@@ -1,11 +1,12 @@
 import pygame
 
 
-class Game:
+class SpaceGame:
     screen = None
     aliens = []
     rockets = []
     lost = False
+    test = 1
 
     def __init__(self, width, height):
         pygame.init()
@@ -32,8 +33,13 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     done = True
+                    
+                    
+                    
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE and not self.lost:
                     self.rockets.append(Rocket(self, hero.x, hero.y))
+                    
+
 
             pygame.display.flip()
             self.clock.tick(60)
@@ -50,6 +56,10 @@ class Game:
                 rocket.draw()
 
             if not self.lost: hero.draw()
+        SpaceGame.aliens = []                 #Klassenvariablen werden zurückgesetzt, damit spiel neu gestartet werden kann
+        SpaceGame.rockets = []
+        SpaceGame.lost = False
+        SpaceGame.test = 2
 
     def displayText(self, text):
         pygame.font.init()
@@ -69,7 +79,7 @@ class Alien:
         pygame.draw.rect(self.game.screen,  # renderovací plocha
                          (81, 43, 88),  # barva objektu
                          pygame.Rect(self.x, self.y, self.size, self.size))
-        self.y += 0.05
+        self.y += 0.2
 
     def checkCollision(self, game):
         for rocket in game.rockets:
@@ -117,5 +127,5 @@ class Rocket:
         self.y -= 2  # poletí po herní ploše nahoru 2px/snímek
 
 
-if __name__ == '__main__':
-    game = Game(600, 400)
+#if __name__ == '__main__':
+#    game = SpaceGame(600, 400)
