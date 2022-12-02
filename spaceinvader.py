@@ -14,6 +14,10 @@ class SpaceGame:
         self.height = height
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
+        self.aliens = []                 #Klassenvariablen werden zurückgesetzt, damit spiel neu gestartet werden kann
+        self.rockets = []
+        self.lost = False
+        self.test = 2
         done = False
 
         hero = Hero(self, width / 2, height - 20)
@@ -56,10 +60,7 @@ class SpaceGame:
                 rocket.draw()
 
             if not self.lost: hero.draw()
-        SpaceGame.aliens = []                 #Klassenvariablen werden zurückgesetzt, damit spiel neu gestartet werden kann
-        SpaceGame.rockets = []
-        SpaceGame.lost = False
-        SpaceGame.test = 2
+        
 
     def displayText(self, text):
         pygame.font.init()

@@ -1,11 +1,14 @@
 import pygame
 from menu import *
 from spaceinvader import *
+from tetris import *
+from logger import Log
 
 
 class Game():
     def __init__(self):
         pygame.init()
+        self.player = ''
         self.running, self.playing = True, False
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
         self.DISPLAY_W, self.DISPLAY_H = 600, 400
@@ -17,12 +20,20 @@ class Game():
         self.main_menu = MainMenu(self)
         self.options = OptionsMenu(self)
         self.credits = CreditsMenu(self)
-        self.curr_menu = self.main_menu
+        self.game_collection = GameMenu(self)
+        self.login = LoginMenu(self)
+        self.curr_menu = self.login
 
     def game_loop(self):
         while self.playing:
-            game = SpaceGame(600,400)
-            
+            if self.game_collection.state == 'Game1':
+                game = SpaceGame(600,400)
+            if self.game_collection.state == 'Game2':
+                game = Tetris(20,10)
+                log = Log()
+                log.highscore('Tetris', game.score, self.player)
+                print (game.score)
+            self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
             self.playing = False
             #self.check_events()
             #if self.START_KEY:
@@ -62,4 +73,9 @@ class Game():
 
 
 
+
+class gamescore:
+    def __init__(self, game, score ):
+        self.game = game
+        self.score = score
 
