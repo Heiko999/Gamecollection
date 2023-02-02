@@ -1,1 +1,1 @@
-{"_default": {"1": {"Game": "Tetris", "Highscore": 73, "Player": "heiko"}}}
+{"_default": {"1": {"Game": "Tetris", "THighscore": 1, "Player": "test"}, "2": {"Game": "SpaceInvaders", "SHighscore": 100, "Player": "test"}, "3": {"Game": "Mastermind", "MHighscore": 12, "Player": "test"}}}

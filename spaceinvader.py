@@ -7,6 +7,7 @@ class SpaceGame:
     rockets = []
     lost = False
     test = 1
+    score_si = 100
 
     def __init__(self, width, height):
         pygame.init()

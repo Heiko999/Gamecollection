@@ -171,10 +171,11 @@ class MainMenu(Menu):
 class GameMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-        self.state = 'Game1'
-        self.volx, self.voly = self.mid_w, self.mid_h + 20
-        self.modex, self.modey = self.mid_w, self.mid_h + 40
-        self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
+        self.state = 'SpaceInvaders'
+        self.spacex, self.spacey = self.mid_w, self.mid_h + 20
+        self.tetrisx, self.tetrisy = self.mid_w, self.mid_h + 40
+        self.mindx, self.mindy = self.mid_w, self.mid_h + 60
+        self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
 
     def display_menu(self):
         self.run_display = True
@@ -183,8 +184,9 @@ class GameMenu(Menu):
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('GameCollection', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-            self.game.draw_text("Game1", 15, self.volx, self.voly)
-            self.game.draw_text("Game2", 15, self.modex, self.modey)
+            self.game.draw_text("SpaceInvaders", 15, self.spacex, self.spacey)
+            self.game.draw_text("Tetris", 15, self.tetrisx, self.tetrisy)
+            self.game.draw_text("Mastermind", 15, self.mindx, self.mindy)
             self.draw_cursor()
             self.blit_screen()
 
@@ -192,17 +194,32 @@ class GameMenu(Menu):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.main_menu
             self.run_display = False
-        elif self.game.UP_KEY or self.game.DOWN_KEY:
-            if self.state == 'Game1':
-                self.state = 'Game2'
-                self.cursor_rect.midtop = (self.modex + self.offset, self.modey)
-            elif self.state == 'Game2':
-                self.state = 'Game1'
-                self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
+        elif self.game.DOWN_KEY:
+            if self.state == 'SpaceInvaders':
+                self.state = 'Tetris'
+                self.cursor_rect.midtop = (self.tetrisx + self.offset, self.tetrisy)
+            elif self.state == 'Tetris':
+                self.state = 'Mastermind'
+                self.cursor_rect.midtop = (self.mindx + self.offset, self.mindy)
+            elif self.state == 'Mastermind':
+                self.state = 'SpaceInvaders'
+                self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
+        elif self.game.UP_KEY:
+            if self.state == 'Mastermind':
+                self.state = 'Tetris'
+                self.cursor_rect.midtop = (self.tetrisx + self.offset, self.tetrisy)
+            elif self.state == 'Tetris':
+                self.state = 'SpaceInvaders'
+                self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
+            elif self.state == 'SpaceInvaders':
+                self.state = 'Mastermind'
+                self.cursor_rect.midtop = (self.mindx + self.offset, self.mindy)
         elif self.game.START_KEY:
-            if self.state == 'Game1':
+            if self.state == 'SpaceInvaders':
                 self.game.playing = True
-            if self.state == 'Game2':
+            if self.state == 'Tetris':
+                self.game.playing = True
+            if self.state == 'Mastermind':
                 self.game.playing = True
         self.run_display = False
 
@@ -251,6 +268,9 @@ class OptionsMenu(Menu):
                     print(self.game.BLACK)
                     print(self.game.WHITE)
                     return
+            if self.state == 'Volume':
+                print('volume')
+                self.game.curr_menu = self.game.main_menu
             
 
 class CreditsMenu(Menu):

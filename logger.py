@@ -1,17 +1,17 @@
 from tinydb import TinyDB, Query
 from menu import *
 
-db  = TinyDB('db.json')
+db = TinyDB('db.json')
 db2 = TinyDB('db2.json')
 
 class Log:
     def signIn(self,x,y):
-        db.insert({'Name': x, 'Passwort': y, 'Tetris' : 0})
-        print(x + 'ist registriert')
+        db.insert({'Name': x, 'Passwort': y, 'Tetris' : 0, 'Mastermind' : 0, 'SpaceInvaders' : 0})
+        print(x + ' ist registriert')
         
 
     def login(self,x,y):
-        sucess = False
+        success = False #notwendig?
         user = Query()
         ergebnis = db.search((user.Name == x) & (user.Passwort == y))
         if len(ergebnis) == 0:
@@ -31,16 +31,31 @@ class Log:
             print('User ' + x + ' wurde gelöscht')
 
     def highscore(self,game,highscore,player):
-        user = Query()
-        ergebnis = db2.search((user.Game == game) & (user.Highscore < highscore))
-        print(ergebnis)
-        if ergebnis != []:
-            db2.update({'Highscore': highscore}, user.Game == game)
-            db2.update({'Player': player}, user.Game == game)
-        #player = Query()
-        ergebnis = db.search((user.Name == player) & (user.Tetris < highscore))
-        if ergebnis != []:
-            db.update({'Tetris': highscore}, user.Name == player)
+        dbEntry = Query()
+        ergebnis = db2.search((dbEntry.Game == 'Tetris') & (dbEntry.THighscore < highscore))
+        if ergebnis != [] and game == 'Tetris':
+            print(f"""Game: {game} Score: {highscore}""")
+            db2.update({'THighscore': highscore, 'Player': player}, dbEntry.Game == 'Tetris')
+        ergebnis = db2.search((dbEntry.Game == 'Mastermind') & (dbEntry.MHighscore < highscore))
+        if ergebnis != [] and game == 'Mastermind':
+            print(f"""Game: {game} Score: {highscore}""")
+            db2.update({'MHighscore': highscore, 'Player': player}, dbEntry.Game == 'Mastermind')
+        ergebnis = db2.search((dbEntry.Game == 'SpaceInvaders') & (dbEntry.SHighscore < highscore))
+        if ergebnis != [] and game == 'SpaceInvaders':
+            print(f"""Game: {game} Score: {highscore}""")
+            db2.update({'SHighscore': highscore, 'Player': player}, dbEntry.Game == 'SpaceInvaders')
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Tetris < highscore))
+        if ergebnis != [] and game == 'Tetris':
+            print(f"""Game: {game} Score: {highscore}""")
+            db.update({'Tetris': highscore}, dbEntry.Name == player)
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Mastermind < highscore))
+        if ergebnis != [] and game == 'Mastermind':
+            print(f"""Game: {game} Score: {highscore}""")
+            db.update({'Mastermind': highscore}, dbEntry.Name == player)
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.SpaceInvaders < highscore))
+        if ergebnis != [] and game == 'SpaceInvaders':
+            print(f"""Game: {game} Score: {highscore}""")
+            db.update({'SpaceInvaders': highscore}, dbEntry.Name == player)
 
 
 

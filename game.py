@@ -2,6 +2,7 @@ import pygame
 from menu import *
 from spaceinvader import *
 from tetris import *
+from mastermind import *
 from logger import Log
 
 
@@ -26,13 +27,22 @@ class Game():
 
     def game_loop(self):
         while self.playing:
-            if self.game_collection.state == 'Game1':
+            if self.game_collection.state == 'SpaceInvaders':
                 game = SpaceGame(600,400)
-            if self.game_collection.state == 'Game2':
+                log = Log()
+                log.highscore('SpaceInvaders', game.score_si, self.player)
+                print(game.score_si)
+            if self.game_collection.state == 'Tetris':
                 game = Tetris(20,10)
                 log = Log()
-                log.highscore('Tetris', game.score, self.player)
-                print (game.score)
+                log.highscore('Tetris', game.score_tetris, self.player)
+                print (game.score_tetris)
+            if self.game_collection.state == 'Mastermind':
+                game = Mastermind()
+                log = Log()
+                log.highscore('Mastermind', game.score_mm, self.player)
+                print(game.score_mm)
+
             self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
             self.playing = False
             #self.check_events()
