@@ -21,12 +21,12 @@ class flappy:
         self.elevation = self.window_height * 0.8
         self.game_images = {}
         self.framepersecond = 32
-        self.pipeimage = 'pipe.png'
-        self.background_image = 'background.jpg'
-        self.birdplayer_image = 'bird.png'
-        self.sealevel_image = 'base.jfif'
+        self.pipeimage = 'gamedump/pipe.png'
+        self.background_image = 'gamedump/background.jpg'
+        self.birdplayer_image = 'gamedump/bird.png'
+        self.sealevel_image = 'gamedump/base.jfif'
         self.framepersecond_clock = pygame.time.Clock()
-
+        self.done = False
         # Sets the title on top of game window
         pygame.display.set_caption('Flappy Bird Game')
 
@@ -34,16 +34,16 @@ class flappy:
 
         # images for displaying score
         self.game_images['scoreimages'] = (
-            pygame.image.load('0.png').convert_alpha(),
-            pygame.image.load('1.png').convert_alpha(),
-            pygame.image.load('2.png').convert_alpha(),
-            pygame.image.load('3.png').convert_alpha(),
-            pygame.image.load('4.png').convert_alpha(),
-            pygame.image.load('5.png').convert_alpha(),
-            pygame.image.load('6.png').convert_alpha(),
-            pygame.image.load('7.png').convert_alpha(),
-            pygame.image.load('8.png').convert_alpha(),
-            pygame.image.load('9.png').convert_alpha()
+            pygame.image.load('gamedump/0.png').convert_alpha(),
+            pygame.image.load('gamedump/1.png').convert_alpha(),
+            pygame.image.load('gamedump/2.png').convert_alpha(),
+            pygame.image.load('gamedump/3.png').convert_alpha(),
+            pygame.image.load('gamedump/4.png').convert_alpha(),
+            pygame.image.load('gamedump/5.png').convert_alpha(),
+            pygame.image.load('gamedump/6.png').convert_alpha(),
+            pygame.image.load('gamedump/7.png').convert_alpha(),
+            pygame.image.load('gamedump/8.png').convert_alpha(),
+            pygame.image.load('gamedump/9.png').convert_alpha()
         )
         self.game_images['flappybird'] = pygame.image.load(
             self.birdplayer_image).convert_alpha()
@@ -60,7 +60,7 @@ class flappy:
 
         # Here starts the main game
 
-        while True:
+        while not self.done:
 
             # sets the coordinates of flappy bird
 
@@ -68,14 +68,14 @@ class flappy:
             vertical = int(
                 (self.window_height - self.game_images['flappybird'].get_height())/2)
             ground = 0
-            while True:
+            while not self.done:
                 for event in pygame.event.get():
 
                     # if user clicks on cross button, close the game
                     if event.type == QUIT or (event.type == KEYDOWN and \
                                             event.key == K_ESCAPE):
-                        pygame.quit()
-                        sys.exit()
+                        self.done = True
+                        break
 
                     # If the user presses space or
                     # up key, start the game for them
@@ -99,6 +99,7 @@ class flappy:
         vertical = int(self.window_width/2)
         ground = 0
         mytempheight = 100
+        
 
         # Generating two pipes for blitting on window
         first_pipe = self.createPipe()
@@ -131,11 +132,10 @@ class flappy:
 
         bird_flap_velocity = -8
         bird_flapped = False
-        while True:
+        while not self.done:
             for event in pygame.event.get():
                 if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
-                    pygame.quit()
-                    sys.exit()
+                    self.done = True
                 if event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_UP):
                     if vertical > 0:
                         bird_velocity_y = bird_flap_velocity
@@ -249,7 +249,6 @@ class flappy:
         ]
         return pipe
     
-flappy()
 
 
 

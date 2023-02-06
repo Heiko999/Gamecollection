@@ -175,6 +175,8 @@ class GameMenu(Menu):
         self.spacex, self.spacey = self.mid_w, self.mid_h + 20
         self.tetrisx, self.tetrisy = self.mid_w, self.mid_h + 40
         self.mindx, self.mindy = self.mid_w, self.mid_h + 60
+        self.snakex, self.snakey = self.mid_w, self.mid_h + 80
+        self.flapx, self.flapy = self.mid_w, self.mid_h + 100
         self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
 
     def display_menu(self):
@@ -187,6 +189,8 @@ class GameMenu(Menu):
             self.game.draw_text("SpaceInvaders", 15, self.spacex, self.spacey)
             self.game.draw_text("Tetris", 15, self.tetrisx, self.tetrisy)
             self.game.draw_text("Mastermind", 15, self.mindx, self.mindy)
+            self.game.draw_text("Snake", 15, self.snakex, self.snakey)
+            self.game.draw_text("Flappy Bird", 15, self.flapx, self.flapy)
             self.draw_cursor()
             self.blit_screen()
 
@@ -202,6 +206,12 @@ class GameMenu(Menu):
                 self.state = 'Mastermind'
                 self.cursor_rect.midtop = (self.mindx + self.offset, self.mindy)
             elif self.state == 'Mastermind':
+                self.state = 'Snake'
+                self.cursor_rect.midtop = (self.snakex + self.offset, self.snakey)
+            elif self.state == 'Snake':
+                self.state = 'Flappy'
+                self.cursor_rect.midtop = (self.flapx + self.offset, self.flapy)
+            elif self.state == 'Flappy':
                 self.state = 'SpaceInvaders'
                 self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
         elif self.game.UP_KEY:
@@ -212,6 +222,12 @@ class GameMenu(Menu):
                 self.state = 'SpaceInvaders'
                 self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
             elif self.state == 'SpaceInvaders':
+                self.state = 'Flappy'
+                self.cursor_rect.midtop = (self.flapx + self.offset, self.flapy)
+            elif self.state == 'Flappy':
+                self.state = 'Snake'
+                self.cursor_rect.midtop = (self.snakex + self.offset, self.snakey)
+            elif self.state == 'Snake':
                 self.state = 'Mastermind'
                 self.cursor_rect.midtop = (self.mindx + self.offset, self.mindy)
         elif self.game.START_KEY:
@@ -220,6 +236,10 @@ class GameMenu(Menu):
             if self.state == 'Tetris':
                 self.game.playing = True
             if self.state == 'Mastermind':
+                self.game.playing = True
+            if self.state == 'Snake':
+                self.game.playing = True
+            if self.state == 'Flappy':
                 self.game.playing = True
         self.run_display = False
 

@@ -4,6 +4,8 @@ from spaceinvader import *
 from tetris import *
 from mastermind import *
 from logger import Log
+from snake import *
+from flappy import *
 
 
 class Game():
@@ -42,6 +44,10 @@ class Game():
                 log = Log()
                 log.highscore('Mastermind', game.score_mm, self.player)
                 print(game.score_mm)
+            if self.game_collection.state == 'Snake':
+                game = Snake()
+            if self.game_collection.state == 'Flappy':
+                game = flappy()
 
             self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
             self.playing = False

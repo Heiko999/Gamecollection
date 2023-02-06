@@ -128,13 +128,13 @@ class Snake:
         
                 clock.tick(snake_speed)
         
-            pygame.quit()
-            quit()
+            #pygame.quit()
+            #quit()
         
         
         gameLoop()
 
-Snake()
+
 
 
 
