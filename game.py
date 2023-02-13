@@ -46,8 +46,16 @@ class Game():
                 print(game.score_mm)
             if self.game_collection.state == 'Snake':
                 game = Snake()
+                log = Log()
+                log.highscore('Snake', game.score_snake, self.player)
+                print(game.score_snake)
             if self.game_collection.state == 'Flappy':
                 game = flappy()
+                log = Log()
+                log.highscore('Flappy', game.score_flappy, self.player)
+                print(game.score_flappy)
+            #TO-DO: Wenn man einen Highscore erreicht, aber das spiel dann nicht schließt sondern eine neue Runde anfängt
+            #wird der Highscore nicht gespeichert 
 
             self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
             self.playing = False

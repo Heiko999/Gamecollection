@@ -9,6 +9,7 @@ from pygame.locals import *
 
 # program where the game starts
 class flappy:
+    score_flappy = 0
     def __init__(self):
             # For initializing modules of pygame library
         pygame.init()
@@ -94,7 +95,7 @@ class flappy:
 
 
     def game(self):
-        your_score = 0
+        self.score_flappy = 0
         horizontal = int(self.window_width/5)
         vertical = int(self.window_width/2)
         ground = 0
@@ -150,13 +151,13 @@ class flappy:
             if game_over:
                 return
 
-            # check for your_score
+            # check for score_flappy
             playerMidPos = horizontal + self.game_images['flappybird'].get_width()/2
             for pipe in up_pipes:
                 pipeMidPos = pipe['x'] + self.game_images['pipeimage'][0].get_width()/2
                 if pipeMidPos <= playerMidPos < pipeMidPos + 4:
-                    your_score += 1
-                    print(f"Your your_score is {your_score}")
+                    self.score_flappy += 1
+                    print(f"Your self.score_flappy is {self.score_flappy}")
 
             if bird_velocity_y < bird_Max_Vel_Y and not bird_flapped:
                 bird_velocity_y += birdAccY
@@ -196,7 +197,7 @@ class flappy:
             self.window.blit(self.game_images['flappybird'], (horizontal, vertical))
 
             # Fetching the digits of score.
-            numbers = [int(x) for x in list(str(your_score))]
+            numbers = [int(x) for x in list(str(self.score_flappy))]
             width = 0
 
             # finding the width of score images from numbers.

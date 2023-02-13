@@ -6,7 +6,7 @@ db2 = TinyDB('db2.json')
 
 class Log:
     def signIn(self,x,y):
-        db.insert({'Name': x, 'Passwort': y, 'Tetris' : 0, 'Mastermind' : 0, 'SpaceInvaders' : 0})
+        db.insert({'Name': x, 'Passwort': y, 'Tetris' : 0, 'Mastermind' : 0, 'SpaceInvaders' : 0 , 'Snake' : 0, 'Flappy' : 0})
         print(x + ' ist registriert')
         
 
@@ -44,6 +44,15 @@ class Log:
         if ergebnis != [] and game == 'SpaceInvaders':
             print(f"""Game: {game} Score: {highscore}""")
             db2.update({'SHighscore': highscore, 'Player': player}, dbEntry.Game == 'SpaceInvaders')
+        ergebnis = db2.search((dbEntry.Game == 'Snake') & (dbEntry.SNHighscore < highscore))
+        if ergebnis != [] and game == 'Snake':
+            print(f"""Game: {game} Score: {highscore}""")
+            db2.update({'SNHighscore': highscore, 'Player': player}, dbEntry.Game == 'Snake')
+        ergebnis = db2.search((dbEntry.Game == 'Flappy') & (dbEntry.FHighscore < highscore))
+        if ergebnis != [] and game == 'Flappy':
+            print(f"""Game: {game} Score: {highscore}""")
+            db2.update({'FHighscore': highscore, 'Player': player}, dbEntry.Game == 'Flappy')
+
         ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Tetris < highscore))
         if ergebnis != [] and game == 'Tetris':
             print(f"""Game: {game} Score: {highscore}""")
@@ -56,6 +65,14 @@ class Log:
         if ergebnis != [] and game == 'SpaceInvaders':
             print(f"""Game: {game} Score: {highscore}""")
             db.update({'SpaceInvaders': highscore}, dbEntry.Name == player)
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Snake < highscore))
+        if ergebnis != [] and game == 'Snake':
+            print(f"""Game: {game} Score: {highscore}""")
+            db.update({'Snake': highscore}, dbEntry.Name == player)
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Flappy < highscore))
+        if ergebnis != [] and game == 'Flappy':
+            print(f"""Game: {game} Score: {highscore}""")
+            db.update({'Flappy': highscore}, dbEntry.Name == player)
 
 
 

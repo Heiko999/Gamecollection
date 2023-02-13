@@ -3,7 +3,7 @@ import time
 import random
 
 class Snake: 
-    
+    score_snake = 0
     def __init__(self):
         pygame.init()
         
@@ -13,10 +13,9 @@ class Snake:
         red = (213, 50, 80)
         green = (0, 255, 0)
         blue = (50, 153, 213)
-        
         dis_width = 600
         dis_height = 400
-        
+        self.score_snake = 0
         dis = pygame.display.set_mode((dis_width, dis_height))
         pygame.display.set_caption('Snake Game')
         
@@ -32,6 +31,7 @@ class Snake:
         def Your_score(score):
             value = score_font.render("Your Score: " + str(score), True, yellow)
             dis.blit(value, [0, 0])
+            self.score_snake = score
         
         
         
@@ -55,7 +55,6 @@ class Snake:
             x1_change = 0
             y1_change = 0
             direction = ''
-        
             snake_List = []
             Length_of_snake = 1
         

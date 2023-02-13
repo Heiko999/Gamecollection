@@ -1,1 +1,1 @@
-{"_default": {"1": {"Game": "Tetris", "THighscore": 1, "Player": "test"}, "2": {"Game": "SpaceInvaders", "SHighscore": 100, "Player": "test"}, "3": {"Game": "Mastermind", "MHighscore": 12, "Player": "test"}}}
+{"_default": {"1": {"Game": "Tetris", "THighscore": 1, "Player": "test"}, "2": {"Game": "SpaceInvaders", "SHighscore": 100, "Player": "test"}, "3": {"Game": "Mastermind", "MHighscore": 12, "Player": "test"}, "4": {"Game": "Snake", "SNHighscore": 5, "Player": "test2"}, "5": {"Game": "Flappy", "FHighscore": 4, "Player": "test"}}}
