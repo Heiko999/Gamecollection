@@ -24,6 +24,12 @@ class Game():
         self.options = OptionsMenu(self)
         self.credits = CreditsMenu(self)
         self.highscores = HighscoreMenu(self)
+        self.gamescores = GamescoreMenu(self)
+        self.spacescoremenu = SpaceMenu(self)
+        self.tetrisscoremenu = TetrisMenu(self)
+        self.masterscoremenu = MastermindMenu(self)
+        self.snakescoremenu = SnakeMenu(self)
+        self.flappyscoremenu = FlappyMenu(self)
         self.game_collection = GameMenu(self)
         self.login = LoginMenu(self)
         self.curr_menu = self.login

@@ -6,7 +6,7 @@ db2 = TinyDB('db2.json')
 
 class Log:
     def signIn(self,x,y):
-        db.insert({'Name': x, 'Passwort': y, 'Tetris' : 0, 'Mastermind' : 0, 'SpaceInvaders' : 0 , 'Snake' : 0, 'Flappy' : 0})
+        db.insert({'Name': x, 'Passwort': y, 'Tetris' : "0", 'Mastermind' : "0", 'SpaceInvaders' : "0" , 'Snake' : "0", 'Flappy' : "0"})
         print(x + ' ist registriert')
         
 
@@ -53,29 +53,153 @@ class Log:
             print(f"""Game: {game} Score: {highscore}""")
             db2.update({'FHighscore': highscore, 'Player': player}, dbEntry.Game == 'Flappy')
 
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Tetris < highscore))
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Tetris < str(highscore)))
         if ergebnis != [] and game == 'Tetris':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'Tetris': highscore}, dbEntry.Name == player)
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Mastermind < highscore))
+            db.update({'Tetris': str(highscore)}, dbEntry.Name == player)
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Mastermind < str(highscore)))
         if ergebnis != [] and game == 'Mastermind':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'Mastermind': highscore}, dbEntry.Name == player)
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.SpaceInvaders < highscore))
+            db.update({'Mastermind': str(highscore)}, dbEntry.Name == player)
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.SpaceInvaders < str(highscore)))
         if ergebnis != [] and game == 'SpaceInvaders':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'SpaceInvaders': highscore}, dbEntry.Name == player)
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Snake < highscore))
+            db.update({'SpaceInvaders': str(highscore)}, dbEntry.Name == player)
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Snake < str(highscore)))
         if ergebnis != [] and game == 'Snake':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'Snake': highscore}, dbEntry.Name == player)
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Flappy < highscore))
+            db.update({'Snake': str(highscore)}, dbEntry.Name == player)
+        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Flappy < str(highscore)))
         if ergebnis != [] and game == 'Flappy':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'Flappy': highscore}, dbEntry.Name == player)
+            db.update({'Flappy': str(highscore)}, dbEntry.Name == player)
+    
+
+    
+
+    def tetrisscore(self):
+        ergebnis = db.all()
+        self.len = len(db)
+        dicture = {}
+        for i in range(self.len): 
+            score = ergebnis[i]
+            scoreStr =str(score)
+            scoreSplit = scoreStr.split("'")
+            #print(TetrisSplit)
+            print(scoreSplit[3])
+            print(scoreSplit[11])
+            dicture[scoreSplit[3]] = int(scoreSplit[11])
+
+        sorted_dict = sorted(dicture.items(),key=lambda x:x[1], reverse=True)
+        converted_dict=dict(sorted_dict)
+        print(converted_dict)
+        result = converted_dict.items()
+        data=list(result)
+        return data
+
+    def mastermindscore(self):
+        ergebnis = db.all()
+        self.len = len(db)
+        dicture = {}
+        for i in range(self.len): 
+            score = ergebnis[i]
+            scoreStr =str(score)
+            scoreSplit = scoreStr.split("'")
+            #print(TetrisSplit)
+            print(scoreSplit[3])
+            print(scoreSplit[15])
+            dicture[scoreSplit[3]] = int(scoreSplit[15])
+
+        sorted_dict = sorted(dicture.items(),key=lambda x:x[1], reverse=True)
+        converted_dict=dict(sorted_dict)
+        print(converted_dict)
+        result = converted_dict.items()
+        data=list(result)
+        return data
+
+    def spaceinvaderscore(self):
+        ergebnis = db.all()
+        self.len = len(db)
+        dicture = {}
+        for i in range(self.len): 
+            score = ergebnis[i]
+            scoreStr =str(score)
+            scoreSplit = scoreStr.split("'")
+            #print(TetrisSplit)
+            dicture[scoreSplit[3]] = int(scoreSplit[19])
+
+        sorted_dict = sorted(dicture.items(),key=lambda x:x[1], reverse=True)
+        converted_dict=dict(sorted_dict)
+        print(converted_dict)
+        result = converted_dict.items()
+        data=list(result)
+        return data
+
+    def snakescore(self):
+        ergebnis = db.all()
+        self.len = len(db)
+        dicture = {}
+        for i in range(self.len): 
+            score = ergebnis[i]
+            scoreStr =str(score)
+            scoreSplit = scoreStr.split("'")
+            #print(TetrisSplit)
+            print(scoreSplit[3])
+            print(scoreSplit[23])
+            dicture[scoreSplit[3]] = int(scoreSplit[23])
+
+        sorted_dict = sorted(dicture.items(),key=lambda x:x[1], reverse=True)
+        converted_dict=dict(sorted_dict)
+        print(converted_dict)
+        result = converted_dict.items()
+        data=list(result)
+        return data
+
+    def flappyscore(self):
+        ergebnis = db.all()
+        self.len = len(db)
+        dicture = {}
+        for i in range(self.len): 
+            score = ergebnis[i]
+            scoreStr =str(score)
+            scoreSplit = scoreStr.split("'")
+            #print(TetrisSplit)
+            print(scoreSplit[3])
+            print(scoreSplit[27])
+            dicture[scoreSplit[3]] = int(scoreSplit[27])
+
+        sorted_dict = sorted(dicture.items(),key=lambda x:x[1], reverse=True)
+        converted_dict=dict(sorted_dict)
+        print(converted_dict)
+        result = converted_dict.items()
+        data=list(result)
+        return data
 
 
 
+
+"""
+def spaceinvaderscore():
+        ergebnis = db.all()
+        len = len(db)
+        dicture = {}
+        for i in range(len): 
+            score = ergebnis[i]
+            scoreStr =str(score)
+            scoreSplit = scoreStr.split("'")
+            #print(TetrisSplit)
+            print(scoreSplit[3])
+            print(scoreSplit[19])
+            dicture[scoreSplit[3]] = int(scoreSplit[19])
+
+        sorted_dict = sorted(dicture.items(),key=lambda x:x[1], reverse=True)
+        converted_dict=dict(sorted_dict)
+        print(converted_dict)
+        result = converted_dict.items()
+        data=list(result)
+        for i in range(len):
+            print(data[i])
+"""
         
 
     
