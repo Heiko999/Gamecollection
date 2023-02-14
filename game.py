@@ -23,6 +23,7 @@ class Game():
         self.main_menu = MainMenu(self)
         self.options = OptionsMenu(self)
         self.credits = CreditsMenu(self)
+        self.highscores = HighscoreMenu(self)
         self.game_collection = GameMenu(self)
         self.login = LoginMenu(self)
         self.curr_menu = self.login

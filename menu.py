@@ -113,8 +113,9 @@ class MainMenu(Menu):
         Menu.__init__(self, game)
         self.state = "Start"
         self.startx, self.starty = self.mid_w, self.mid_h + 30
-        self.optionsx, self.optionsy = self.mid_w, self.mid_h + 50
-        self.creditsx, self.creditsy = self.mid_w, self.mid_h + 70
+        self.highscorex, self.highscorey = self.mid_w, self.mid_h + 50
+        self.optionsx, self.optionsy = self.mid_w, self.mid_h + 70
+        self.creditsx, self.creditsy = self.mid_w, self.mid_h + 90
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
 
     def display_menu(self):
@@ -126,6 +127,7 @@ class MainMenu(Menu):
             mainM = "Main Menu" + "      Hallo Player: " + str(self.game.player)
             self.game.draw_text(mainM, 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 20)
             self.game.draw_text("Start Game", 20, self.startx, self.starty)
+            self.game.draw_text("Highscores", 20, self.highscorex, self.highscorey)
             self.game.draw_text("Options", 20, self.optionsx, self.optionsy)
             self.game.draw_text("Credits", 20, self.creditsx, self.creditsy)
             self.draw_cursor()
@@ -135,6 +137,9 @@ class MainMenu(Menu):
     def move_cursor(self):
         if self.game.DOWN_KEY:
             if self.state == 'Start':
+                self.cursor_rect.midtop = (self.highscorex + self.offset, self.highscorey)
+                self.state = 'Highscores'
+            elif self.state == 'Highscores':
                 self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
                 self.state = 'Options'
             elif self.state == 'Options':
@@ -147,9 +152,12 @@ class MainMenu(Menu):
             if self.state == 'Start':
                 self.cursor_rect.midtop = (self.creditsx + self.offset, self.creditsy)
                 self.state = 'Credits'
-            elif self.state == 'Options':
+            elif self.state == 'Highscores':
                 self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
                 self.state = 'Start'
+            elif self.state == 'Options':
+                self.cursor_rect.midtop = (self.highscorex + self.offset, self.highscorey)
+                self.state = 'Highscores'
             elif self.state == 'Credits':
                 self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
                 self.state = 'Options'
@@ -162,6 +170,8 @@ class MainMenu(Menu):
         if self.game.START_KEY:
             if self.state == 'Start':
                 self.game.curr_menu = self.game.game_collection
+            elif self.state == 'Highscores':
+                self.game.curr_menu = self.game.highscores
             elif self.state == 'Options':
                 self.game.curr_menu = self.game.options
             elif self.state == 'Credits':
@@ -242,6 +252,47 @@ class GameMenu(Menu):
             if self.state == 'Flappy':
                 self.game.playing = True
         self.run_display = False
+
+class HighscoreMenu(Menu):
+    def __init__(self, game):
+        Menu.__init__(self, game)
+        self.state = 'Playerscore'
+        self.phighscorex, self.phighscorey = self.mid_w, self.mid_h + 20
+        self.ghighscorex, self.ghighscorey = self.mid_w, self.mid_h + 40
+        self.cursor_rect.midtop = (self.phighscorex + self.offset, self.phighscorey)
+
+    def display_menu(self):
+        self.run_display = True
+        while self.run_display:
+            self.game.check_events()
+            self.check_input()
+            self.game.display.fill(self.game.BLACK)
+            self.game.draw_text('Highscores', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
+            self.game.draw_text("Playerscore", 15, self.phighscorex, self.phighscorey)
+            self.game.draw_text("Gamescore", 15, self.ghighscorex, self.ghighscorey)
+            self.draw_cursor()
+            self.blit_screen()
+
+    def check_input(self):
+        if self.game.BACK_KEY:
+            self.game.curr_menu = self.game.main_menu
+            self.run_display = False
+        elif self.game.UP_KEY or self.game.DOWN_KEY:
+            if self.state == 'Playerscore':
+                self.state = 'Gamescore'
+                self.cursor_rect.midtop = (self.ghighscorex + self.offset, self.ghighscorey)
+            elif self.state == 'Gamescore':
+                self.state = 'Playerscore'
+                self.cursor_rect.midtop = (self.phighscorex + self.offset, self.phighscorey)
+        elif self.game.START_KEY:
+            if self.state == '':
+                if self.game.BLACK == (0, 0, 0):
+                    self.game.BLACK = (255, 255, 255)  
+                    self.game.WHITE = (0, 0, 0)
+                    print(self.game.BLACK)
+                    print(self.game.WHITE)
+                    return
+                
 
 class OptionsMenu(Menu):
     def __init__(self, game):
