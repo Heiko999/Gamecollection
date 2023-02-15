@@ -5,11 +5,12 @@ db = TinyDB('db.json')
 db2 = TinyDB('db2.json')
 
 class Log:
+    #Erstellt neuen Spieler
     def signIn(self,x,y):
         db.insert({'Name': x, 'Passwort': y, 'Tetris' : "0", 'Mastermind' : "0", 'SpaceInvaders' : "0" , 'Snake' : "0", 'Flappy' : "0"})
         print(x + ' ist registriert')
         
-
+    #Meldet Spieler an
     def login(self,x,y):
         success = False #notwendig?
         user = Query()
@@ -21,6 +22,7 @@ class Log:
             success = True
             return success
     
+    #Löscht einen Spieler
     def delete(self,x,y):
         user = Query()
         ergebnis = db.search((user.Name == x) & (user.Passwort == y))
@@ -30,6 +32,8 @@ class Log:
             db.remove((user.Name == x) & (user.Passwort == y))
             print('User ' + x + ' wurde gelöscht')
 
+
+    #aktualisiert die Highscore Einträge
     def highscore(self,game,highscore,player):
         dbEntry = Query()
         ergebnis = db2.search((dbEntry.Game == 'Tetris') & (dbEntry.THighscore < highscore))
@@ -75,7 +79,9 @@ class Log:
             db.update({'Flappy': str(highscore)}, dbEntry.Name == player)
     
 
-    
+    #funktionen um Highscore des entsprechenden spiels aus der Datenbank auszulesen
+    #Werte werden in einem Dictionaryder Form {Spieler: Punkte} gespeichert und anschließend
+    #in ein Array umgewandelt welches weiter verwendet werden kann
 
     def tetrisscore(self):
         ergebnis = db.all()

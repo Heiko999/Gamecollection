@@ -7,7 +7,8 @@ COLOR_INACTIVE = pg.Color('lightskyblue3')
 COLOR_ACTIVE = pg.Color('dodgerblue2')
 FONT = pg.font.Font(None, 32)
 
-
+#Klasse für die Inputboxen im Login Menu, welche für die Eingabefelder für
+#Username und Passwort verwendet werden
 class InputBox:
 
     def __init__(self, x, y, w, h, text=''):
@@ -17,6 +18,7 @@ class InputBox:
         self.txt_surface = FONT.render(text, True, self.color)
         self.active = False
 
+    #Funktion die dafür sorgt, dass in Inputboxen geschrieben werden kann und text gelöscht werden kann
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             # If the user clicked on the input_box rect.
@@ -38,9 +40,9 @@ class InputBox:
                     self.text += event.unicode
                 # Re-render the text.
                 self.txt_surface = FONT.render(self.text, True, self.color)
-
+    
+    # Resize the box if the text is too long.
     def update(self):
-        # Resize the box if the text is too long.
         width = max(200, self.txt_surface.get_width()+10)
         self.rect.w = width
 

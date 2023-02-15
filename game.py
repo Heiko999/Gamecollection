@@ -33,7 +33,9 @@ class Game():
         self.game_collection = GameMenu(self)
         self.login = LoginMenu(self)
         self.curr_menu = self.login
-
+    
+    #Wird für das Gamemenu verwendet. Solange man im GameMenu ist wird der State erfasst, um zu sehen, welches spiel gerade gespielt wird
+    #dann wird ein Objekt des Spiels erzeugt und somit dieses Spiel gestartet
     def game_loop(self):
         while self.playing:
             if self.game_collection.state == 'SpaceInvaders':
@@ -76,7 +78,7 @@ class Game():
             self.reset_keys()
 
 
-
+    #Funktion um die gedrückten Tasten zu erfassen und in einem Boolean zu speichern
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -91,10 +93,13 @@ class Game():
                     self.DOWN_KEY = True
                 if event.key == pygame.K_UP:
                     self.UP_KEY = True
-
+    
+    #Wird in den Menuklassen benutzt um am ende eines Displayloop die gedrückten Tasten zu resetten, damit nach einem Klick nach
+    #z.B. Unten nicht durchgehend nach unten gescrollt wird
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
-
+    
+    #Führt alle Schritte aus, um Text auf die Oberfläche zu zeichnen
     def draw_text(self, text, size, x, y ):
         font = pygame.font.Font(self.font_name,size)
         text_surface = font.render(text, True, self.WHITE)
@@ -104,7 +109,7 @@ class Game():
 
 
 
-
+#Ist glaube ich ein überbleibsel und wird nicht benötigt aber not sure
 class gamescore:
     def __init__(self, game, score ):
         self.game = game

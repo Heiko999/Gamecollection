@@ -1,6 +1,6 @@
 import pygame
 
-#button class
+#Erstellt den die Button Objekte für den SignIn LogIn und Delete Button
 class Button:
 	def __init__(self, x, y, image, scale):
 		width = image.get_width()
@@ -10,6 +10,7 @@ class Button:
 		self.rect.topleft = (x, y)
 		self.clicked = False
 
+	#Zeichnet den Button und checkt gleichzeitig auch permanent ob dieser gedrückt wurde
 	def draw(self, surface):
 		action = False
 		#get mouse position

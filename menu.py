@@ -8,6 +8,8 @@ signin_img = pygame.image.load('signin_btn.png').convert_alpha()
 login_img = pygame.image.load('login_btn.png').convert_alpha()
 delete_img = pygame.image.load('delete_btn.png').convert_alpha()
 FONT = pygame.font.Font(None, 32)
+
+#Hauptklasse von welcher die anderen Klassen erben.
 class Menu():
     #currentPlayer=''
     def __init__(self, game):
@@ -17,9 +19,10 @@ class Menu():
         self.cursor_rect = pygame.Rect(0, 0, 20, 20)
         self.offset = - 100
 
+    #Wird verwendet um den * Cursor an den ensprechenden Menupunkt zu setzen
     def draw_cursor(self):
         self.game.draw_text('*', 15, self.cursor_rect.x, self.cursor_rect.y)
-
+    #Wird verwendet, um nach Ende einer Aktion in einem Menu das Bild zu aktualisieren
     def blit_screen(self):
         self.game.window.blit(self.game.display, (0, 0))
         pygame.display.update()
@@ -30,7 +33,8 @@ class LoginMenu(Menu):
         Menu.__init__(self, game)
         self.state = "Login"
         self.screen = pygame.display.set_mode((self.game.DISPLAY_W,self.game.DISPLAY_H))
-
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -40,6 +44,7 @@ class LoginMenu(Menu):
             
             log = Log()
 
+            #Erzeugt TextBoxen und Buttons für das LoginMenu
             input_box1 = InputBox(self.game.DISPLAY_W / 2 - 100,  50, 140, 32)
             input_box2 = InputBox(self.game.DISPLAY_W / 2 - 100, 100, 140, 32)
             input_boxes = [input_box1, input_box2]
@@ -65,6 +70,9 @@ class LoginMenu(Menu):
                 self.game.draw_text('Login Screen', 20, self.game.DISPLAY_W / 2, 30)
                 for box in input_boxes:
                     box.draw(self.game.display)
+                
+                #Legt bei Klick auf SignIn Button nach eingabe eines Usernamen und Passworts einen neuen Benutzer
+                #in der Datenbank an
                 if signin_button.draw(self.screen):
                     print('START')
                     print(input_box1.text)
@@ -74,7 +82,9 @@ class LoginMenu(Menu):
                     input_box2.text = ''
                     input_box1.txt_surface = FONT.render(input_box1.text, True, input_box1.color)
                     input_box2.txt_surface = FONT.render(input_box2.text, True, input_box2.color)
-                    
+
+                #Checkt nach auswahl des LoginButton, Ob Username und Passwort mit eintrag in Datenbank übereinstimmen
+                #Stimmt es wird das Menu auf das Main Menu geändert    
                 if login_button.draw(self.screen):
                     print('EXIT')
                     print(input_box1.text)
@@ -89,6 +99,8 @@ class LoginMenu(Menu):
                     input_box1.txt_surface = FONT.render(input_box1.text, True, input_box1.color)
                     input_box2.txt_surface = FONT.render(input_box2.text, True, input_box2.color)
 
+                #Checkt nach Klick auf den Deletebutton ob User und Passwort mit eintrag in Datenbank übereinstimmen.
+                #Tun sie das, wird der Spieler gelöscht 
                 if delete_button.draw(self.screen):
                     print('delete')
                     print(input_box1.text)
@@ -103,10 +115,6 @@ class LoginMenu(Menu):
                 self.blit_screen()
 
                 
-                
-    
-
-    
 
 class MainMenu(Menu):
     def __init__(self, game):
@@ -117,7 +125,9 @@ class MainMenu(Menu):
         self.optionsx, self.optionsy = self.mid_w, self.mid_h + 70
         self.creditsx, self.creditsy = self.mid_w, self.mid_h + 90
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
-
+    
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -164,7 +174,7 @@ class MainMenu(Menu):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.login
             self.run_display = False
-
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         self.move_cursor()
         if self.game.START_KEY:
@@ -189,6 +199,8 @@ class GameMenu(Menu):
         self.flapx, self.flapy = self.mid_w, self.mid_h + 100
         self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
 
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -204,6 +216,7 @@ class GameMenu(Menu):
             self.draw_cursor()
             self.blit_screen()
 
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.main_menu
@@ -261,6 +274,8 @@ class HighscoreMenu(Menu):
         self.ghighscorex, self.ghighscorey = self.mid_w, self.mid_h + 40
         self.cursor_rect.midtop = (self.phighscorex + self.offset, self.phighscorey)
 
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -272,7 +287,7 @@ class HighscoreMenu(Menu):
             self.game.draw_text("Gamescore", 15, self.ghighscorex, self.ghighscorey)
             self.draw_cursor()
             self.blit_screen()
-
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.main_menu
@@ -301,6 +316,8 @@ class GamescoreMenu(Menu):
         self.flapx, self.flapy = self.mid_w, self.mid_h + 100
         self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
 
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -316,6 +333,7 @@ class GamescoreMenu(Menu):
             self.draw_cursor()
             self.blit_screen()
 
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.main_menu
@@ -374,7 +392,8 @@ class SpaceMenu(Menu):
         self.leng = len(self.spacescore)
         print("leng ist : " + str(self.leng))
         
-
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -395,6 +414,7 @@ class SpaceMenu(Menu):
                 self.game.draw_text(str(self.spacescore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
             self.blit_screen()
 
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.gamescores
@@ -416,7 +436,9 @@ class TetrisMenu(Menu):
         self.tetscore = log.tetrisscore()
         self.leng = len(self.tetscore)
         print("leng ist : " + str(self.leng))
-        
+
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet    
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -437,6 +459,7 @@ class TetrisMenu(Menu):
                 self.game.draw_text(str(self.tetscore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
             self.blit_screen()
 
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.gamescores
@@ -458,7 +481,9 @@ class MastermindMenu(Menu):
         self.masterscore = log.mastermindscore()
         self.leng = len(self.masterscore)
         print("leng ist : " + str(self.leng))
-        
+    
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet    
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -479,6 +504,7 @@ class MastermindMenu(Menu):
                 self.game.draw_text(str(self.masterscore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
             self.blit_screen()
 
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.gamescores
@@ -501,7 +527,9 @@ class SnakeMenu(Menu):
         self.snekscore = log.snakescore()
         self.leng = len(self.snekscore)
         print("leng ist : " + str(self.leng))
-        
+
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet    
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -522,6 +550,7 @@ class SnakeMenu(Menu):
                 self.game.draw_text(str(self.snekscore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
             self.blit_screen()
 
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.gamescores
@@ -543,7 +572,9 @@ class FlappyMenu(Menu):
         self.flapscore = log.flappyscore()
         self.leng = len(self.flapscore)
         print("leng ist : " + str(self.leng))
-        
+
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet    
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -564,6 +595,7 @@ class FlappyMenu(Menu):
                 self.game.draw_text(str(self.flapscore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
             self.blit_screen()
 
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.gamescores
@@ -587,6 +619,8 @@ class OptionsMenu(Menu):
         self.modex, self.modey = self.mid_w, self.mid_h + 40
         self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
 
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -599,6 +633,7 @@ class OptionsMenu(Menu):
             self.draw_cursor()
             self.blit_screen()
 
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.curr_menu = self.game.main_menu
@@ -632,7 +667,9 @@ class OptionsMenu(Menu):
 class CreditsMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-
+    
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet, benötigt kein Check_input() da es nur ein Bild der Credits anzeigt
     def display_menu(self):
         self.run_display = True
         while self.run_display:
