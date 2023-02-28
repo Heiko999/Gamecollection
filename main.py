@@ -4,6 +4,7 @@
 #die display_Menu Funktion ausgeführt wird, welche dafür sorgt, dass das Bild für dieses Menu generiert wird
 #Sobald ein Spiel im GameMenu aufgerufen wird, wird der Gameloop gestartet welcher ein Objekt des zu spielenden Spiels generiert 
 from game import Game
+#from logger import Database
 g = Game()
 while g.running:
     g.curr_menu.display_menu()

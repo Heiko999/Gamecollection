@@ -4,9 +4,12 @@ from input import InputBox
 from button import Button
 from logger import Log
 
+
+
 signin_img = pygame.image.load('signin_btn.png').convert_alpha()
 login_img = pygame.image.load('login_btn.png').convert_alpha()
 delete_img = pygame.image.load('delete_btn.png').convert_alpha()
+search_img = pygame.image.load('search_btn.png').convert_alpha()
 FONT = pygame.font.Font(None, 32)
 
 #Hauptklasse von welcher die anderen Klassen erben.
@@ -70,10 +73,11 @@ class LoginMenu(Menu):
                 self.game.draw_text('Login Screen', 20, self.game.DISPLAY_W / 2, 30)
                 for box in input_boxes:
                     box.draw(self.game.display)
-                
+##TODO: Inputbox.text und txt_surface in Methode, für DRY damit Code mehr Lightweight                
                 #Legt bei Klick auf SignIn Button nach eingabe eines Usernamen und Passworts einen neuen Benutzer
-                #in der Datenbank an
-                if signin_button.draw(self.screen):
+                #in der Datenbank 
+                signin_button.draw(self.screen)
+                if signin_button.click():
                     print('START')
                     print(input_box1.text)
                     print(input_box2.text)
@@ -85,7 +89,8 @@ class LoginMenu(Menu):
 
                 #Checkt nach auswahl des LoginButton, Ob Username und Passwort mit eintrag in Datenbank übereinstimmen
                 #Stimmt es wird das Menu auf das Main Menu geändert    
-                if login_button.draw(self.screen):
+                login_button.draw(self.screen)
+                if login_button.click():
                     print('EXIT')
                     print(input_box1.text)
                     print(input_box2.text)
@@ -101,7 +106,8 @@ class LoginMenu(Menu):
 
                 #Checkt nach Klick auf den Deletebutton ob User und Passwort mit eintrag in Datenbank übereinstimmen.
                 #Tun sie das, wird der Spieler gelöscht 
-                if delete_button.draw(self.screen):
+                delete_button.draw(self.screen)
+                if delete_button.click():
                     print('delete')
                     print(input_box1.text)
                     print(input_box2.text)
@@ -303,7 +309,89 @@ class HighscoreMenu(Menu):
             if self.state == 'Gamescore':
                 self.game.curr_menu = self.game.gamescores
                 self.run_display = False
+            elif self.state == 'Playerscore':
+                self.game.curr_menu = self.game.playerscores
+                self.run_display = False
                 
+
+class PlayerscoreMenu(Menu):
+    def __init__(self, game):
+        Menu.__init__(self, game)
+        self.state = "Playerscore"
+        self.screen = pygame.display.set_mode((self.game.DISPLAY_W,self.game.DISPLAY_H))
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet
+    def display_menu(self):
+        self.run_display = True
+        while self.run_display:
+            clock = pygame.time.Clock()
+            self.game.check_events()
+            self.game.display.fill(self.game.BLACK)
+            
+            log = Log()
+
+            #Erzeugt TextBoxen und Buttons für das LoginMenu
+            input_box1 = InputBox(self.game.DISPLAY_W / 2 - 100,  50, 140, 32)  
+            input_button = Button(self.game.DISPLAY_W / 2 -50, 200, search_img, 0.4)
+            #buttons =[start_button, exit_button]
+            done = False
+
+            while not done:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        done = True
+                    input_box1.handle_event(event)
+                    input_box1.update()
+                
+                self.game.display.fill((30, 30, 30))
+                self.game.draw_text('Highscores for which Player?', 20, self.game.DISPLAY_W / 2, 30)
+                input_box1.draw(self.game.display)
+                
+                #Legt bei Klick auf SignIn Button nach eingabe eines Usernamen und Passworts einen neuen Benutzer
+                #in der Datenbank an
+
+                input_button.draw(self.screen) 
+                if input_button.click():
+                    print('input')
+                    print(input_box1.text)
+                    if log.playername(input_box1.text):
+                        self.game.highscoreplayer = input_box1.text
+                        done = True
+                        self.run_display = False
+                        self.game.curr_menu = self.game.playerhighscore
+                    input_box1.text = ''
+                    input_box1.txt_surface = FONT.render(input_box1.text, True, input_box1.color)
+                pygame.display.flip()
+                clock.tick(20)
+                self.blit_screen()
+
+class PlayerhighscoreMenu(Menu):
+    def __init__(self, game):
+        Menu.__init__(self, game)
+        log = Log()
+        self.gamerscore = log.playerscores(self.game.highscoreplayer)
+        
+    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
+    #welcher auf Eingaben wartet
+    def display_menu(self):
+        self.run_display = True
+        while self.run_display:
+            self.game.check_events()
+            self.check_input()
+            self.game.display.fill(self.game.BLACK)
+            self.game.draw_text('Highscores Player ' + self.game.highscoreplayer + ':', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
+            self.game.draw_text(str(self.gamerscore[0]), 15, self.mid_w, self.mid_h + 20)
+            self.game.draw_text(str(self.gamerscore[1]), 15, self.mid_w, self.mid_h + 40)
+            self.game.draw_text(str(self.gamerscore[2]), 15, self.mid_w, self.mid_h + 60)
+            self.game.draw_text(str(self.gamerscore[3]), 15, self.mid_w, self.mid_h + 80)
+            self.game.draw_text(str(self.gamerscore[4]), 15, self.mid_w, self.mid_h + 100)
+            self.blit_screen()
+
+    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    def check_input(self):
+        if self.game.BACK_KEY:
+            self.game.curr_menu = self.game.playerscores
+            self.run_display = False
 
 class GamescoreMenu(Menu):
     def __init__(self, game):

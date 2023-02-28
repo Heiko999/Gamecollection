@@ -1,13 +1,31 @@
 from tinydb import TinyDB, Query
-from menu import *
+#from menu import *
+import threading
 
-db = TinyDB('db.json')
+class DatabaseConnection:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            print('Creating the database connection')
+            cls._instance = super(DatabaseConnection, cls).__new__(cls)
+            cls._instance.db = TinyDB('db.json')
+        return cls._instance
+
+    def getDB(self):
+        return self.db
+    
+db = DatabaseConnection().getDB()
+
+#db = TinyDB('db.json')
 db2 = TinyDB('db2.json')
 
 class Log:
+    db = DatabaseConnection().getDB()
+    #db = TinyDB('db.json')
     #Erstellt neuen Spieler
     def signIn(self,x,y):
-        db.insert({'Name': x, 'Passwort': y, 'Tetris' : "0", 'Mastermind' : "0", 'SpaceInvaders' : "0" , 'Snake' : "0", 'Flappy' : "0"})
+        self.db.insert({'Name': x, 'Passwort': y, 'Tetris' : "0", 'Mastermind' : "0", 'SpaceInvaders' : "0" , 'Snake' : "0", 'Flappy' : "0"})
         print(x + ' ist registriert')
         
     #Meldet Spieler an
@@ -32,6 +50,13 @@ class Log:
             db.remove((user.Name == x) & (user.Passwort == y))
             print('User ' + x + ' wurde gelöscht')
 
+    def playername(self,x):
+        user = Query()
+        ergebnis = db.search(user.Name == x)
+        if len(ergebnis) ==0:
+            print("User nicht registriert")
+        elif ergebnis != False:
+            return True
 
     #aktualisiert die Highscore Einträge
     def highscore(self,game,highscore,player):
@@ -77,12 +102,31 @@ class Log:
         if ergebnis != [] and game == 'Flappy':
             print(f"""Game: {game} Score: {highscore}""")
             db.update({'Flappy': str(highscore)}, dbEntry.Name == player)
+
     
 
-    #funktionen um Highscore des entsprechenden spiels aus der Datenbank auszulesen
+#TODO: Funktionen um Highscore des entsprechenden spiels aus der Datenbank auszulesen
     #Werte werden in einem Dictionaryder Form {Spieler: Punkte} gespeichert und anschließend
     #in ein Array umgewandelt welches weiter verwendet werden kann
 
+    def playerscores(self,player):
+        User = Query()
+        dicture = {}
+        ergebnis = db.search(User.Name == player)
+        print("x ist gleich: " + player)
+        ergebnisStr =str(ergebnis)
+        ergebnisSplit = ergebnisStr.split("'")
+        dicture[ergebnisSplit[9]] = int(ergebnisSplit[11])
+        dicture[ergebnisSplit[13]] = int(ergebnisSplit[15])
+        dicture[ergebnisSplit[17]] = int(ergebnisSplit[19])
+        dicture[ergebnisSplit[21]] = int(ergebnisSplit[23])
+        dicture[ergebnisSplit[25]] = int(ergebnisSplit[27])
+        sorted_dict = sorted(dicture.items(),key=lambda x:x[1], reverse=True)
+        converted_dict=dict(sorted_dict)
+        result = converted_dict.items()
+        data=list(result)
+        return data
+    
     def tetrisscore(self):
         ergebnis = db.all()
         self.len = len(db)
@@ -180,6 +224,9 @@ class Log:
         result = converted_dict.items()
         data=list(result)
         return data
+
+    #Zu einer Funktion refactoren
+    #scoreSplit[i] kann einfach je nach spiel angepasst werden
 
 
 

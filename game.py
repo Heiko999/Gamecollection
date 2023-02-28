@@ -12,6 +12,7 @@ class Game():
     def __init__(self):
         pygame.init()
         self.player = ''
+        self.highscoreplayer = 'test'
         self.running, self.playing = True, False
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
         self.DISPLAY_W, self.DISPLAY_H = 600, 400
@@ -25,6 +26,8 @@ class Game():
         self.credits = CreditsMenu(self)
         self.highscores = HighscoreMenu(self)
         self.gamescores = GamescoreMenu(self)
+        self.playerscores = PlayerscoreMenu(self)
+        self.playerhighscore = PlayerhighscoreMenu(self)
         self.spacescoremenu = SpaceMenu(self)
         self.tetrisscoremenu = TetrisMenu(self)
         self.masterscoremenu = MastermindMenu(self)
@@ -71,10 +74,10 @@ class Game():
             #self.check_events()
             #if self.START_KEY:
                 #self.playing= False
-            self.display.fill(self.BLACK)
-            self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
-            self.window.blit(self.display, (0,0))
-            pygame.display.update()
+            #self.display.fill(self.BLACK)
+            #self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
+            #self.window.blit(self.display, (0,0))
+            #pygame.display.update()
             self.reset_keys()
 
 

@@ -11,7 +11,7 @@ class Button:
 		self.clicked = False
 
 	#Zeichnet den Button und checkt gleichzeitig auch permanent ob dieser gedrückt wurde
-	def draw(self, surface):
+	def click(self):
 		action = False
 		#get mouse position
 		pos = pygame.mouse.get_pos()
@@ -25,7 +25,9 @@ class Button:
 		if pygame.mouse.get_pressed()[0] == 0:
 			self.clicked = False
 
+		
+		return action
+	
+	def draw(self, surface):
 		#draw button on screen
 		surface.blit(self.image, (self.rect.x, self.rect.y))
-
-		return action
