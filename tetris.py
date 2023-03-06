@@ -72,76 +72,9 @@ class Tetris:
         self.field = []
         self.score_tetris = 0
         self.state = "start"
-        for i in range(height):
-            new_line = []
-            for j in range(width):
-                new_line.append(0)
-            self.field.append(new_line)
-        while not self.done:
-            if self.figure is None:
-                self.new_figure()
-            self.counter += 1
-            if self.counter > 100000:
-                self.counter = 0
-
-            if self.counter % (self.fps // self.level // 2) == 0 or self.pressing_down:
-                if self.state == "start":
-                    self.go_down()
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.done = True
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_UP:
-                        self.rotate()
-                    if event.key == pygame.K_DOWN:
-                        pressing_down = True
-                    if event.key == pygame.K_LEFT:
-                        self.go_side(-1)
-                    if event.key == pygame.K_RIGHT:
-                        self.go_side(1)
-                    if event.key == pygame.K_SPACE:
-                        self.go_space()
-                    if event.key == pygame.K_ESCAPE:
-                        self.__init__(20, 10)
-
-            #if event.type == pygame.KEYUP:
-                    #if event.key == pygame.K_DOWN:
-                        #pressing_down = False
-
-            self.screen.fill(self.WHITE)
-            
-
-            for i in range(self.height):
-                for j in range(self.width):
-                    pygame.draw.rect(self.screen, self.GRAY, [self.x + self.zoom * j, self.y + self.zoom * i, self.zoom, self.zoom], 1)
-                    if self.field[i][j] > 0:
-                        pygame.draw.rect(self.screen, colors[self.field[i][j]],
-                                        [self.x + self.zoom * j + 1, self.y + self.zoom * i + 1, self.zoom - 2, self.zoom - 1])
-
-            if self.figure is not None:
-                for i in range(4):
-                    for j in range(4):
-                        p = i * 4 + j
-                        if p in self.figure.image():
-                            pygame.draw.rect(self.screen, colors[self.figure.color],
-                                            [self.x + self.zoom * (j + self.figure.x) + 1,
-                                            self.y + self.zoom * (i + self.figure.y) + 1,
-                                            self.zoom - 2, self.zoom - 2])
-
-            font = pygame.font.SysFont('Calibri', 25, True, False)
-            font1 = pygame.font.SysFont('Calibri', 65, True, False)
-            text = font.render("Score: " + str(self.score_tetris), True, self.BLACK)
-            text_game_over = font1.render("Game Over", True, (255, 125, 0))
-            text_game_over1 = font1.render("Press ESC", True, (255, 215, 0))
-
-            self.screen.blit(text, [0, 0])
-            if self.state == "gameover":
-                self.screen.blit(text_game_over, [20, 200])
-                self.screen.blit(text_game_over1, [25, 265])
-
-            pygame.display.flip()
-            self.clock.tick(self.fps)
+        self.done = False
+        
+        
     
     def new_figure(self):
         self.figure = Figure(3, 0)
@@ -206,9 +139,78 @@ class Tetris:
         if self.intersects():
             self.figure.rotation = old_rotation
 
+    def run(self):
+        for i in range(self.height):
+            new_line = []
+            for j in range(self.width):
+                new_line.append(0)
+            self.field.append(new_line)
+        while not self.done:
+            if self.figure is None:
+                self.new_figure()
+            self.counter += 1
+            if self.counter > 100000:
+                self.counter = 0
+
+            if self.counter % (self.fps // self.level // 2) == 0 or self.pressing_down:
+                if self.state == "start":
+                    self.go_down()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.done = True
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_UP:
+                        self.rotate()
+                    if event.key == pygame.K_DOWN:
+                        pressing_down = True
+                    if event.key == pygame.K_LEFT:
+                        self.go_side(-1)
+                    if event.key == pygame.K_RIGHT:
+                        self.go_side(1)
+                    if event.key == pygame.K_SPACE:
+                        self.go_space()
+                    if event.key == pygame.K_ESCAPE:
+                        self.done = True
+                        #self.__init__(20, 10)
+
+            #if event.type == pygame.KEYUP:
+                    #if event.key == pygame.K_DOWN:
+                        #pressing_down = False
+            if not self.done:
+                self.screen.fill(self.WHITE)
+                
+                for i in range(self.height):
+                    for j in range(self.width):
+                        pygame.draw.rect(self.screen, self.GRAY, [self.x + self.zoom * j, self.y + self.zoom * i, self.zoom, self.zoom], 1)
+                        if self.field[i][j] > 0:
+                            pygame.draw.rect(self.screen, colors[self.field[i][j]],
+                                            [self.x + self.zoom * j + 1, self.y + self.zoom * i + 1, self.zoom - 2, self.zoom - 1])
+
+                if self.figure is not None:
+                    for i in range(4):
+                        for j in range(4):
+                            p = i * 4 + j
+                            if p in self.figure.image():
+                                pygame.draw.rect(self.screen, colors[self.figure.color],
+                                                [self.x + self.zoom * (j + self.figure.x) + 1,
+                                                self.y + self.zoom * (i + self.figure.y) + 1,
+                                                self.zoom - 2, self.zoom - 2])
+
+                font = pygame.font.SysFont('Calibri', 25, True, False)
+                font1 = pygame.font.SysFont('Calibri', 65, True, False)
+                text = font.render("Score: " + str(self.score_tetris), True, self.BLACK)
+                text_game_over = font1.render("Game Over", True, (255, 125, 0))
+                text_game_over1 = font1.render("Press ESC", True, (255, 215, 0))
+
+                self.screen.blit(text, [0, 0])
+                if self.state == "gameover":
+                    self.screen.blit(text_game_over, [20, 200])
+                    self.screen.blit(text_game_over1, [25, 265])
+
+                pygame.display.flip()
+                self.clock.tick(self.fps)
+
     
-# Initialize the game engine
-
-#game = Tetris(20, 10)
-
-#pygame.quit()
+#game=Tetris(20,10)
+#game.run()

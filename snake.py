@@ -1,140 +1,168 @@
-import pygame
-import time
-import random
+import pygame as pg
+#import sys
+from random import randrange
 
-class Snake: 
-    score_snake = 0
+
+vec2 = pg.math.Vector2
+
+
+class Snake:
+    def __init__(self, game):
+        self.game = game
+        self.size = game.TILE_SIZE
+        self.rect = pg.rect.Rect([0, 0, game.TILE_SIZE - 2, game.TILE_SIZE - 2])
+        self.range = (self.size // 2, self.game.WINDOW_SIZE - self.size // 2, self.size)
+        self.rect.center = self.get_random_position()
+        self.direction = vec2(0, 0)
+        self.step_delay = 100  # milliseconds
+        self.time = 0
+        self.length = 1
+        self.segments = []
+        self.directions = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 1, pg.K_d: 1}
+        
+    def control(self, event):
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_w and self.directions[pg.K_w]:
+                self.direction = vec2(0, -self.size)
+                self.directions = {pg.K_w: 1, pg.K_s: 0, pg.K_a: 1, pg.K_d: 1}
+
+            if event.key == pg.K_s and self.directions[pg.K_s]:
+                self.direction = vec2(0, self.size)
+                self.directions = {pg.K_w: 0, pg.K_s: 1, pg.K_a: 1, pg.K_d: 1}
+
+            if event.key == pg.K_a and self.directions[pg.K_a]:
+                self.direction = vec2(-self.size, 0)
+                self.directions = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 1, pg.K_d: 0}
+
+            if event.key == pg.K_d and self.directions[pg.K_d]:
+                self.direction = vec2(self.size, 0)
+                self.directions = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 0, pg.K_d: 1}
+
+    def delta_time(self):
+        time_now = pg.time.get_ticks()
+        if time_now - self.time > self.step_delay:
+            self.time = time_now
+            return True
+        return False
+
+    def get_random_position(self):
+        return [randrange(*self.range), randrange(*self.range)]
+
+    def check_borders(self):
+        if self.rect.left < 0 or self.rect.right > self.game.WINDOW_SIZE:
+            if(self.length> SnakeGame.highscore):
+                SnakeGame.highscore = self.length
+            self.game.new_game()
+        if self.rect.top < 0 or self.rect.bottom > self.game.WINDOW_SIZE:
+            if(self.length> SnakeGame.highscore):
+                SnakeGame.highscore = self.length
+            self.game.new_game()
+
+    def check_food(self):
+        if self.rect.center == self.game.food.rect.center:
+            self.game.food.rect.center = self.get_random_position()
+            self.length += 1
+            print(self.length)
+
+    def check_selfeating(self):
+        if len(self.segments) != len(set(segment.center for segment in self.segments)):
+            SnakeGame.highscore = self.length
+            self.game.new_game()
+
+    def move(self):
+        if self.delta_time():
+            self.rect.move_ip(self.direction)
+            self.segments.append(self.rect.copy())
+            self.segments = self.segments[-self.length:]
+
+    def update(self):
+        self.check_selfeating()
+        self.check_borders()
+        self.check_food()
+        self.move()
+
+    def draw(self):
+        [pg.draw.rect(self.game.screen, 'green', segment) for segment in self.segments]
+
+
+class Food():
+    def __init__(self, game):
+        self.game = game
+        self.size = game.TILE_SIZE
+        self.rect = pg.rect.Rect([0, 0, game.TILE_SIZE - 2, game.TILE_SIZE - 2])
+        self.rect.center = self.game.snake.get_random_position()
+
+    def draw(self):
+        pg.draw.rect(self.game.screen, 'red', self.rect)
+
+class SnakeGame:
+    highscore=0
     def __init__(self):
-        pygame.init()
+        pg.init()
+        self.WINDOW_SIZE = 800
+        self.TILE_SIZE = 50
+        self.screen = pg.display.set_mode([self.WINDOW_SIZE] * 2)
+        self.clock = pg.time.Clock()
+        self.new_game()
+        self.score = 0
+        self.Done = False
+        self.score_font = pg.font.SysFont("comicsansms", 35)
         
-        white = (255, 255, 255)
-        yellow = (255, 255, 102)
-        black = (0, 0, 0)
-        red = (213, 50, 80)
-        green = (0, 255, 0)
-        blue = (50, 153, 213)
-        dis_width = 600
-        dis_height = 400
-        self.score_snake = 0
-        dis = pygame.display.set_mode((dis_width, dis_height))
-        pygame.display.set_caption('Snake Game')
+
+    def draw_grid(self):
+        [pg.draw.line(self.screen, [50] * 3, (x, 0), (x, self.WINDOW_SIZE))
+                                             for x in range(0, self.WINDOW_SIZE, self.TILE_SIZE)]
+        [pg.draw.line(self.screen, [50] * 3, (0, y), (self.WINDOW_SIZE, y))
+                                             for y in range(0, self.WINDOW_SIZE, self.TILE_SIZE)]
+
+    def new_game(self):
+        self.snake = Snake(self)
+        self.food = Food(self)
+
+    def update(self):
+        self.snake.update()
+        pg.display.flip()
+        self.clock.tick(60)
+
+    def Your_score(self):
+        value = self.score_font.render("Your Score: " + str(self.snake.length), True,(255,255,255))
+        self.screen.blit(value, [0, 0])
         
-        clock = pygame.time.Clock()
-        
-        snake_block = 10
-        snake_speed = 15
-        
-        font_style = pygame.font.SysFont("bahnschrift", 25)
-        score_font = pygame.font.SysFont("comicsansms", 35)
-        
-        
-        def Your_score(score):
-            value = score_font.render("Your Score: " + str(score), True, yellow)
-            dis.blit(value, [0, 0])
-            self.score_snake = score
-        
-        
-        
-        def our_snake(snake_block, snake_list):
-            for x in snake_list:
-                pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
-        
-        
-        def message(msg, color):
-            mesg = font_style.render(msg, True, color)
-            dis.blit(mesg, [dis_width / 6, dis_height / 3])
-        
-        
-        def gameLoop():
-            game_over = False
-            game_close = False
-        
-            x1 = dis_width / 2
-            y1 = dis_height / 2
-        
-            x1_change = 0
-            y1_change = 0
-            direction = ''
-            snake_List = []
-            Length_of_snake = 1
-        
-            foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-            foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-        
-            while not game_over:
-        
-                while game_close == True:
-                    dis.fill(blue)
-                    message("You Lost! Press C-Play Again or Q-Quit", red)
-                    Your_score(Length_of_snake - 1)
-                    pygame.display.update()
-        
-                    for event in pygame.event.get():
-                        if event.type == pygame.KEYDOWN:
-                            if event.key == pygame.K_q:
-                                game_over = True
-                                game_close = False
-                            if event.key == pygame.K_c:
-                                gameLoop()
-        
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        game_over = True
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_LEFT and direction != 'right':
-                            x1_change = -snake_block
-                            y1_change = 0
-                            direction = 'left'
-                        elif event.key == pygame.K_RIGHT and direction != 'left':
-                            x1_change = snake_block
-                            y1_change = 0
-                            direction = 'right'
-                        elif event.key == pygame.K_UP and direction != 'down':
-                            y1_change = -snake_block
-                            x1_change = 0
-                            direction = 'up'
-                        elif event.key == pygame.K_DOWN and direction != 'up':
-                            y1_change = snake_block
-                            x1_change = 0
-                            direction = 'down'
-        
-                if x1 >= dis_width or x1 < 0 or y1 >= dis_height or y1 < 0:
-                    game_close = True
-                x1 += x1_change
-                y1 += y1_change
-                dis.fill(blue)
-                pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
-                snake_Head = []
-                snake_Head.append(x1)
-                snake_Head.append(y1)
-                snake_List.append(snake_Head)
-                if len(snake_List) > Length_of_snake:
-                    del snake_List[0]
-        
-                for x in snake_List[:-1]:
-                    if x == snake_Head:
-                        game_close = True
-        
-                our_snake(snake_block, snake_List)
-                Your_score(Length_of_snake - 1)
-        
-                pygame.display.update()
-        
-                if x1 == foodx and y1 == foody:
-                    foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-                    foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
-                    Length_of_snake += 1
-        
-                clock.tick(snake_speed)
-        
-            #pygame.quit()
-            #quit()
-        
-        
-        gameLoop()
+
+    def draw(self):
+        self.screen.fill('black')
+        self.draw_grid()
+        self.food.draw()
+        self.snake.draw()
+        self.Your_score()
+
+    def check_event(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.Done = True
+                #pg.quit()
+                #sys.exit()
+            # snake control
+            self.snake.control(event)
+
+    def run(self):
+        while not self.Done:
+            self.check_event()
+            self.update()
+            self.draw()
+        #pg.quit()
+
+    def getscore(self):
+        return self.score
+
+
+'''
+if __name__ == '__main__':
+    game = Game()
+    game.run()
+    print('score =' + str(Game.highscore))
+    Game.highscore = 0
 
 
 
-
-
-# https://www.edureka.co/blog/snake-game-with-pygame/
+'''

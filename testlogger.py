@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, Mock
-from tinydb import TinyDB
+from tinydb import TinyDB, Query
 from logger import Log
 
 
@@ -31,7 +31,7 @@ class TestLog(unittest.TestCase):
         
         # assert that the mock insert function was called with the expected data
         insert_mock.assert_called_once_with(mock_data)
-'''
+
     def test_login(self):
         # create mock data to be searched in the database
         mock_data = {'Name': 'test', 'Passwort': 'test'}
@@ -43,9 +43,9 @@ class TestLog(unittest.TestCase):
         # create a Log instance and call login with mock data
         log = Log()
         success = log.login('test', 'test')
-        
+        user= Query()
         # assert that the mock search function was called with the expected data
-        search_mock.assert_called_once_with((log.user.Name == 'test') & (log.user.Passwort == 'test'))
+        search_mock.assert_called_once_with((user.Name == 'test') & (user.Passwort == 'test'))
         # assert that success is True, indicating the login was successful
         self.assertTrue(success)
 
@@ -63,13 +63,14 @@ class TestLog(unittest.TestCase):
         
         # create a Log instance and call delete with mock data
         log = Log()
+        user = Query()
         log.delete('test', 'test')
         
         # assert that the mock search function was called with the expected data
-        search_mock.assert_called_once_with((log.user.Name == 'test') & (log.user.Passwort == 'test'))
+        search_mock.assert_called_once_with((user.Name == 'test') & (user.Passwort == 'test'))
         # assert that the mock remove function was called with the expected data
-        remove_mock.assert_called_once_with((log.user.Name == 'test') & (log.user.Passwort == 'test'))
-    '''
+        remove_mock.assert_called_once_with((user.Name == 'test') & (user.Passwort == 'test'))
+    
 
 if __name__ == '__main__':
     unittest.main()

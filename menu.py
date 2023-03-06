@@ -6,6 +6,7 @@ from logger import Log
 
 
 
+
 signin_img = pygame.image.load('signin_btn.png').convert_alpha()
 login_img = pygame.image.load('login_btn.png').convert_alpha()
 delete_img = pygame.image.load('delete_btn.png').convert_alpha()
@@ -31,6 +32,22 @@ class Menu():
         pygame.display.update()
         self.game.reset_keys()
 
+    #Funktion um die gedrückten Tasten zu erfassen und in einem Boolean zu speichern
+    def check_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.game.running, self.game.playing = False, False
+                self.game.curr_menu.run_display = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    self.game.START_KEY = True
+                if event.key == pygame.K_BACKSPACE:
+                    self.game.BACK_KEY = True
+                if event.key == pygame.K_DOWN:
+                    self.game.DOWN_KEY = True
+                if event.key == pygame.K_UP:
+                    self.game.UP_KEY = True
+
 class LoginMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
@@ -42,7 +59,7 @@ class LoginMenu(Menu):
         self.run_display = True
         while self.run_display:
             clock = pygame.time.Clock()
-            self.game.check_events()
+            self.check_events()
             self.game.display.fill(self.game.BLACK)
             
             log = Log()
@@ -137,7 +154,7 @@ class MainMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             mainM = "Main Menu" + "      Hallo Player: " + str(self.game.player)
@@ -210,7 +227,7 @@ class GameMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('GameCollection', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -285,7 +302,7 @@ class HighscoreMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('Highscores', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -325,7 +342,7 @@ class PlayerscoreMenu(Menu):
         self.run_display = True
         while self.run_display:
             clock = pygame.time.Clock()
-            self.game.check_events()
+            self.check_events()
             self.game.display.fill(self.game.BLACK)
             
             log = Log()
@@ -376,7 +393,7 @@ class PlayerhighscoreMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('Highscores Player ' + self.game.highscoreplayer + ':', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -409,7 +426,7 @@ class GamescoreMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('GameCollection', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -485,7 +502,7 @@ class SpaceMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('Highscores Spaceinvader:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -530,7 +547,7 @@ class TetrisMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('Highscores Tetris:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -575,7 +592,7 @@ class MastermindMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('Highscores Mastermind:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -612,7 +629,9 @@ class SnakeMenu(Menu):
         Menu.__init__(self, game)
         self.n = 0
         log = Log()
+        print("snekscore=")
         self.snekscore = log.snakescore()
+        print(self.snekscore)
         self.leng = len(self.snekscore)
         print("leng ist : " + str(self.leng))
 
@@ -621,7 +640,7 @@ class SnakeMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('Highscores Snake:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -666,7 +685,7 @@ class FlappyMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('Highscores FlappyBird:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -712,7 +731,7 @@ class OptionsMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             self.check_input()
             self.game.display.fill(self.game.BLACK)
             self.game.draw_text('Options', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -761,7 +780,7 @@ class CreditsMenu(Menu):
     def display_menu(self):
         self.run_display = True
         while self.run_display:
-            self.game.check_events()
+            self.check_events()
             if self.game.START_KEY or self.game.BACK_KEY:
                 self.game.curr_menu = self.game.main_menu
                 self.run_display = False

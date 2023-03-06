@@ -15,7 +15,7 @@ class DatabaseConnection:
     def getDB(self):
         return self.db
     
-db = DatabaseConnection().getDB()
+#db = DatabaseConnection().getDB()
 
 #db = TinyDB('db.json')
 db2 = TinyDB('db2.json')
@@ -32,7 +32,7 @@ class Log:
     def login(self,x,y):
         success = False #notwendig?
         user = Query()
-        ergebnis = db.search((user.Name == x) & (user.Passwort == y))
+        ergebnis = self.db.search((user.Name == x) & (user.Passwort == y))
         if len(ergebnis) == 0:
             print('Anmeldedaten nicht korrekt')
         elif ergebnis != False:
@@ -43,16 +43,16 @@ class Log:
     #Löscht einen Spieler
     def delete(self,x,y):
         user = Query()
-        ergebnis = db.search((user.Name == x) & (user.Passwort == y))
+        ergebnis = self.db.search((user.Name == x) & (user.Passwort == y))
         if len(ergebnis) == 0:
             print('Anmeldedaten nicht korrekt')
         elif ergebnis != False:
-            db.remove((user.Name == x) & (user.Passwort == y))
+            self.db.remove((user.Name == x) & (user.Passwort == y))
             print('User ' + x + ' wurde gelöscht')
 
     def playername(self,x):
         user = Query()
-        ergebnis = db.search(user.Name == x)
+        ergebnis = self.db.search(user.Name == x)
         if len(ergebnis) ==0:
             print("User nicht registriert")
         elif ergebnis != False:
@@ -82,26 +82,26 @@ class Log:
             print(f"""Game: {game} Score: {highscore}""")
             db2.update({'FHighscore': highscore, 'Player': player}, dbEntry.Game == 'Flappy')
 
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Tetris < str(highscore)))
+        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.Tetris < str(highscore)))
         if ergebnis != [] and game == 'Tetris':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'Tetris': str(highscore)}, dbEntry.Name == player)
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Mastermind < str(highscore)))
+            self.db.update({'Tetris': str(highscore)}, dbEntry.Name == player)
+        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.Mastermind < str(highscore)))
         if ergebnis != [] and game == 'Mastermind':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'Mastermind': str(highscore)}, dbEntry.Name == player)
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.SpaceInvaders < str(highscore)))
+            self.db.update({'Mastermind': str(highscore)}, dbEntry.Name == player)
+        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.SpaceInvaders < str(highscore)))
         if ergebnis != [] and game == 'SpaceInvaders':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'SpaceInvaders': str(highscore)}, dbEntry.Name == player)
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Snake < str(highscore)))
+            self.db.update({'SpaceInvaders': str(highscore)}, dbEntry.Name == player)
+        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.Snake < str(highscore)))
         if ergebnis != [] and game == 'Snake':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'Snake': str(highscore)}, dbEntry.Name == player)
-        ergebnis = db.search((dbEntry.Name == player) & (dbEntry.Flappy < str(highscore)))
+            self.db.update({'Snake': str(highscore)}, dbEntry.Name == player)
+        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.Flappy < str(highscore)))
         if ergebnis != [] and game == 'Flappy':
             print(f"""Game: {game} Score: {highscore}""")
-            db.update({'Flappy': str(highscore)}, dbEntry.Name == player)
+            self.db.update({'Flappy': str(highscore)}, dbEntry.Name == player)
 
     
 
@@ -112,7 +112,7 @@ class Log:
     def playerscores(self,player):
         User = Query()
         dicture = {}
-        ergebnis = db.search(User.Name == player)
+        ergebnis = self.db.search(User.Name == player)
         print("x ist gleich: " + player)
         ergebnisStr =str(ergebnis)
         ergebnisSplit = ergebnisStr.split("'")
@@ -128,8 +128,8 @@ class Log:
         return data
     
     def tetrisscore(self):
-        ergebnis = db.all()
-        self.len = len(db)
+        ergebnis = self.db.all()
+        self.len = len(self.db)
         dicture = {}
         for i in range(self.len): 
             score = ergebnis[i]
@@ -148,8 +148,8 @@ class Log:
         return data
 
     def mastermindscore(self):
-        ergebnis = db.all()
-        self.len = len(db)
+        ergebnis = self.db.all()
+        self.len = len(self.db)
         dicture = {}
         for i in range(self.len): 
             score = ergebnis[i]
@@ -168,8 +168,8 @@ class Log:
         return data
 
     def spaceinvaderscore(self):
-        ergebnis = db.all()
-        self.len = len(db)
+        ergebnis = self.db.all()
+        self.len = len(self.db)
         dicture = {}
         for i in range(self.len): 
             score = ergebnis[i]
@@ -186,8 +186,8 @@ class Log:
         return data
 
     def snakescore(self):
-        ergebnis = db.all()
-        self.len = len(db)
+        ergebnis = self.db.all()
+        self.len = len(self.db)
         dicture = {}
         for i in range(self.len): 
             score = ergebnis[i]
@@ -206,8 +206,8 @@ class Log:
         return data
 
     def flappyscore(self):
-        ergebnis = db.all()
-        self.len = len(db)
+        ergebnis = self.db.all()
+        self.len = len(self.db)
         dicture = {}
         for i in range(self.len): 
             score = ergebnis[i]
@@ -224,9 +224,32 @@ class Log:
         result = converted_dict.items()
         data=list(result)
         return data
+    
+    def gamesscores(self, game):
+        ergebnis = self.db.all()
+        print("ergebnis = ")
+        print(ergebnis)
+        self.len = len(self.db)
+        dicture = {}
+        game_positions = {'tetris': 11, 'mastermind': 15, 'spaceinvader': 19, 'snake': 23, 'flappy' : 27}
+        game_position = game_positions[game]
+        for i in range(self.len): 
+            score = ergebnis[i]
+            scoreStr = str(score)
+            scoreSplit = scoreStr.split("'")
+            dicture[scoreSplit[3]] = int(scoreSplit[game_position])
+
+        sorted_dict = sorted(dicture.items(),key=lambda x:x[1], reverse=True)
+        converted_dict=dict(sorted_dict)
+        print(converted_dict)
+        result = converted_dict.items()
+        data=list(result)
+        return data
 
     #Zu einer Funktion refactoren
     #scoreSplit[i] kann einfach je nach spiel angepasst werden
+    
+
 
 
 

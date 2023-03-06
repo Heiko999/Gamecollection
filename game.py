@@ -8,6 +8,7 @@ from snake import *
 from flappy import *
 
 
+
 class Game():
     def __init__(self):
         pygame.init()
@@ -48,6 +49,7 @@ class Game():
                 print(game.score_si)
             if self.game_collection.state == 'Tetris':
                 game = Tetris(20,10)
+                game.run()
                 log = Log()
                 log.highscore('Tetris', game.score_tetris, self.player)
                 print (game.score_tetris)
@@ -57,10 +59,13 @@ class Game():
                 log.highscore('Mastermind', game.score_mm, self.player)
                 print(game.score_mm)
             if self.game_collection.state == 'Snake':
-                game = Snake()
+                game = SnakeGame()
+                game.run()
                 log = Log()
-                log.highscore('Snake', game.score_snake, self.player)
-                print(game.score_snake)
+                scoresnake= SnakeGame.highscore
+                log.highscore('Snake', scoresnake, self.player)
+                print("Highscore is: " + str(SnakeGame.highscore))
+                SnakeGame.highscore = 0
             if self.game_collection.state == 'Flappy':
                 game = flappy()
                 log = Log()
@@ -80,7 +85,7 @@ class Game():
             #pygame.display.update()
             self.reset_keys()
 
-
+    '''
     #Funktion um die gedrückten Tasten zu erfassen und in einem Boolean zu speichern
     def check_events(self):
         for event in pygame.event.get():
@@ -96,7 +101,7 @@ class Game():
                     self.DOWN_KEY = True
                 if event.key == pygame.K_UP:
                     self.UP_KEY = True
-    
+    '''
     #Wird in den Menuklassen benutzt um am ende eines Displayloop die gedrückten Tasten zu resetten, damit nach einem Klick nach
     #z.B. Unten nicht durchgehend nach unten gescrollt wird
     def reset_keys(self):
