@@ -18,7 +18,7 @@ class TestLog(unittest.TestCase):
 
     def test_signIn(self):
         # create mock data to be inserted into the database
-        mock_data = {'Name': 'test50000', 'Passwort': 'test', 'Tetris': "0", 'Mastermind': "0", 'SpaceInvaders': "0",
+        mock_data = {'Name': 'test50', 'Passwort': 'test', 'Tetris': "0", 'Mastermind': "0", 'SpaceInvaders': "0",
                      'Snake': "0", 'Flappy': "0"}
 
         # create a mock insert function that returns the mock data
@@ -27,7 +27,7 @@ class TestLog(unittest.TestCase):
         
         # create a Log instance and call signIn with mock data
         log = Log()
-        log.signIn('test50000', 'test')
+        log.signIn('test50', 'test')
         
         # assert that the mock insert function was called with the expected data
         insert_mock.assert_called_once_with(mock_data)

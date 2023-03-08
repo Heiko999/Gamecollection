@@ -6,8 +6,9 @@ from mastermind import *
 from logger import Log
 from snake import *
 from flappy import *
+from skyfallgame import *
 
-
+#TO-DO: Pygame Dependency entfernen, damit diese Klasse für Clean Code auf Framework Abhängigkeiten verzichtet.
 
 class Game():
     def __init__(self):
@@ -43,10 +44,12 @@ class Game():
     def game_loop(self):
         while self.playing:
             if self.game_collection.state == 'SpaceInvaders':
-                game = SpaceGame(600,400)
+                game = skyfallGame()
+                game.run()
                 log = Log()
-                log.highscore('SpaceInvaders', game.score_si, self.player)
-                print(game.score_si)
+                log.highscore('SpaceInvaders', skyfallGame.highscore, self.player)
+                print("Skyfallhighscore = " + str(skyfallGame.highscore))
+                skyfallGame.highscore = 0
             if self.game_collection.state == 'Tetris':
                 game = Tetris(20,10)
                 game.run()

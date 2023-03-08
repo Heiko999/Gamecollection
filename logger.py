@@ -2,26 +2,40 @@ from tinydb import TinyDB, Query
 #from menu import *
 import threading
 
-class DatabaseConnection:
+class DatabaseConnection1:
     _instance = None
 
     def __new__(cls):
         if cls._instance is None:
             print('Creating the database connection')
-            cls._instance = super(DatabaseConnection, cls).__new__(cls)
+            cls._instance = super(DatabaseConnection1, cls).__new__(cls)
             cls._instance.db = TinyDB('db.json')
         return cls._instance
 
     def getDB(self):
         return self.db
     
+class DatabaseConnection2:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            print('Creating the database connection')
+            cls._instance = super(DatabaseConnection2, cls).__new__(cls)
+            cls._instance.db2 = TinyDB('db2.json')
+        return cls._instance
+
+    def getDB(self):
+        return self.db2
+    
 #db = DatabaseConnection().getDB()
 
 #db = TinyDB('db.json')
-db2 = TinyDB('db2.json')
+#db2 = TinyDB('db2.json')
 
 class Log:
-    db = DatabaseConnection().getDB()
+    db = DatabaseConnection1().getDB()
+    db2 = DatabaseConnection2().getDB()
     #db = TinyDB('db.json')
     #Erstellt neuen Spieler
     def signIn(self,x,y):
@@ -59,49 +73,30 @@ class Log:
             return True
 
     #aktualisiert die Highscore Einträge
-    def highscore(self,game,highscore,player):
+    def highscore(self, game, highscore, player):
         dbEntry = Query()
-        ergebnis = db2.search((dbEntry.Game == 'Tetris') & (dbEntry.THighscore < highscore))
-        if ergebnis != [] and game == 'Tetris':
-            print(f"""Game: {game} Score: {highscore}""")
-            db2.update({'THighscore': highscore, 'Player': player}, dbEntry.Game == 'Tetris')
-        ergebnis = db2.search((dbEntry.Game == 'Mastermind') & (dbEntry.MHighscore < highscore))
-        if ergebnis != [] and game == 'Mastermind':
-            print(f"""Game: {game} Score: {highscore}""")
-            db2.update({'MHighscore': highscore, 'Player': player}, dbEntry.Game == 'Mastermind')
-        ergebnis = db2.search((dbEntry.Game == 'SpaceInvaders') & (dbEntry.SHighscore < highscore))
-        if ergebnis != [] and game == 'SpaceInvaders':
-            print(f"""Game: {game} Score: {highscore}""")
-            db2.update({'SHighscore': highscore, 'Player': player}, dbEntry.Game == 'SpaceInvaders')
-        ergebnis = db2.search((dbEntry.Game == 'Snake') & (dbEntry.SNHighscore < highscore))
-        if ergebnis != [] and game == 'Snake':
-            print(f"""Game: {game} Score: {highscore}""")
-            db2.update({'SNHighscore': highscore, 'Player': player}, dbEntry.Game == 'Snake')
-        ergebnis = db2.search((dbEntry.Game == 'Flappy') & (dbEntry.FHighscore < highscore))
-        if ergebnis != [] and game == 'Flappy':
-            print(f"""Game: {game} Score: {highscore}""")
-            db2.update({'FHighscore': highscore, 'Player': player}, dbEntry.Game == 'Flappy')
 
-        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.Tetris < str(highscore)))
-        if ergebnis != [] and game == 'Tetris':
-            print(f"""Game: {game} Score: {highscore}""")
-            self.db.update({'Tetris': str(highscore)}, dbEntry.Name == player)
-        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.Mastermind < str(highscore)))
-        if ergebnis != [] and game == 'Mastermind':
-            print(f"""Game: {game} Score: {highscore}""")
-            self.db.update({'Mastermind': str(highscore)}, dbEntry.Name == player)
-        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.SpaceInvaders < str(highscore)))
-        if ergebnis != [] and game == 'SpaceInvaders':
-            print(f"""Game: {game} Score: {highscore}""")
-            self.db.update({'SpaceInvaders': str(highscore)}, dbEntry.Name == player)
-        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.Snake < str(highscore)))
-        if ergebnis != [] and game == 'Snake':
-            print(f"""Game: {game} Score: {highscore}""")
-            self.db.update({'Snake': str(highscore)}, dbEntry.Name == player)
-        ergebnis = self.db.search((dbEntry.Name == player) & (dbEntry.Flappy < str(highscore)))
-        if ergebnis != [] and game == 'Flappy':
-            print(f"""Game: {game} Score: {highscore}""")
-            self.db.update({'Flappy': str(highscore)}, dbEntry.Name == player)
+        # Mapping of game name to highscore field
+        game_fields = {
+            'Tetris': 'THighscore',
+            'Mastermind': 'MHighscore',
+            'SpaceInvaders': 'SHighscore',
+            'Snake': 'SNHighscore',
+            'Flappy': 'FHighscore'
+        }
+
+        # Loop through each game and check for a new high score
+        for game_name, highscore_field in game_fields.items():
+            if game == game_name:
+                ergebnis = self.db2.search((dbEntry.Game == game_name) & (getattr(dbEntry, highscore_field) < highscore))
+                if ergebnis:
+                    print(f"Game: {game} Score: {highscore}")
+                    self.db2.update({highscore_field: highscore, 'Player': player}, dbEntry.Game == game_name)
+
+                ergebnis = self.db.search((dbEntry.Name == player) & (getattr(dbEntry, game_name) < str(highscore)))
+                if ergebnis:
+                    print(f"Game: {game} Score: {highscore}")
+                    self.db.update({game_name: str(highscore)}, dbEntry.Name == player)
 
     
 
