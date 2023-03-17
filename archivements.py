@@ -31,3 +31,10 @@ class highscore_reached(bigger_archivement):
 
     def music_play(self):
         print("play musik") 
+
+
+
+h = highscore_reached(30)
+
+h.congrats()
+h.music_play()

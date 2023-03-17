@@ -342,7 +342,6 @@ class PlayerscoreMenu(Menu):
         self.run_display = True
         while self.run_display:
             clock = pygame.time.Clock()
-            self.check_events()
             self.game.display.fill(self.game.BLACK)
             
             log = Log()
@@ -351,19 +350,18 @@ class PlayerscoreMenu(Menu):
             input_box1 = InputBox(self.game.DISPLAY_W / 2 - 100,  50, 140, 32)  
             input_button = Button(self.game.DISPLAY_W / 2 -50, 200, search_img, 0.4)
             #buttons =[start_button, exit_button]
-            done = False
+            self.done = False
 
-            while not done:
+            while not self.done:
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        done = True
+                        self.done = True
                     input_box1.handle_event(event)
                     input_box1.update()
                 
                 self.game.display.fill((30, 30, 30))
                 self.game.draw_text('Highscores for which Player?', 20, self.game.DISPLAY_W / 2, 30)
                 input_box1.draw(self.game.display)
-                
                 #Legt bei Klick auf SignIn Button nach eingabe eines Usernamen und Passworts einen neuen Benutzer
                 #in der Datenbank an
 
@@ -373,7 +371,7 @@ class PlayerscoreMenu(Menu):
                     print(input_box1.text)
                     if log.playername(input_box1.text):
                         self.game.highscoreplayer = input_box1.text
-                        done = True
+                        self.done = True
                         self.run_display = False
                         self.game.curr_menu = self.game.playerhighscore
                     input_box1.text = ''
@@ -381,6 +379,13 @@ class PlayerscoreMenu(Menu):
                 pygame.display.flip()
                 clock.tick(20)
                 self.blit_screen()
+    
+    def check_input(self):
+        if self.game.BACK_KEY:
+            print("jo geht")
+            self.game.curr_menu = self.game.highscores
+            self.done = True
+            self.run_display = False
 
 class PlayerhighscoreMenu(Menu):
     def __init__(self, game):
@@ -407,7 +412,7 @@ class PlayerhighscoreMenu(Menu):
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.playerscores
+            self.game.curr_menu = self.game.highscores
             self.run_display = False
 
 class GamescoreMenu(Menu):

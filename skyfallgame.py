@@ -58,6 +58,7 @@ class SlowEnemyMode(EnemyMode):
         Enemy.speedscale = 1
         print("Slow")
 
+
 # Define the enemy class
 class Enemy(pygame.sprite.Sprite):
     speedscale = 1

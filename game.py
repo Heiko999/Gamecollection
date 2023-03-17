@@ -71,6 +71,7 @@ class Game():
                 SnakeGame.highscore = 0
             if self.game_collection.state == 'Flappy':
                 game = flappy()
+                game.run()
                 log = Log()
                 log.highscore('Flappy', game.score_flappy, self.player)
                 print(game.score_flappy)

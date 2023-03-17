@@ -61,6 +61,7 @@ class flappy:
 
         # Here starts the main game
 
+    def run(self):
         while not self.done:
 
             # sets the coordinates of flappy bird
@@ -251,7 +252,7 @@ class flappy:
         return pipe
     
 
-
+# https://www.geeksforgeeks.org/how-to-make-flappy-bird-game-in-pygame/
     
 
 
