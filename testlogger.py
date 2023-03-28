@@ -13,8 +13,6 @@ class TestLog(unittest.TestCase):
         self.patcher = patch.multiple(Log, db=self.mock_db)
         self.patcher.start()
         
-    def tearDown(self):
-        self.patcher.stop()
 
     def test_signIn(self):
         # create mock data to be inserted into the database
@@ -31,6 +29,7 @@ class TestLog(unittest.TestCase):
         
         # assert that the mock insert function was called with the expected data
         insert_mock.assert_called_once_with(mock_data)
+        print("hier war der signing test")
 
     def test_login(self):
         # create mock data to be searched in the database
@@ -48,6 +47,7 @@ class TestLog(unittest.TestCase):
         search_mock.assert_called_once_with((user.Name == 'test') & (user.Passwort == 'test'))
         # assert that success is True, indicating the login was successful
         self.assertTrue(success)
+        print("hier war der login Test")
 
     def test_delete(self):
         # create mock data to be searched and deleted in the database
@@ -70,7 +70,11 @@ class TestLog(unittest.TestCase):
         search_mock.assert_called_once_with((user.Name == 'test') & (user.Passwort == 'test'))
         # assert that the mock remove function was called with the expected data
         remove_mock.assert_called_once_with((user.Name == 'test') & (user.Passwort == 'test'))
+        print("hier war der delete Test")
     
+
+    #def tearDown(self):
+        #self.patcher.stop()
 
 if __name__ == '__main__':
     unittest.main()
