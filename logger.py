@@ -1,6 +1,6 @@
 from tinydb import TinyDB, Query
 #from menu import *
-import threading
+
 
 class DatabaseConnection1:
     _instance = None
@@ -28,14 +28,11 @@ class DatabaseConnection2:
     def getDB(self):
         return self.db2
     
-#db = DatabaseConnection().getDB()
-
-#db = TinyDB('db.json')
-#db2 = TinyDB('db2.json')
-
 class Log:
-    db = DatabaseConnection1().getDB()
-    db2 = DatabaseConnection2().getDB()
+    
+    def __init__(self,database,database2):
+        self.db=database
+        self.db2=database2
     #db = TinyDB('db.json')
     #Erstellt neuen Spieler
     def signIn(self,x,y):

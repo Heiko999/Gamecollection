@@ -1,9 +1,9 @@
-import pygame
+
 from menu import *
 from spaceinvader import *
 from tetris import *
 from mastermind import *
-from logger import Log
+from logger import *
 from snake import *
 from flappy import *
 from skyfallgame import *
@@ -12,16 +12,13 @@ from skyfallgame import *
 
 class Game():
     def __init__(self):
-        pygame.init()
+        #pygame.init()
         self.player = ''
         self.highscoreplayer = 'test'
         self.running, self.playing = True, False
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
         self.DISPLAY_W, self.DISPLAY_H = 600, 400
-        self.display = pygame.Surface((self.DISPLAY_W,self.DISPLAY_H))
-        self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
         #self.font_name = '8-BIT WONDER.TTF'
-        self.font_name = pygame.font.get_default_font()
         self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
         self.main_menu = MainMenu(self)
         self.options = OptionsMenu(self)
@@ -38,47 +35,53 @@ class Game():
         self.game_collection = GameMenu(self)
         self.login = LoginMenu(self)
         self.curr_menu = self.login
+        self.closedcounter = 0
     
     #Wird für das Gamemenu verwendet. Solange man im GameMenu ist wird der State erfasst, um zu sehen, welches spiel gerade gespielt wird
     #dann wird ein Objekt des Spiels erzeugt und somit dieses Spiel gestartet
     def game_loop(self):
-        while self.playing:
+        if self.playing:
             if self.game_collection.state == 'SpaceInvaders':
                 game = skyfallGame()
                 game.run()
-                log = Log()
+                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
                 log.highscore('SpaceInvaders', skyfallGame.highscore, self.player)
                 print("Skyfallhighscore = " + str(skyfallGame.highscore))
                 skyfallGame.highscore = 0
+                self.closedcounter = 1
             if self.game_collection.state == 'Tetris':
                 game = Tetris(20,10)
                 game.run()
-                log = Log()
+                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
                 log.highscore('Tetris', game.score_tetris, self.player)
                 print (game.score_tetris)
+                self.closedcounter = 1
             if self.game_collection.state == 'Mastermind':
                 game = Mastermind()
-                log = Log()
+                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
                 log.highscore('Mastermind', game.score_mm, self.player)
                 print(game.score_mm)
+                self.closedcounter = 1
             if self.game_collection.state == 'Snake':
                 game = SnakeGame()
                 game.run()
-                log = Log()
+                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
                 scoresnake= SnakeGame.highscore
                 log.highscore('Snake', scoresnake, self.player)
                 print("Highscore is: " + str(SnakeGame.highscore))
                 SnakeGame.highscore = 0
+                self.closedcounter = 1
             if self.game_collection.state == 'Flappy':
                 game = flappy()
                 game.run()
-                log = Log()
+                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
                 log.highscore('Flappy', game.score_flappy, self.player)
                 print(game.score_flappy)
+                self.closedcounter = 1
             #TO-DO: Wenn man einen Highscore erreicht, aber das spiel dann nicht schließt sondern eine neue Runde anfängt
             #wird der Highscore nicht gespeichert 
 
-            self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
+            #self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
             self.playing = False
             #self.check_events()
             #if self.START_KEY:
@@ -112,12 +115,7 @@ class Game():
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
     
     #Führt alle Schritte aus, um Text auf die Oberfläche zu zeichnen
-    def draw_text(self, text, size, x, y ):
-        font = pygame.font.Font(self.font_name,size)
-        text_surface = font.render(text, True, self.WHITE)
-        text_rect = text_surface.get_rect()
-        text_rect.center = (x,y)
-        self.display.blit(text_surface,text_rect)
+    
 
 
 
