@@ -223,8 +223,3 @@ class skyfallGame:
         # Run the game loop again
         self.run()
 
-
-#game = skyfallGame()
-#game.run()
-
-#print("Highscore is" + str(skyfallGame.highscore))

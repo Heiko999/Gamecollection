@@ -80,35 +80,9 @@ class Game():
                 self.closedcounter = 1
             #TO-DO: Wenn man einen Highscore erreicht, aber das spiel dann nicht schließt sondern eine neue Runde anfängt
             #wird der Highscore nicht gespeichert 
-
-            #self.window = pygame.display.set_mode(((self.DISPLAY_W,self.DISPLAY_H)))
             self.playing = False
-            #self.check_events()
-            #if self.START_KEY:
-                #self.playing= False
-            #self.display.fill(self.BLACK)
-            #self.draw_text('Thanks for Playing', 20, self.DISPLAY_W/2, self.DISPLAY_H/2)
-            #self.window.blit(self.display, (0,0))
-            #pygame.display.update()
             self.reset_keys()
 
-    '''
-    #Funktion um die gedrückten Tasten zu erfassen und in einem Boolean zu speichern
-    def check_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running, self.playing = False, False
-                self.curr_menu.run_display = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    self.START_KEY = True
-                if event.key == pygame.K_BACKSPACE:
-                    self.BACK_KEY = True
-                if event.key == pygame.K_DOWN:
-                    self.DOWN_KEY = True
-                if event.key == pygame.K_UP:
-                    self.UP_KEY = True
-    '''
     #Wird in den Menuklassen benutzt um am ende eines Displayloop die gedrückten Tasten zu resetten, damit nach einem Klick nach
     #z.B. Unten nicht durchgehend nach unten gescrollt wird
     def reset_keys(self):

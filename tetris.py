@@ -210,7 +210,3 @@ class Tetris:
 
                 pygame.display.flip()
                 self.clock.tick(self.fps)
-
-    
-#game=Tetris(20,10)
-#game.run()

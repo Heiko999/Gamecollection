@@ -154,15 +154,3 @@ class SnakeGame:
 
     def getscore(self):
         return self.score
-
-
-'''
-if __name__ == '__main__':
-    game = Game()
-    game.run()
-    print('score =' + str(Game.highscore))
-    Game.highscore = 0
-
-
-
-'''
