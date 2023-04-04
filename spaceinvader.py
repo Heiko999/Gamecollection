@@ -128,6 +128,3 @@ class Rocket:
                          pygame.Rect(self.x, self.y, 2, 4))
         self.y -= 2  # poletí po herní ploše nahoru 2px/snímek
 
-
-#if __name__ == '__main__':
-#    game = SpaceGame(600, 400)

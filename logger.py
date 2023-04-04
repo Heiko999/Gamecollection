@@ -1,7 +1,7 @@
 from tinydb import TinyDB, Query
 #from menu import *
 
-
+# TODO: Tom baut beide Database connection singletons zu einem und Logerparameter in games und menu ändern
 class DatabaseConnection1:
     _instance = None
 
@@ -15,6 +15,7 @@ class DatabaseConnection1:
     def getDB(self):
         return self.db
     
+
 class DatabaseConnection2:
     _instance = None
 
@@ -29,7 +30,6 @@ class DatabaseConnection2:
         return self.db2
     
 class Log:
-    
     def __init__(self,database,database2):
         self.db=database
         self.db2=database2

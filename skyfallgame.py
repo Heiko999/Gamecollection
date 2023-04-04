@@ -69,7 +69,6 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, SCREEN_WIDTH - self.rect.width)
         self.rect.y = random.randint(-100, -50)
-        
         self.speed = random.randint(1, 3) + Enemy.speedscale
 
     def update(self):
@@ -215,6 +214,7 @@ class skyfallGame:
             self.all_sprites.add(enemy)
             self.enemy_Mode.execute()
             enemy.update()
+            
 
         # Reset the player position and bullets
         self.player.rect.centerx = SCREEN_WIDTH // 2
