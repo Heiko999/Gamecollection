@@ -2,7 +2,6 @@
 from menu import *
 from spaceinvader import *
 from tetris import *
-from mastermind import *
 from logger import *
 from snake import *
 from flappy import *
@@ -19,7 +18,7 @@ class Game():
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
         self.DISPLAY_W, self.DISPLAY_H = 600, 400
         #self.font_name = '8-BIT WONDER.TTF'
-        self.BLACK, self.WHITE = (0, 0, 0), (255, 255, 255)
+        self.backgroundcolor, self.textcolor = (0, 0, 0), (255, 255, 255)
         self.main_menu = MainMenu(self)
         self.options = OptionsMenu(self)
         self.credits = CreditsMenu(self)
@@ -29,7 +28,6 @@ class Game():
         self.playerhighscore = PlayerhighscoreMenu(self)
         self.spacescoremenu = SpaceMenu(self)
         self.tetrisscoremenu = TetrisMenu(self)
-        self.masterscoremenu = MastermindMenu(self)
         self.snakescoremenu = SnakeMenu(self)
         self.flappyscoremenu = FlappyMenu(self)
         self.game_collection = GameMenu(self)
@@ -55,12 +53,6 @@ class Game():
                 log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
                 log.highscore('Tetris', game.score_tetris, self.player)
                 print (game.score_tetris)
-                self.closedcounter = 1
-            if self.game_collection.state == 'Mastermind':
-                game = Mastermind()
-                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-                log.highscore('Mastermind', game.score_mm, self.player)
-                print(game.score_mm)
                 self.closedcounter = 1
             if self.game_collection.state == 'Snake':
                 game = SnakeGame()
