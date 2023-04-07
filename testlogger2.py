@@ -16,7 +16,6 @@ class LogTests(unittest.TestCase):
             'Name': "John Doe",
             'Passwort': "password",
             'Tetris' : "0",
-            'Mastermind' : "0",
             'SpaceInvaders' : "0",
             'Snake' : "0",
             'Flappy' : "0"
@@ -52,7 +51,7 @@ class LogTests(unittest.TestCase):
 
         # set up mock database search and update methods
         self.db2.search.return_value = [{'Game': 'Tetris', 'THighscore': 50}]
-        self.db.search.return_value = [{'Name': 'Alice', 'Tetris': '80', 'Mastermind': '20', 'SpaceInvaders': '30', 'Snake': '40', 'Flappy': '50'}]
+        self.db.search.return_value = [{'Name': 'Alice', 'Tetris': '80', 'SpaceInvaders': '30', 'Snake': '40', 'Flappy': '50'}]
 
         # call highscore method
         self.log.highscore(game, highscore, player)
