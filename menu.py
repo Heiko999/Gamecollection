@@ -45,7 +45,7 @@ class Menu():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.game.START_KEY = True
-                if event.key == pygame.K_BACKSPACE:
+                if event.key == pygame.K_BACKSPACE or event.key == pygame.K_ESCAPE:
                     self.game.BACK_KEY = True
                 if event.key == pygame.K_DOWN:
                     self.game.DOWN_KEY = True
@@ -54,7 +54,7 @@ class Menu():
 
     def draw_text(self, text, size, x, y ):
         font = pygame.font.Font(self.font_name,size)
-        text_surface = font.render(text, True, self.game.WHITE)
+        text_surface = font.render(text, True, self.game.textcolor)
         text_rect = text_surface.get_rect()
         text_rect.center = (x,y)
         self.display.blit(text_surface,text_rect)
@@ -78,7 +78,7 @@ class LoginMenu(Menu):
         while self.run_display:
             clock = pygame.time.Clock()
             self.check_events()
-            self.display.fill(self.game.BLACK)
+            self.display.fill(self.game.backgroundcolor)
             
             self.done = False
             while not self.done:
@@ -160,8 +160,8 @@ class MainMenu(Menu):
             
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
-        mainM = "Main Menu" + "      Hallo Player: " + str(self.game.player)
+        self.display.fill(self.game.backgroundcolor)
+        mainM = "Main Menu" + "      Hello Player: " + str(self.game.player)
         self.draw_text(mainM, 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 20)
         self.draw_text("Start Game", 20, self.startx, self.starty)
         self.draw_text("Highscores", 20, self.highscorex, self.highscorey)
@@ -221,9 +221,8 @@ class GameMenu(Menu):
         self.state = 'SpaceInvaders'
         self.spacex, self.spacey = self.mid_w, self.mid_h + 20
         self.tetrisx, self.tetrisy = self.mid_w, self.mid_h + 40
-        self.mindx, self.mindy = self.mid_w, self.mid_h + 60
-        self.snakex, self.snakey = self.mid_w, self.mid_h + 80
-        self.flapx, self.flapy = self.mid_w, self.mid_h + 100
+        self.snakex, self.snakey = self.mid_w, self.mid_h + 60
+        self.flapx, self.flapy = self.mid_w, self.mid_h + 80
         self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
 
     #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
@@ -236,11 +235,10 @@ class GameMenu(Menu):
             self.draw_display()
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('GameCollection', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
         self.draw_text("SpaceInvaders", 15, self.spacex, self.spacey)
         self.draw_text("Tetris", 15, self.tetrisx, self.tetrisy)
-        self.draw_text("Mastermind", 15, self.mindx, self.mindy)
         self.draw_text("Snake", 15, self.snakex, self.snakey)
         self.draw_text("Flappy Bird", 15, self.flapx, self.flapy)
         self.draw_cursor()
@@ -256,9 +254,6 @@ class GameMenu(Menu):
                 self.state = 'Tetris'
                 self.cursor_rect.midtop = (self.tetrisx + self.offset, self.tetrisy)
             elif self.state == 'Tetris':
-                self.state = 'Mastermind'
-                self.cursor_rect.midtop = (self.mindx + self.offset, self.mindy)
-            elif self.state == 'Mastermind':
                 self.state = 'Snake'
                 self.cursor_rect.midtop = (self.snakex + self.offset, self.snakey)
             elif self.state == 'Snake':
@@ -268,10 +263,7 @@ class GameMenu(Menu):
                 self.state = 'SpaceInvaders'
                 self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
         elif self.game.UP_KEY:
-            if self.state == 'Mastermind':
-                self.state = 'Tetris'
-                self.cursor_rect.midtop = (self.tetrisx + self.offset, self.tetrisy)
-            elif self.state == 'Tetris':
+            if self.state == 'Tetris':
                 self.state = 'SpaceInvaders'
                 self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
             elif self.state == 'SpaceInvaders':
@@ -281,14 +273,12 @@ class GameMenu(Menu):
                 self.state = 'Snake'
                 self.cursor_rect.midtop = (self.snakex + self.offset, self.snakey)
             elif self.state == 'Snake':
-                self.state = 'Mastermind'
-                self.cursor_rect.midtop = (self.mindx + self.offset, self.mindy)
+                self.state = 'Tetris'
+                self.cursor_rect.midtop = (self.tetrisx + self.offset, self.tetrisy)
         elif self.game.START_KEY:
             if self.state == 'SpaceInvaders':
                 self.game.playing = True
             if self.state == 'Tetris':
-                self.game.playing = True
-            if self.state == 'Mastermind':
                 self.game.playing = True
             if self.state == 'Snake':
                 self.game.playing = True
@@ -318,7 +308,7 @@ class HighscoreMenu(Menu):
             
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
         self.draw_text("Playerscore", 15, self.phighscorex, self.phighscorey)
         self.draw_text("Gamescore", 15, self.ghighscorex, self.ghighscorey)
@@ -357,7 +347,7 @@ class PlayerscoreMenu(Menu):
         self.run_display = True
         while self.run_display:
             clock = pygame.time.Clock()
-            self.display.fill(self.game.BLACK)
+            self.display.fill(self.game.backgroundcolor)
             
             log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
 
@@ -419,13 +409,12 @@ class PlayerhighscoreMenu(Menu):
             
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Player ' + self.game.highscoreplayer + ':', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-        self.draw_text(str(self.gamerscore[0]), 15, self.mid_w, self.mid_h + 20)
-        self.draw_text(str(self.gamerscore[1]), 15, self.mid_w, self.mid_h + 40)
-        self.draw_text(str(self.gamerscore[2]), 15, self.mid_w, self.mid_h + 60)
-        self.draw_text(str(self.gamerscore[3]), 15, self.mid_w, self.mid_h + 80)
-        self.draw_text(str(self.gamerscore[4]), 15, self.mid_w, self.mid_h + 100)
+        self.draw_text(str(self.gamerscore[0]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
+        self.draw_text(str(self.gamerscore[1]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
+        self.draw_text(str(self.gamerscore[2]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
+        self.draw_text(str(self.gamerscore[3]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
         self.blit_screen()
 
 
@@ -441,9 +430,8 @@ class GamescoreMenu(Menu):
         self.state = 'SpaceInvaders'
         self.spacex, self.spacey = self.mid_w, self.mid_h + 20
         self.tetrisx, self.tetrisy = self.mid_w, self.mid_h + 40
-        self.mindx, self.mindy = self.mid_w, self.mid_h + 60
-        self.snakex, self.snakey = self.mid_w, self.mid_h + 80
-        self.flapx, self.flapy = self.mid_w, self.mid_h + 100
+        self.snakex, self.snakey = self.mid_w, self.mid_h + 60
+        self.flapx, self.flapy = self.mid_w, self.mid_h + 80
         self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
 
     #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
@@ -457,11 +445,10 @@ class GamescoreMenu(Menu):
             
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('GameCollection', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
         self.draw_text("SpaceInvaders", 15, self.spacex, self.spacey)
         self.draw_text("Tetris", 15, self.tetrisx, self.tetrisy)
-        self.draw_text("Mastermind", 15, self.mindx, self.mindy)
         self.draw_text("Snake", 15, self.snakex, self.snakey)
         self.draw_text("Flappy Bird", 15, self.flapx, self.flapy)
         self.draw_cursor()
@@ -478,9 +465,6 @@ class GamescoreMenu(Menu):
                 self.state = 'Tetris'
                 self.cursor_rect.midtop = (self.tetrisx + self.offset, self.tetrisy)
             elif self.state == 'Tetris':
-                self.state = 'Mastermind'
-                self.cursor_rect.midtop = (self.mindx + self.offset, self.mindy)
-            elif self.state == 'Mastermind':
                 self.state = 'Snake'
                 self.cursor_rect.midtop = (self.snakex + self.offset, self.snakey)
             elif self.state == 'Snake':
@@ -490,10 +474,7 @@ class GamescoreMenu(Menu):
                 self.state = 'SpaceInvaders'
                 self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
         elif self.game.UP_KEY:
-            if self.state == 'Mastermind':
-                self.state = 'Tetris'
-                self.cursor_rect.midtop = (self.tetrisx + self.offset, self.tetrisy)
-            elif self.state == 'Tetris':
+            if self.state == 'Tetris':
                 self.state = 'SpaceInvaders'
                 self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
             elif self.state == 'SpaceInvaders':
@@ -503,15 +484,13 @@ class GamescoreMenu(Menu):
                 self.state = 'Snake'
                 self.cursor_rect.midtop = (self.snakex + self.offset, self.snakey)
             elif self.state == 'Snake':
-                self.state = 'Mastermind'
-                self.cursor_rect.midtop = (self.mindx + self.offset, self.mindy)
+                self.state = 'Tetris'
+                self.cursor_rect.midtop = (self.tetrisx + self.offset, self.tetrisy)
         elif self.game.START_KEY:
             if self.state == 'SpaceInvaders':
                 self.game.curr_menu = self.game.spacescoremenu
             elif self.state == 'Tetris':
                 self.game.curr_menu = self.game.tetrisscoremenu
-            elif self.state == 'Mastermind':
-                self.game.curr_menu = self.game.masterscoremenu
             elif self.state == 'Snake':
                 self.game.curr_menu = self.game.snakescoremenu
             elif self.state == 'Flappy':
@@ -538,19 +517,19 @@ class SpaceMenu(Menu):
             
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Spaceinvader:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
         #if self.spacescore[0 + self.n] != []:
         if 1+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[0 + self.n]), 15, self.mid_w, self.mid_h + 20)
+            self.draw_text(str(self.spacescore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
         if 2+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[1 + self.n]), 15, self.mid_w, self.mid_h + 40)
+            self.draw_text(str(self.spacescore[1 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
         if 3+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[2 + self.n]), 15, self.mid_w, self.mid_h + 60)
+            self.draw_text(str(self.spacescore[2 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
         if 4+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[3 + self.n]), 15, self.mid_w, self.mid_h + 80)
+            self.draw_text(str(self.spacescore[3 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
         if 5+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
+            self.draw_text(str(self.spacescore[4 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 100)
         self.blit_screen()
 
 
@@ -587,19 +566,19 @@ class TetrisMenu(Menu):
             self.draw_display()
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Tetris:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
         #if self.spacescore[0 + self.n] != []:
         if 1+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[0 + self.n]), 15, self.mid_w, self.mid_h + 20)
+            self.draw_text(str(self.tetscore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
         if 2+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[1 + self.n]), 15, self.mid_w, self.mid_h + 40)
+            self.draw_text(str(self.tetscore[1 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
         if 3+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[2 + self.n]), 15, self.mid_w, self.mid_h + 60)
+            self.draw_text(str(self.tetscore[2 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
         if 4+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[3 + self.n]), 15, self.mid_w, self.mid_h + 80)
+            self.draw_text(str(self.tetscore[3 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
         if 5+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
+            self.draw_text(str(self.tetscore[4 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 100)
         self.blit_screen()
             
 
@@ -616,66 +595,16 @@ class TetrisMenu(Menu):
             if 5+self.n < self.leng:
                 self.n =self.n + 5
                 print("N ist jetzt:" + str(self.n))
-
-class MastermindMenu(Menu):
-    def __init__(self, game):
-        Menu.__init__(self, game)
-        self.n = 0
-        log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        self.masterscore = log.gamesscores('mastermind')
-        self.leng = len(self.masterscore)
-        print("leng ist : " + str(self.leng))
-    
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet    
-    def display_menu(self):
-        self.run_display = True
-        while self.run_display:
-            self.check_events()
-            self.check_input()
-            self.draw_display()
-
-    def draw_display(self):
-        self.display.fill(self.game.BLACK)
-        self.draw_text('Highscores Mastermind:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-        #if self.spacescore[0 + self.n] != []:
-        if 1+ self.n <= self.leng:
-            self.draw_text(str(self.masterscore[0 + self.n]), 15, self.mid_w, self.mid_h + 20)
-        if 2+ self.n <= self.leng:
-            self.draw_text(str(self.masterscore[1 + self.n]), 15, self.mid_w, self.mid_h + 40)
-        if 3+ self.n <= self.leng:
-            self.draw_text(str(self.masterscore[2 + self.n]), 15, self.mid_w, self.mid_h + 60)
-        if 4+ self.n <= self.leng:
-            self.draw_text(str(self.masterscore[3 + self.n]), 15, self.mid_w, self.mid_h + 80)
-        if 5+ self.n <= self.leng:
-            self.draw_text(str(self.masterscore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
-        self.blit_screen()
-            
-
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
-    def check_input(self):
-        if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.gamescores
-            self.run_display = False
-        elif self.game.UP_KEY:
-            if self.n >0:
-                self.n = self.n - 5
-                print("N ist jetzt:" + str(self.n))              
-        elif self.game.DOWN_KEY:
-            if 5+self.n < self.leng:
-                self.n =self.n + 5
-                print("N ist jetzt:" + str(self.n))
-
 
 class SnakeMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.n = 0
         log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        print("snekscore=")
-        self.snekscore = log.gamesscores('snake')
-        print(self.snekscore)
-        self.leng = len(self.snekscore)
+        print("snakescore=")
+        self.snakescore = log.gamesscores('snake')
+        print(self.snakescore)
+        self.leng = len(self.snakescore)
         print("leng ist : " + str(self.leng))
 
     #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
@@ -688,19 +617,19 @@ class SnakeMenu(Menu):
             self.draw_display()
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Snake:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
         #if self.spacescore[0 + self.n] != []:
         if 1+ self.n <= self.leng:
-            self.draw_text(str(self.snekscore[0 + self.n]), 15, self.mid_w, self.mid_h + 20)
+            self.draw_text(str(self.snakescore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
         if 2+ self.n <= self.leng:
-            self.draw_text(str(self.snekscore[1 + self.n]), 15, self.mid_w, self.mid_h + 40)
+            self.draw_text(str(self.snakescore[1 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
         if 3+ self.n <= self.leng:
-            self.draw_text(str(self.snekscore[2 + self.n]), 15, self.mid_w, self.mid_h + 60)
+            self.draw_text(str(self.snakescore[2 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
         if 4+ self.n <= self.leng:
-            self.draw_text(str(self.snekscore[3 + self.n]), 15, self.mid_w, self.mid_h + 80)
+            self.draw_text(str(self.snakescore[3 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
         if 5+ self.n <= self.leng:
-            self.draw_text(str(self.snekscore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
+            self.draw_text(str(self.snakescore[4 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 100)
         self.blit_screen()
             
 
@@ -737,19 +666,19 @@ class FlappyMenu(Menu):
             self.draw_display()
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores FlappyBird:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
         #if self.spacescore[0 + self.n] != []:
         if 1+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[0 + self.n]), 15, self.mid_w, self.mid_h + 20)
+            self.draw_text(str(self.flapscore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
         if 2+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[1 + self.n]), 15, self.mid_w, self.mid_h + 40)
+            self.draw_text(str(self.flapscore[1 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
         if 3+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[2 + self.n]), 15, self.mid_w, self.mid_h + 60)
+            self.draw_text(str(self.flapscore[2 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
         if 4+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[3 + self.n]), 15, self.mid_w, self.mid_h + 80)
+            self.draw_text(str(self.flapscore[3 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
         if 5+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[4 + self.n]), 15, self.mid_w, self.mid_h + 100)
+            self.draw_text(str(self.flapscore[4 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 100)
         self.blit_screen()
             
 
@@ -773,8 +702,10 @@ class OptionsMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.state = 'Volume'
+        self.volume = ""
         self.volx, self.voly = self.mid_w, self.mid_h + 20
         self.modex, self.modey = self.mid_w, self.mid_h + 40
+        self.voltextx, self.voltexty = self.mid_w, self.mid_h + 60
         self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
 
     #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
@@ -787,16 +718,18 @@ class OptionsMenu(Menu):
             self.draw_display()
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('Options', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
         self.draw_text("Volume", 15, self.volx, self.voly)
         self.draw_text("Mode", 15, self.modex, self.modey)
+        self.draw_text(f"""{self.volume}""", 15, self.voltextx, self.voltexty)
         self.draw_cursor()
         self.blit_screen()
 
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
+            self.volume = ""
             self.game.curr_menu = self.game.main_menu
             self.run_display = False
         elif self.game.UP_KEY or self.game.DOWN_KEY:
@@ -808,20 +741,26 @@ class OptionsMenu(Menu):
                 self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
         elif self.game.START_KEY:
             if self.state == 'Mode':
-                if self.game.BLACK == (0, 0, 0):
-                    self.game.BLACK = (255, 255, 255)  
-                    self.game.WHITE = (0, 0, 0)
-                    print(self.game.BLACK)
-                    print(self.game.WHITE)
+                if self.game.backgroundcolor == (0, 0, 0):
+                    self.game.backgroundcolor = (57, 57, 57)
+                    self.game.textcolor = (0, 0, 0)
+                    print(self.game.backgroundcolor)
+                    print(self.game.textcolor)
                     return
-                elif self.game.BLACK == (255, 255, 255):
-                    self.game.BLACK = (0, 0, 0)  
-                    self.game.WHITE = (255, 255, 255)
-                    print(self.game.BLACK)
-                    print(self.game.WHITE)
+                elif self.game.backgroundcolor == (57, 57, 57):
+                    self.game.backgroundcolor = (2, 56, 5)
+                    self.game.textcolor = (57, 57, 57)
+                    print(self.game.backgroundcolor)
+                    print(self.game.textcolor)
+                    return
+                elif self.game.backgroundcolor == (2, 56, 5):
+                    self.game.backgroundcolor = (0, 0, 0)
+                    self.game.textcolor = (255, 255, 255)
                     return
             if self.state == 'Volume':
-                print('volume')
+                print("Volume activated / deactivated")
+                self.volume = 'volume - (doesn´t change anything currently)'
+                self.draw_display()
                 self.game.curr_menu = self.game.main_menu
             
 
@@ -841,7 +780,7 @@ class CreditsMenu(Menu):
             self.draw_display()
 
     def draw_display(self):
-        self.display.fill(self.game.BLACK)
+        self.display.fill(self.game.backgroundcolor)
         self.draw_text('Credits', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 20)
         self.draw_text('Made by ', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 10)
         self.draw_text('Heiko Herrmann', 15, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 + 30)

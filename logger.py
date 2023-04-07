@@ -2,6 +2,36 @@ from tinydb import TinyDB, Query
 #from menu import *
 
 # TODO: Tom baut beide Database connection singletons zu einem und Logerparameter in games und menu ändern
+class DatabaseConnection:
+    _instanceDB1 = None
+    _instanceDB2 = None
+
+    def __new__(cls):
+        if cls._instanceDB1 and cls._instanceDB2 is None:
+            cls._instanceDB1 = super(DatabaseConnection, cls).__new__(cls)
+            cls._instanceDB2 = super(DatabaseConnection, cls).__new__(cls)
+            cls._instanceDB1.db = TinyDB("db.json")
+            cls._instanceDB2.db = TinyDB("db2.json")
+            return cls._instanceDB1, cls._instanceDB2
+        if cls._instanceDB1 is None:
+            print(f"""creating Database instance""")
+            cls._instanceDB1 = super(DatabaseConnection, cls).__new__(cls)
+            cls._instanceDB1.db = TinyDB("db.json")
+            return cls._instanceDB1
+        elif cls._instanceDB2 is None:
+            print(f"""creating Database instance""")
+            cls._instanceDB2 = super(DatabaseConnection, cls).__new__(cls)
+            cls._instanceDB2.db2 = TinyDB("db2.json")
+            return cls._instanceDB2
+
+    def getDB(self):
+        if(self._instanceDB1 != None and self._instanceDB2 != None):
+            return self.db, self.db2
+        elif(self._instanceDB1 != None):
+            return self.db
+        elif(self._instanceDB2 != None):
+            return self.db2
+
 class DatabaseConnection1:
     _instance = None
 
@@ -35,7 +65,7 @@ class Log:
         self.db2=database2
     #Erstellt neuen Spieler
     def signIn(self,x,y):
-        self.db.insert({'Name': x, 'Passwort': y, 'Tetris' : "0", 'Mastermind' : "0", 'SpaceInvaders' : "0" , 'Snake' : "0", 'Flappy' : "0"})
+        self.db.insert({'Name': x, 'Passwort': y, 'Tetris' : "0", 'SpaceInvaders' : "0" , 'Snake' : "0", 'Flappy' : "0"})
         print(x + ' ist registriert')
         
     #Meldet Spieler an
@@ -78,7 +108,6 @@ class Log:
         # Mapping of game name to highscore field
         game_fields = {
             'Tetris': 'THighscore',
-            'Mastermind': 'MHighscore',
             'SpaceInvaders': 'SHighscore',
             'Snake': 'SNHighscore',
             'Flappy': 'FHighscore'
@@ -100,7 +129,7 @@ class Log:
     
 
 #TODO: Funktionen um Highscore des entsprechenden spiels aus der Datenbank auszulesen
-    #Werte werden in einem Dictionaryder Form {Spieler: Punkte} gespeichert und anschließend
+    #Werte werden in einem Dictionary der Form {Spieler: Punkte} gespeichert und anschließend
     #in ein Array umgewandelt welches weiter verwendet werden kann
 
     def playerscores(self,player):
@@ -114,7 +143,6 @@ class Log:
         dicture[ergebnisSplit[13]] = int(ergebnisSplit[15])
         dicture[ergebnisSplit[17]] = int(ergebnisSplit[19])
         dicture[ergebnisSplit[21]] = int(ergebnisSplit[23])
-        dicture[ergebnisSplit[25]] = int(ergebnisSplit[27])
         sorted_dict = sorted(dicture.items(),key=lambda x:x[1], reverse=True)
         converted_dict=dict(sorted_dict)
         result = converted_dict.items()
@@ -127,7 +155,7 @@ class Log:
         print(ergebnis)
         self.len = len(self.db)
         dicture = {}
-        game_positions = {'tetris': 11, 'mastermind': 15, 'spaceinvader': 19, 'snake': 23, 'flappy' : 27}
+        game_positions = {'tetris': 11, 'spaceinvader': 15, 'snake': 19, 'flappy' : 23}
         game_position = game_positions[game]
         for i in range(self.len): 
             score = ergebnis[i]
