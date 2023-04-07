@@ -395,12 +395,13 @@ class PlayerscoreMenu(Menu):
 class PlayerhighscoreMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
-        log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        self.gamerscore = log.playerscores(self.game.highscoreplayer)
+        
         
     #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
     #welcher auf Eingaben wartet
     def display_menu(self):
+        self.log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+        self.gamerscore = self.log.playerscores(self.game.highscoreplayer)
         self.run_display = True
         while self.run_display:
             self.check_events()
