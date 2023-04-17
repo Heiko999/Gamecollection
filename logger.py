@@ -1,5 +1,6 @@
 from tinydb import TinyDB, Query
-#from menu import *
+from archivements import points_reached, highscore_reached
+
 
 # TODO: Tom baut beide Database connection singletons zu einem und Logerparameter in games und menu ändern
 class DatabaseConnection:
@@ -120,12 +121,15 @@ class Log:
                 if ergebnis:
                     print(f"Game: {game} Score: {highscore}")
                     self.db2.update({highscore_field: highscore, 'Player': player}, dbEntry.Game == game_name)
-
+                    self.h = highscore_reached(highscore)
+                    self.h.music_play()
+                    self.h.congrats()
                 ergebnis = self.db.search((dbEntry.Name == player) & (getattr(dbEntry, game_name) < str(highscore)))
                 if ergebnis:
                     print(f"Game: {game} Score: {highscore}")
                     self.db.update({game_name: str(highscore)}, dbEntry.Name == player)
-
+                    self.p = points_reached(highscore)
+                    self.p.congrats()
     
 
 #TODO: Funktionen um Highscore des entsprechenden spiels aus der Datenbank auszulesen
