@@ -106,6 +106,8 @@ class Tetris:
         self.score_tetris += lines ** 2
 
     def go_space(self):
+        if self.state == "gameover":
+            return
         while not self.intersects():
             self.figure.y += 1
         self.figure.y -= 1

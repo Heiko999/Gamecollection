@@ -126,7 +126,7 @@ class LoginMenu(Menu):
                 self.game.player = self.input_box1.text
                 self.done = True
                 self.run_display = False
-                self.game.curr_menu = self.game.main_menu
+                self.game.main_menu_set()
             self.reset_boxes()
 
     #Checkt nach Klick auf den Deletebutton ob User und Passwort mit eintrag in Datenbank übereinstimmen.
@@ -206,13 +206,17 @@ class MainMenu(Menu):
         self.move_cursor()
         if self.game.START_KEY:
             if self.state == 'Start':
-                self.game.curr_menu = self.game.game_collection
+                self.game.game_collection_set()
+                #self.game.curr_menu = self.game.game_collection
             elif self.state == 'Highscores':
-                self.game.curr_menu = self.game.highscores
+                self.game.highscores_set()
+                #self.game.curr_menu = self.game.highscores
             elif self.state == 'Options':
-                self.game.curr_menu = self.game.options
+                self.game.options_set()
+                #self.game.curr_menu = self.game.options
             elif self.state == 'Credits':
-                self.game.curr_menu = self.game.credits
+                self.game.credits_set()
+                #self.game.curr_menu = self.game.credits
             self.run_display = False
 
 class GameMenu(Menu):
@@ -247,7 +251,8 @@ class GameMenu(Menu):
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.main_menu
+            self.game.main_menu_set()
+            #self.game.curr_menu = self.game.main_menu
             self.run_display = False
         elif self.game.DOWN_KEY:
             if self.state == 'SpaceInvaders':
@@ -318,7 +323,8 @@ class HighscoreMenu(Menu):
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.main_menu
+            self.game.main_menu_set()
+            #self.game.curr_menu = self.game.main_menu
             self.run_display = False
         elif self.game.UP_KEY or self.game.DOWN_KEY:
             if self.state == 'Playerscore':
@@ -329,10 +335,12 @@ class HighscoreMenu(Menu):
                 self.cursor_rect.midtop = (self.phighscorex + self.offset, self.phighscorey)
         elif self.game.START_KEY:
             if self.state == 'Gamescore':
-                self.game.curr_menu = self.game.gamescores
+                self.game.gamescores_set()
+                #self.game.curr_menu = self.game.gamescores
                 self.run_display = False
             elif self.state == 'Playerscore':
-                self.game.curr_menu = self.game.playerscores
+                self.game.playerscores_set()
+                #self.game.curr_menu = self.game.playerscores
                 self.run_display = False
                 
 
@@ -378,7 +386,8 @@ class PlayerscoreMenu(Menu):
                         self.game.highscoreplayer = input_box1.text
                         self.done = True
                         self.run_display = False
-                        self.game.curr_menu = self.game.playerhighscore
+                        self.game.playerhighscores_set()
+                        #self.game.curr_menu = self.game.playerhighscore
                     input_box1.text = ''
                     input_box1.txt_surface = FONT.render(input_box1.text, True, input_box1.color)
                 pygame.display.flip()
@@ -388,7 +397,8 @@ class PlayerscoreMenu(Menu):
     def check_input(self):
         if self.game.BACK_KEY:
             print("jo geht")
-            self.game.curr_menu = self.game.highscores
+            self.game.highscores_set()
+            #self.game.curr_menu = self.game.highscores
             self.done = True
             self.run_display = False
 
@@ -422,7 +432,8 @@ class PlayerhighscoreMenu(Menu):
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.highscores
+            self.game.highscores_set()
+            #self.game.curr_menu = self.game.highscores
             self.run_display = False
 
 class GamescoreMenu(Menu):
@@ -459,7 +470,8 @@ class GamescoreMenu(Menu):
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.main_menu
+            self.game.main_menu_set()
+            #self.game.curr_menu = self.game.main_menu
             self.run_display = False
         elif self.game.DOWN_KEY:
             if self.state == 'SpaceInvaders':
@@ -489,13 +501,17 @@ class GamescoreMenu(Menu):
                 self.cursor_rect.midtop = (self.tetrisx + self.offset, self.tetrisy)
         elif self.game.START_KEY:
             if self.state == 'SpaceInvaders':
-                self.game.curr_menu = self.game.spacescoremenu
+                self.game.spacescoremenu_set()
+                #self.game.curr_menu = self.game.spacescoremenu
             elif self.state == 'Tetris':
-                self.game.curr_menu = self.game.tetrisscoremenu
+                self.game.tetrisscoremenu_set()
+                #self.game.curr_menu = self.game.tetrisscoremenu
             elif self.state == 'Snake':
-                self.game.curr_menu = self.game.snakescoremenu
+                self.game.snakescoremenu_set()
+                #self.game.curr_menu = self.game.snakescoremenu
             elif self.state == 'Flappy':
-                self.game.curr_menu = self.game.flappyscoremenu
+                self.game.flappyscoremenu_set()
+                #self.game.curr_menu = self.game.flappyscoremenu
         self.run_display = False
 
 class SpaceMenu(Menu):
@@ -537,7 +553,8 @@ class SpaceMenu(Menu):
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.gamescores
+            self.game.gamescores_set()
+            #self.game.curr_menu = self.game.gamescores
             self.run_display = False
         elif self.game.UP_KEY:
             if self.n >0:
@@ -586,7 +603,8 @@ class TetrisMenu(Menu):
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.gamescores
+            self.game.gamescores_set()
+            #self.game.curr_menu = self.game.gamescores
             self.run_display = False
         elif self.game.UP_KEY:
             if self.n >0:
@@ -637,7 +655,8 @@ class SnakeMenu(Menu):
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.gamescores
+            self.game.gamescores_set()
+            #self.game.curr_menu = self.game.gamescores
             self.run_display = False
         elif self.game.UP_KEY:
             if self.n >0:
@@ -686,7 +705,8 @@ class FlappyMenu(Menu):
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
     def check_input(self):
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.gamescores
+            self.game.gamescores_set()
+            #self.game.curr_menu = self.game.gamescores
             self.run_display = False
         elif self.game.UP_KEY:
             if self.n >0:
@@ -731,7 +751,8 @@ class OptionsMenu(Menu):
     def check_input(self):
         if self.game.BACK_KEY:
             self.volume = ""
-            self.game.curr_menu = self.game.main_menu
+            self.game.main_menu_set()
+            #self.game.curr_menu = self.game.main_menu
             self.run_display = False
         elif self.game.UP_KEY or self.game.DOWN_KEY:
             if self.state == 'Volume':
@@ -776,7 +797,8 @@ class CreditsMenu(Menu):
         while self.run_display:
             self.check_events()
             if self.game.START_KEY or self.game.BACK_KEY:
-                self.game.curr_menu = self.game.main_menu
+                self.game.main_menu_set()
+                #self.game.curr_menu = self.game.main_menu
                 self.run_display = False
             self.draw_display()
 

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-
+import pygame
 
 class archivement(ABC):
     @abstractmethod
@@ -30,11 +30,8 @@ class highscore_reached(bigger_archivement):
         print("congrats you got %d points and broke the Highscore!" % self.points)
 
     def music_play(self):
-        print("play musik") 
-
-
-
-h = highscore_reached(30)
-
-h.congrats()
-h.music_play()
+        # Load the mp3 file
+        pygame.init()
+        sound = pygame.mixer.Sound("gamedump/highscoresound.mp3")
+        sound.play()
+        pygame.time.wait(int(sound.get_length() * 1000))

@@ -1,6 +1,6 @@
 import pygame as pg
 #import sys
-from random import randrange
+from random import randrange, randint
 
 
 vec2 = pg.math.Vector2
@@ -61,7 +61,8 @@ class Snake:
     def check_food(self):
         if self.rect.center == self.game.food.rect.center:
             self.game.food.rect.center = self.get_random_position()
-            self.length += 1
+            self.length += self.game.food.foodpoint
+            self.game.new_foodtype()
             print(self.length)
 
     def check_selfeating(self):
@@ -93,7 +94,27 @@ class Food():
         self.rect.center = self.game.snake.get_random_position()
 
     def draw(self):
-        pg.draw.rect(self.game.screen, 'red', self.rect)
+        pg.draw.rect(self.game.screen, self.game.food.color, self.rect)
+
+class Item1(Food):
+    def __init__(self, game):
+        super().__init__(game)
+        self.foodpoint = 1
+        self.color = 'red'
+
+class Item2(Food):
+    def __init__(self, game):
+        super().__init__(game)
+        self.foodpoint = 2
+        self.color = 'blue'
+
+class Item3(Food):
+    def __init__(self, game):
+        super().__init__(game)
+        self.foodpoint = 3
+        self.color = 'yellow'
+
+    
 
 class SnakeGame:
     highscore=0
@@ -117,7 +138,16 @@ class SnakeGame:
 
     def new_game(self):
         self.snake = Snake(self)
-        self.food = Food(self)
+        self.food = Item1(self)
+
+    def new_foodtype(self):
+        rando = randint(1,3)
+        if rando == 1:
+            self.food = Item1(self)
+        elif rando == 2:
+            self.food = Item2(self)
+        elif rando == 3:
+            self.food = Item3(self)
 
     def update(self):
         self.snake.update()
