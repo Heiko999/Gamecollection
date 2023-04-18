@@ -3,6 +3,7 @@ import pygame
 from input import InputBox
 from button import Button
 from logger import *
+from usecase import *
 
 
 
@@ -96,9 +97,9 @@ class LoginMenu(Menu):
                 self.draw_text('Login Screen', 20, self.game.DISPLAY_W / 2, 30)
                 for box in self.input_boxes:
                     box.draw(self.display)
-                self.check_signin()
-                self.check_login()
-                self.check_delete()
+                self.new_check_signin()
+                self.new_check_login()
+                self.new_check_delete()
                 pygame.display.flip()
                 clock.tick(20)
                 self.blit_screen()
@@ -116,6 +117,20 @@ class LoginMenu(Menu):
         if self.signin_button.click():
             self.log.signIn(self.input_box1.text,self.input_box2.text)
             self.reset_boxes()
+
+    def new_check_signin(self):
+        self.signin_button.draw(self.screen)
+        if self.signin_button.click():
+            user_repo = UserRepositoryImpl()
+            registration_use_case = RegistrationUseCase(user_repo)
+            registration_use_case.register(self.input_box1.text, self.input_box2.text, 0, 0, 0, 0)
+            high_score_use_case = HighScoreUseCase(user_repo)
+
+            # Update the high score for Tetris game
+            high_score_use_case.update_high_score(self.input_box1.text, 'Tetris', 100)
+            self.reset_boxes()
+
+    
     
     #Checkt nach auswahl des LoginButton, Ob Username und Passwort mit eintrag in Datenbank übereinstimmen
     #Stimmt es wird das Menu auf das Main Menu geändert 
@@ -129,6 +144,18 @@ class LoginMenu(Menu):
                 self.game.main_menu_set()
             self.reset_boxes()
 
+    def new_check_login(self):
+        self.login_button.draw(self.screen)
+        if self.login_button.click():
+            user_repo = UserRepositoryImpl()
+            login_use_case = LoginUseCase(user_repo)
+            if login_use_case.execute(self.input_box1.text, self.input_box2.text):
+                self.game.player = self.input_box1.text
+                self.done = True
+                self.run_display = False
+                self.game.main_menu_set()
+            self.reset_boxes()
+
     #Checkt nach Klick auf den Deletebutton ob User und Passwort mit eintrag in Datenbank übereinstimmen.
     #Tun sie das, wird der Spieler gelöscht 
     def check_delete(self):
@@ -136,6 +163,14 @@ class LoginMenu(Menu):
         if self.delete_button.click():
             self.log.delete(self.input_box1.text,self.input_box2.text)
             self.reset_boxes()
+
+    def new_check_delete(self):
+        self.delete_button.draw(self.screen)
+        if self.delete_button.click():
+            user_repo = UserRepositoryImpl()
+            delete_use_case = DeleteUseCase(user_repo)
+            if delete_use_case.execute(self.input_box1.text,self.input_box2.text):
+                self.reset_boxes()
 
                 
 
@@ -356,9 +391,9 @@ class PlayerscoreMenu(Menu):
         while self.run_display:
             clock = pygame.time.Clock()
             self.display.fill(self.game.backgroundcolor)
-            
-            log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-
+            #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+            user_repository = UserRepositoryImpl()
+            Playercheck = FindPlayerUseCase(user_repository)
             #Erzeugt TextBoxen und Buttons für das LoginMenu
             input_box1 = InputBox(self.game.DISPLAY_W / 2 - 100,  50, 140, 32)  
             input_button = Button(self.game.DISPLAY_W / 2 -50, 200, search_img, 0.4)
@@ -382,7 +417,8 @@ class PlayerscoreMenu(Menu):
                 if input_button.click():
                     print('input')
                     print(input_box1.text)
-                    if log.playername(input_box1.text):
+                
+                    if Playercheck.execute(input_box1.text):
                         self.game.highscoreplayer = input_box1.text
                         self.done = True
                         self.run_display = False
@@ -410,8 +446,10 @@ class PlayerhighscoreMenu(Menu):
     #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
     #welcher auf Eingaben wartet
     def display_menu(self):
-        self.log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        self.gamerscore = self.log.playerscores(self.game.highscoreplayer)
+        #self.log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+        user_repository = UserRepositoryImpl()
+        playerhigh_score_use_case = PlayerHighscoreUseCase(user_repository)
+        self.gamerscore = playerhigh_score_use_case.execute(self.game.highscoreplayer)
         self.run_display = True
         while self.run_display:
             self.check_events()
@@ -518,8 +556,11 @@ class SpaceMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.n = 0
-        log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        self.spacescore = log.gamesscores('spaceinvader')
+        #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+        user_repository = UserRepositoryImpl()
+        gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
+        self.spacescore = gamehigh_score_use_case.execute('spaceinvader')
+        #self.spacescore = log.gamesscores('spaceinvader')
         self.leng = len(self.spacescore)
         print("leng ist : " + str(self.leng))
         
@@ -569,8 +610,11 @@ class TetrisMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.n = 0
-        log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        self.tetscore = log.gamesscores('tetris')
+        #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+        #self.tetscore = log.gamesscores('tetris')
+        user_repository = UserRepositoryImpl()
+        gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
+        self.tetscore = gamehigh_score_use_case.execute('tetris')
         self.leng = len(self.tetscore)
         print("leng ist : " + str(self.leng))
 
@@ -619,9 +663,12 @@ class SnakeMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.n = 0
-        log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        print("snakescore=")
-        self.snakescore = log.gamesscores('snake')
+        #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+        #print("snakescore=")
+        #self.snakescore = log.gamesscores('snake')
+        user_repository = UserRepositoryImpl()
+        gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
+        self.snakescore = gamehigh_score_use_case.execute('snake')
         print(self.snakescore)
         self.leng = len(self.snakescore)
         print("leng ist : " + str(self.leng))
@@ -634,7 +681,7 @@ class SnakeMenu(Menu):
             self.check_events()
             self.check_input()
             self.draw_display()
-
+#codesmell : Duplicate Code
     def draw_display(self):
         self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Snake:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
@@ -650,6 +697,7 @@ class SnakeMenu(Menu):
         if 5+ self.n <= self.leng:
             self.draw_text(str(self.snakescore[4 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 100)
         self.blit_screen()
+
             
 
     #Reagiert auf gedrückte Tasten mit entsprechender Funktion
@@ -671,8 +719,11 @@ class FlappyMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.n = 0
-        log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        self.flapscore = log.gamesscores('flappy')
+        #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+        #self.flapscore = log.gamesscores('flappy')
+        user_repository = UserRepositoryImpl()
+        gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
+        self.flapscore = gamehigh_score_use_case.execute('flappy')
         self.leng = len(self.flapscore)
         print("leng ist : " + str(self.leng))
 

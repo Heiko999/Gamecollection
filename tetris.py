@@ -47,7 +47,6 @@ class Tetris:
 
     size = (400, 500)
     screen = None
-    level = 2
     score_tetris = 0
     state = "start"
     field = []
@@ -62,8 +61,6 @@ class Tetris:
     fps = 25
     counter = 0
 
-    pressing_down = False
-
     def __init__(self, height, width):
         pygame.init()
         self.screen = pygame.display.set_mode(self.size)
@@ -73,7 +70,7 @@ class Tetris:
         self.score_tetris = 0
         self.state = "start"
         self.done = False
-        
+        self.pressing_down = False
         
     
     def new_figure(self):
@@ -154,9 +151,10 @@ class Tetris:
             if self.counter > 100000:
                 self.counter = 0
 
-            if self.counter % (self.fps // self.level // 2) == 0 or self.pressing_down:
+            if ((self.counter % 5) == 0) or self.pressing_down:
                 if self.state == "start":
                     self.go_down()
+                    self.pressing_down = False
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -165,7 +163,7 @@ class Tetris:
                     if event.key == pygame.K_UP:
                         self.rotate()
                     if event.key == pygame.K_DOWN:
-                        pressing_down = True
+                        self.pressing_down = True
                     if event.key == pygame.K_LEFT:
                         self.go_side(-1)
                     if event.key == pygame.K_RIGHT:

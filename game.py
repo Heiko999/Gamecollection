@@ -6,6 +6,7 @@ from logger import *
 from snake import *
 from flappy import *
 from skyfallgame import *
+from usecase import *
 
 #TO-DO: Pygame Dependency entfernen, damit diese Klasse für Clean Code auf Framework Abhängigkeiten verzichtet.
 
@@ -42,32 +43,44 @@ class Game():
             if self.game_collection.state == 'SpaceInvaders':
                 game = skyfallGame()
                 game.run()
-                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-                log.highscore('SpaceInvaders', skyfallGame.highscore, self.player)
+                #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+                #log.highscore('SpaceInvaders', skyfallGame.highscore, self.player)
+                user_repository = UserRepositoryImpl()
+                high_score_use_case = HighScoreUseCase(user_repository)
+                high_score_use_case.update_high_score(self.player, 'spaceinvader', skyfallGame.highscore)
                 print("Skyfallhighscore = " + str(skyfallGame.highscore))
                 skyfallGame.highscore = 0
                 self.closedcounter = 1
             if self.game_collection.state == 'Tetris':
                 game = Tetris(20,10)
                 game.run()
-                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-                log.highscore('Tetris', game.score_tetris, self.player)
+                #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+                #log.highscore('Tetris', game.score_tetris, self.player)
+                user_repository = UserRepositoryImpl()
+                high_score_use_case = HighScoreUseCase(user_repository)
+                high_score_use_case.update_high_score(self.player, 'tetris', game.score_tetris)
                 print (game.score_tetris)
                 self.closedcounter = 1
             if self.game_collection.state == 'Snake':
                 game = SnakeGame()
                 game.run()
-                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-                scoresnake= SnakeGame.highscore
-                log.highscore('Snake', scoresnake, self.player)
+                #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+                #scoresnake= SnakeGame.highscore
+                #log.highscore('Snake', scoresnake, self.player)
+                user_repository = UserRepositoryImpl()
+                high_score_use_case = HighScoreUseCase(user_repository)
+                high_score_use_case.update_high_score(self.player, 'snake', SnakeGame.highscore)
                 print("Highscore is: " + str(SnakeGame.highscore))
                 SnakeGame.highscore = 0
                 self.closedcounter = 1
             if self.game_collection.state == 'Flappy':
                 game = flappy()
                 game.run()
-                log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-                log.highscore('Flappy', game.score_flappy, self.player)
+                #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
+                #log.highscore('Flappy', game.score_flappy, self.player)
+                user_repository = UserRepositoryImpl()
+                high_score_use_case = HighScoreUseCase(user_repository)
+                high_score_use_case.update_high_score(self.player, 'flappy', game.score_flappy)
                 print(game.score_flappy)
                 self.closedcounter = 1
             #TO-DO: Wenn man einen Highscore erreicht, aber das spiel dann nicht schließt sondern eine neue Runde anfängt
@@ -141,4 +154,5 @@ class gamescore:
     def __init__(self, game, score ):
         self.game = game
         self.score = score
+
 

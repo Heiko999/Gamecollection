@@ -5,7 +5,7 @@ class TestTetris(unittest.TestCase):
 
     def test_new_figure(self):
         # Check that a new figure is created and the figure variable is set
-        game =Tetris(20, 10)
+        game = Tetris(20, 10)
         print("Check if FIgure Variable is not Set")
         self.assertIsNone(game.figure)
         print("Not Set")
