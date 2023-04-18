@@ -1,4 +1,5 @@
 # User-Objekt
+from abc import ABC, abstractmethod
 class User:
     def __init__(self, name, password, tetris, spaceinvader, snake, flappy):
         self.name = name
@@ -39,24 +40,31 @@ class User:
         self.flappy = score
 
 # User-Repository-Interface
-class UserRepository:
+class UserRepository(ABC):
+    @abstractmethod
     def save(self, user):
         pass
 
+    @abstractmethod
     def find_by_name(self, name):
         pass
 
+    @abstractmethod
     def check_password(self,name, password):
         pass
 
+    @abstractmethod
     def delete_by_name(self, name):
         pass
     
+    @abstractmethod
     def update(self, user):
         pass
 
+    @abstractmethod
     def find_all(self):
         pass
 
+    @abstractmethod
     def get_highest_score(self, game_name):
         pass
