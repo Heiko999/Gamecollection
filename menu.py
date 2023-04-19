@@ -563,9 +563,12 @@ class SpaceMenu(Menu):
         while self.run_display:
             self.check_events()
             self.check_input()
-            #draw the MenuText on the screen
+            #draw the MenuText on the screen:
             self.display.fill(self.game.backgroundcolor)
             self.draw_text('Highscores Spaceinvader:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
+            #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer 
+            # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und 
+            #immer 5 Scores auf einmal angeschaut werden
             if 1+ self.n <= self.leng:
                 self.draw_text(str(self.spacescore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
             if 2+ self.n <= self.leng:
@@ -617,6 +620,9 @@ class TetrisMenu(Menu):
             #draw the MenuText on the screen
             self.display.fill(self.game.backgroundcolor)
             self.draw_text('Highscores Tetris:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
+            #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer 
+            # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und 
+            #immer 5 Scores auf einmal angeschaut werden
             if 1+ self.n <= self.leng:
                 self.draw_text(str(self.tetscore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
             if 2+ self.n <= self.leng:
@@ -668,6 +674,9 @@ class SnakeMenu(Menu):
             #draw the MenuText on the screen 
             self.display.fill(self.game.backgroundcolor)
             self.draw_text('Highscores Snake:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
+            #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer 
+            # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und 
+            #immer 5 Scores auf einmal angeschaut werden
             if 1+ self.n <= self.leng:
                 self.draw_text(str(self.snakescore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
             if 2+ self.n <= self.leng:
@@ -716,6 +725,9 @@ class FlappyMenu(Menu):
             #draw the MenuText on the screen 
             self.display.fill(self.game.backgroundcolor)
             self.draw_text('Highscores FlappyBird:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
+            #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer 
+            # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und 
+            #immer 5 Scores auf einmal angeschaut werden
             if 1+ self.n <= self.leng:
                 self.draw_text(str(self.flapscore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
             if 2+ self.n <= self.leng:
