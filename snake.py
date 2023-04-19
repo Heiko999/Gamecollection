@@ -18,25 +18,25 @@ class Snake:
         self.time = 0
         self.length = 1
         self.segments = []
-        self.directions = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 1, pg.K_d: 1}
+        self.directions = {pg.K_UP: 1, pg.K_DOWN: 1, pg.K_LEFT: 1, pg.K_RIGHT: 1}
         
     def control(self, event):
         if event.type == pg.KEYDOWN:
-            if event.key == pg.K_w and self.directions[pg.K_w]:
+            if event.key == pg.K_UP and self.directions[pg.K_UP]:
                 self.direction = vec2(0, -self.size)
-                self.directions = {pg.K_w: 1, pg.K_s: 0, pg.K_a: 1, pg.K_d: 1}
+                self.directions = {pg.K_UP: 1, pg.K_DOWN: 0, pg.K_LEFT: 1, pg.K_RIGHT: 1}
 
-            if event.key == pg.K_s and self.directions[pg.K_s]:
+            if event.key == pg.K_DOWN and self.directions[pg.K_DOWN]:
                 self.direction = vec2(0, self.size)
-                self.directions = {pg.K_w: 0, pg.K_s: 1, pg.K_a: 1, pg.K_d: 1}
+                self.directions = {pg.K_UP: 0, pg.K_DOWN: 1, pg.K_LEFT: 1, pg.K_RIGHT: 1}
 
-            if event.key == pg.K_a and self.directions[pg.K_a]:
+            if event.key == pg.K_LEFT and self.directions[pg.K_LEFT]:
                 self.direction = vec2(-self.size, 0)
-                self.directions = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 1, pg.K_d: 0}
+                self.directions = {pg.K_UP: 1, pg.K_DOWN: 1, pg.K_LEFT: 1, pg.K_RIGHT: 0}
 
-            if event.key == pg.K_d and self.directions[pg.K_d]:
+            if event.key == pg.K_RIGHT and self.directions[pg.K_RIGHT]:
                 self.direction = vec2(self.size, 0)
-                self.directions = {pg.K_w: 1, pg.K_s: 1, pg.K_a: 0, pg.K_d: 1}
+                self.directions = {pg.K_UP: 1, pg.K_DOWN: 1, pg.K_LEFT: 0, pg.K_RIGHT: 1}
 
     def delta_time(self):
         time_now = pg.time.get_ticks()

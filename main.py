@@ -6,6 +6,7 @@
 from game import Game
 #from logger import Database
 g = Game()
+g.login_set()
 while g.running:
     g.curr_menu.display_menu()
     g.game_loop()

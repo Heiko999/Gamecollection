@@ -1,10 +1,10 @@
 import unittest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 from usecase import *
 from infrastructure import UserRepositoryImpl, User
 
 class RegistrationUseCaseTests(unittest.TestCase):
-    
+
     def test_register_success(self):
         mock_user_repository = Mock(spec=UserRepositoryImpl)
         use_case = RegistrationUseCase(mock_user_repository)
@@ -19,9 +19,7 @@ class RegistrationUseCaseTests(unittest.TestCase):
         user = User(name, password, tetris, spaceinvader, snake, flappy)
 
         use_case.register(name, password, tetris, spaceinvader, snake, flappy)
-
         mock_user_repository.save.assert_called_once()
-
         saved_user = mock_user_repository.save.call_args[0][0]
 
         self.assertEqual(saved_user.name, user.name)
@@ -70,9 +68,7 @@ class LoginUseCaseTests(unittest.TestCase):
         password = "testpassword"
 
         user = User(name, password, 0, 0, 0, 0)
-
         mock_user_repository.find_by_name.return_value = user
-
         result = use_case.execute(name, password)
 
         self.assertTrue(result)
@@ -85,9 +81,7 @@ class LoginUseCaseTests(unittest.TestCase):
         password = "testpassword"
 
         user = User(name, password, 0, 0, 0, 0)
-
         mock_user_repository.find_by_name.return_value = user
-
         result = use_case.execute(name, "wrongpassword")
 
         self.assertFalse(result)
@@ -100,7 +94,6 @@ class LoginUseCaseTests(unittest.TestCase):
         password = "testpassword"
 
         mock_user_repository.find_by_name.return_value = None
-
         result = use_case.execute(name, password)
 
         self.assertFalse(result)
@@ -116,9 +109,7 @@ class DeleteUseCaseTests(unittest.TestCase):
         password = "testpassword"
 
         user = User(name, password, 0, 0, 0, 0)
-
         mock_user_repository.find_by_name.return_value = user
-
         result = use_case.execute(name, password)
 
         self.assertTrue(result)

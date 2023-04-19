@@ -11,46 +11,43 @@ class TestGame(unittest.TestCase):
         game.check_event()
         game.update()
         updated_position = game.snake.rect.center
-        print(initial_position)
-        print(updated_position)
+        updated_direction = game.snake.direction
         self.assertNotEqual(initial_position, updated_position)
-        print("Snake moved right")
-
-    def test_snake_moveleft(self):
+        self.assertEqual(updated_direction, (50, 0))  # Check if direction changed to right
+    
+    def test_snake_moverleft(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_a}))  # move left
+        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_a}))  # move right
         game.check_event()
         game.update()
         updated_position = game.snake.rect.center
-        print(initial_position)
-        print(updated_position)
+        updated_direction = game.snake.direction
         self.assertNotEqual(initial_position, updated_position)
-        print("Snake moved left")
+        self.assertEqual(updated_direction, (-50, 0))  # Check if direction changed to right
 
     def test_snake_moveup(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_w}))  # move up
+        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_w}))  # move right
         game.check_event()
         game.update()
         updated_position = game.snake.rect.center
-        print(initial_position)
-        print(updated_position)
+        updated_direction = game.snake.direction
         self.assertNotEqual(initial_position, updated_position)
-        print("Snake moved up")
+        self.assertEqual(updated_direction, (0, -50))  # Check if direction changed to right
 
     def test_snake_movedown(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_s}))  # move down
+        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_s}))  # move right
         game.check_event()
         game.update()
         updated_position = game.snake.rect.center
-        print(initial_position)
-        print(updated_position)
+        updated_direction = game.snake.direction
         self.assertNotEqual(initial_position, updated_position)
-        print("Snake moved down")
+        self.assertEqual(updated_direction, (0, 50))  # Check if direction changed to right
+
         
 
 if __name__ == '__main__':

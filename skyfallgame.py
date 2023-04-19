@@ -29,10 +29,6 @@ class Player(pygame.sprite.Sprite):
             self.rect.x -= self.speed
         if keys[pygame.K_RIGHT]:
             self.rect.x += self.speed
-        #if keys[pygame.K_1]:
-        #    game.set_enemy_Mode(FastEnemyMode())
-        #if keys[pygame.K_2]:
-        #    game.set_enemy_Mode(SlowEnemyMode())
         
 
         # Keep the player within the screen bounds

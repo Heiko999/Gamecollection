@@ -20,7 +20,7 @@ class Game():
         self.DISPLAY_W, self.DISPLAY_H = 600, 400
         #self.font_name = '8-BIT WONDER.TTF'
         self.backgroundcolor, self.textcolor = (0, 0, 0), (255, 255, 255)
-        self.login = LoginMenu(self)
+        #self.login = LoginMenu(self)
         self.main_menu = ''
         self.options = ''
         self.credits = ''
@@ -33,7 +33,7 @@ class Game():
         self.snakescoremenu = ''
         self.flappyscoremenu = ''
         self.game_collection = ''
-        self.curr_menu = self.login
+        self.curr_menu = ''
         self.closedcounter = 0
     
     #Wird für das Gamemenu verwendet. Solange man im GameMenu ist wird der State erfasst, um zu sehen, welches spiel gerade gespielt wird
@@ -43,8 +43,6 @@ class Game():
             if self.game_collection.state == 'SpaceInvaders':
                 game = skyfallGame()
                 game.run()
-                #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-                #log.highscore('SpaceInvaders', skyfallGame.highscore, self.player)
                 user_repository = UserRepositoryImpl()
                 high_score_use_case = HighScoreUseCase(user_repository)
                 high_score_use_case.update_high_score(self.player, 'spaceinvader', skyfallGame.highscore)
@@ -54,8 +52,6 @@ class Game():
             if self.game_collection.state == 'Tetris':
                 game = Tetris(20,10)
                 game.run()
-                #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-                #log.highscore('Tetris', game.score_tetris, self.player)
                 user_repository = UserRepositoryImpl()
                 high_score_use_case = HighScoreUseCase(user_repository)
                 high_score_use_case.update_high_score(self.player, 'tetris', game.score_tetris)
@@ -64,9 +60,6 @@ class Game():
             if self.game_collection.state == 'Snake':
                 game = SnakeGame()
                 game.run()
-                #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-                #scoresnake= SnakeGame.highscore
-                #log.highscore('Snake', scoresnake, self.player)
                 user_repository = UserRepositoryImpl()
                 high_score_use_case = HighScoreUseCase(user_repository)
                 high_score_use_case.update_high_score(self.player, 'snake', SnakeGame.highscore)
@@ -76,15 +69,11 @@ class Game():
             if self.game_collection.state == 'Flappy':
                 game = flappy()
                 game.run()
-                #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-                #log.highscore('Flappy', game.score_flappy, self.player)
                 user_repository = UserRepositoryImpl()
                 high_score_use_case = HighScoreUseCase(user_repository)
                 high_score_use_case.update_high_score(self.player, 'flappy', game.score_flappy)
                 print(game.score_flappy)
-                self.closedcounter = 1
-            #TO-DO: Wenn man einen Highscore erreicht, aber das spiel dann nicht schließt sondern eine neue Runde anfängt
-            #wird der Highscore nicht gespeichert 
+                self.closedcounter = 1 
             self.playing = False
             self.reset_keys()
 
@@ -93,8 +82,6 @@ class Game():
     #z.B. Unten nicht durchgehend nach unten gescrollt wird
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
-    
-    #Führt alle Schritte aus, um Text auf die Oberfläche zu zeichnen
     
     def main_menu_set(self):
         self.main_menu = MainMenu(self)
