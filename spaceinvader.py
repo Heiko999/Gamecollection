@@ -30,10 +30,10 @@ class SpaceGame:
                 self.displayText("VICTORY ACHIEVED")
 
             pressed = pygame.key.get_pressed()
-            if pressed[pygame.K_LEFT]:  # sipka doleva
-                hero.x -= 2 if hero.x > 20 else 0  # leva hranice plochy
-            elif pressed[pygame.K_RIGHT]:  # sipka doprava
-                hero.x += 2 if hero.x < width - 20 else 0  # prava hranice
+            if pressed[pygame.K_LEFT]:
+                hero.x -= 2 if hero.x > 20 else 0
+            elif pressed[pygame.K_RIGHT]:
+                hero.x += 2 if hero.x < width - 20 else 0
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -78,8 +78,8 @@ class Alien:
         self.size = 30
 
     def draw(self):
-        pygame.draw.rect(self.game.screen,  # renderovací plocha
-                         (81, 43, 88),  # barva objektu
+        pygame.draw.rect(self.game.screen,
+                         (81, 43, 88),
                          pygame.Rect(self.x, self.y, self.size, self.size))
         self.y += 0.2
 
@@ -107,8 +107,8 @@ class Hero:
 
 class Generator:
     def __init__(self, game):
-        margin = 30  # mezera od okraju obrazovky
-        width = 50  # mezera mezi alieny
+        margin = 30
+        width = 50
         for x in range(margin, game.width - margin, width):
             for y in range(margin, int(game.height / 2), width):
                 game.aliens.append(Alien(game, x, y))
@@ -123,8 +123,8 @@ class Rocket:
         self.game = game
 
     def draw(self):
-        pygame.draw.rect(self.game.screen,  # renderovací plocha
-                         (254, 52, 110),  # barva objektu
+        pygame.draw.rect(self.game.screen,
+                         (254, 52, 110),
                          pygame.Rect(self.x, self.y, 2, 4))
-        self.y -= 2  # poletí po herní ploše nahoru 2px/snímek
+        self.y -= 2
 
