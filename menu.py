@@ -836,17 +836,7 @@ class OptionsMenu(Menu):
                     self.game.textcolor = (255, 255, 255)
                     return
             if self.state == 'Volume':
-                print("Volume activated / deactivated")
                 self.volume = 'volume - (doesn´t change anything currently)'
-                #draw the MenuText on Screen
-                self.display.fill(self.game.backgroundcolor)
-                self.draw_text('Options', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-                self.draw_text("Volume", 15, self.volx, self.voly)
-                self.draw_text("Mode", 15, self.modex, self.modey)
-                self.draw_text(f"""{self.volume}""", 15, self.voltextx, self.voltexty)
-                self.draw_cursor()
-                self.blit_screen()
-                self.game.curr_menu = self.game.main_menu
             
 
 class CreditsMenu(Menu):
@@ -862,6 +852,7 @@ class CreditsMenu(Menu):
             if self.game.START_KEY or self.game.BACK_KEY:
                 self.game.main_menu_set()
                 self.run_display = False
+            self.draw_display()
 
     def draw_display(self):
         self.display.fill(self.game.backgroundcolor)
