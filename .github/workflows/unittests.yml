@@ -33,4 +33,4 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: |
-          python -m unittest testlogger
+          python -m unittest testdatabase
