@@ -1,6 +1,8 @@
 import unittest
 from menu import MainMenu
 from game import Game
+import os
+os.environ['SDL_VIDEODRIVER'] = 'dummy'
 
 class TestMainMenu(unittest.TestCase):
         
