@@ -7,12 +7,12 @@ class archivement(ABC):
         pass
 
     @abstractmethod
-    def congrats():
+    def congrats(self):
         pass
 
 class bigger_archivement(archivement):
     @abstractmethod
-    def music_play():
+    def music_play(self):
         pass
 
 class points_reached(archivement):
@@ -30,8 +30,9 @@ class highscore_reached(bigger_archivement):
         print("congrats you got %d points and broke the Highscore!" % self.points)
 
     def music_play(self):
+        print("playing music")
         # Load the mp3 file
-        pygame.init()
-        sound = pygame.mixer.Sound("gamedump/highscoresound.mp3")
-        sound.play()
-        pygame.time.wait(int(sound.get_length() * 1000))
+        #pygame.init()
+        #sound = pygame.mixer.Sound("gamedump/highscoresound.mp3")
+        #sound.play()
+        #pygame.time.wait(int(sound.get_length() * 1000))

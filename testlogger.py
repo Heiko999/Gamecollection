@@ -14,7 +14,7 @@ class TestLog(unittest.TestCase):
 
     def test_signIn(self):
         # Erstellt ein Mock Dataset welches in die Datenbank eingefügt werden soll
-        mock_data = {'Name': 'test50', 'Passwort': 'test', 'Tetris': "0", 'Mastermind': "0", 'SpaceInvaders': "0",
+        mock_data = {'Name': 'test50', 'Passwort': 'test', 'Tetris': "0", 'SpaceInvaders': "0",
                      'Snake': "0", 'Flappy': "0"}
 
         # Erstellt eine Mock Instert Funktion, welche das Mock Dataset zurückgibt

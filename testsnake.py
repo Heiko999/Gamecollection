@@ -7,7 +7,7 @@ class TestGame(unittest.TestCase):
     def test_snake_moveright(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_d}))  # move right
+        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_RIGHT}))  # move right
         game.check_event()
         game.update()
         updated_position = game.snake.rect.center
@@ -18,7 +18,7 @@ class TestGame(unittest.TestCase):
     def test_snake_moverleft(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_a}))  # move right
+        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_LEFT}))  # move right
         game.check_event()
         game.update()
         updated_position = game.snake.rect.center
@@ -29,7 +29,7 @@ class TestGame(unittest.TestCase):
     def test_snake_moveup(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_w}))  # move right
+        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_UP}))  # move right
         game.check_event()
         game.update()
         updated_position = game.snake.rect.center
@@ -40,7 +40,7 @@ class TestGame(unittest.TestCase):
     def test_snake_movedown(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_s}))  # move right
+        pg.event.post(pg.event.Event(pg.KEYDOWN, {"key": pg.K_DOWN}))  # move right
         game.check_event()
         game.update()
         updated_position = game.snake.rect.center
