@@ -9,7 +9,7 @@ class TestPlayer(unittest.TestCase):
         self.assertFalse(self.game.game_over)
         self.game.player.rect.centerx = self.game.enemy_sprites.sprites()[0].rect.centerx
         self.game.player.rect.centery = self.game.enemy_sprites.sprites()[0].rect.centery
-        self.game.update()
+        self.game.collision_score_update()
         self.assertTrue(self.game.game_over)
  
 

@@ -134,15 +134,17 @@ class skyfallGame:
             self.all_sprites.update()
             #self.enemy_Mode.execute(self)
             
+            self.collision_score_update()
+            
 
-            # Check for collisions between the player and enemies
+    def collision_score_update(self):
+        # Check for collisions between the player and enemies
             if pygame.sprite.spritecollide(self.player, self.enemy_sprites, False):
                 self.game_over = True
                 font = pygame.font.SysFont("Arial", 48)
                 self.game_over_text = font.render("GAME OVER", True, WHITE)
                 if self.score > skyfallGame.highscore:
                     skyfallGame.highscore = self.score
-
 
     def draw(self):
         # Draw everything to the screen
