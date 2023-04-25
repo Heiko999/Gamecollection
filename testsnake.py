@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import Mock
 import pygame as pg
 from snake import SnakeGame
-from pyvirtualdisplay import Display
 
 
 class TestGame(unittest.TestCase):
