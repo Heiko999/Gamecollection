@@ -35,3 +35,5 @@ jobs:
       - run: |
           python -m unittest testdatabase
           python -m unittest testtetris
+          python -m unittest testsnake
+          python -m unittest testskyfallgame
