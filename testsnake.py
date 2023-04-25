@@ -4,6 +4,12 @@ from snake import SnakeGame
 
 
 class TestGame(unittest.TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        pg.display.init()
+        pg.display.set_mode((1, 1), pg.NOFRAME)
+    
     def test_snake_moveright(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
