@@ -122,7 +122,6 @@ class SnakeGame:
         pg.init()
         self.WINDOW_SIZE = 800
         self.TILE_SIZE = 50
-        self.screen = pg.display.set_mode([self.WINDOW_SIZE] * 2)
         self.clock = pg.time.Clock()
         self.new_game()
         self.score = 0
@@ -176,6 +175,7 @@ class SnakeGame:
             self.snake.control(event)
 
     def run(self):
+        self.screen = pg.display.set_mode([self.WINDOW_SIZE] * 2)
         while not self.Done:
             self.check_event()
             self.update()

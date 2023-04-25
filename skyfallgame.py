@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
 
 class EnemyMode(ABC):
     @abstractclassmethod
-    def execute(self, enemy):
+    def execute(self):
         pass
 
 # Define the fast enemy mode
@@ -82,8 +82,7 @@ class skyfallGame:
         # Initialize Pygame
         pygame.init()
         self.start_time = time.time()
-        # Set the screen size
-        self.screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
+        
 
         # Set the caption of the window
         pygame.display.set_caption("Space Invader")
@@ -178,6 +177,8 @@ class skyfallGame:
 
 
     def run(self):
+        # Set the screen size
+        self.screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
         # Game loop
         while not self.done:
             self.handle_events()
