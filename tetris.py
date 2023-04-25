@@ -63,7 +63,7 @@ class Tetris:
 
     def __init__(self, height, width):
         pygame.init()
-        self.screen = pygame.display.set_mode(self.size)
+        
         self.height = height
         self.width = width
         self.field = []
@@ -139,6 +139,7 @@ class Tetris:
             self.figure.rotation = old_rotation
 
     def run(self):
+        self.screen = pygame.display.set_mode(self.size)
         for i in range(self.height):
             new_line = []
             for j in range(self.width):
