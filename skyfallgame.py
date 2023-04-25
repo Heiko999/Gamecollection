@@ -37,10 +37,23 @@ class Player(pygame.sprite.Sprite):
         if self.rect.right > SCREEN_WIDTH:
             self.rect.right = SCREEN_WIDTH
 
+class Context:
+    def __init__(self, strategy):
+        self.strategy = strategy
+
+    def setStrategy(self, strategy):
+        self.strategy = strategy
+
+    def executeStrategy(self):
+        return self.strategy.execute()
+
 class EnemyMode(ABC):
     @abstractclassmethod
     def execute(self):
         pass
+
+    def execute(self, a, b):
+        return self.strategy(a, b)
 
 # Define the fast enemy mode
 class FastEnemyMode(EnemyMode):
@@ -86,10 +99,11 @@ class skyfallGame:
 
         # Set the caption of the window
         pygame.display.set_caption("Space Invader")
-
+        self.context = Context(SlowEnemyMode())
         # Create the player object
         self.player = Player()
-        self.enemy_Mode = SlowEnemyMode()
+        self.context.setStrategy(SlowEnemyMode())
+        #self.enemy_Mode = SlowEnemyMode()
         # Create a sprite group for the player and enemies
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
@@ -102,7 +116,8 @@ class skyfallGame:
             enemy = Enemy()
             self.enemy_sprites.add(enemy)
             self.all_sprites.add(enemy)
-            self.enemy_Mode.execute()
+            self.context.executeStrategy()
+            #self.enemy_Mode.execute()
             enemy.update()
         # Set the game loop
         self.done = False
@@ -125,9 +140,11 @@ class skyfallGame:
                 if self.game_over and event.key == pygame.K_RETURN:
                     self.restart_game()
                 if event.key == pygame.K_1:
-                    self.set_enemy_Mode(FastEnemyMode())
+                    self.context.setStrategy(FastEnemyMode())
+                    #self.set_enemy_Mode(FastEnemyMode())
                 if event.key == pygame.K_2:
-                    self.set_enemy_Mode(SlowEnemyMode())
+                    self.context.setStrategy(SlowEnemyMode())
+                    #self.set_enemy_Mode(SlowEnemyMode())
 
     def update(self):
         if not self.game_over:
@@ -211,7 +228,8 @@ class skyfallGame:
             enemy = Enemy()
             self.enemy_sprites.add(enemy)
             self.all_sprites.add(enemy)
-            self.enemy_Mode.execute()
+            self.context.executeStrategy()
+            #self.enemy_Mode.execute()
             enemy.update()
             
 
