@@ -40,11 +40,11 @@ class RegistrationUseCaseTests(unittest.TestCase):
         snake = 0
         flappy = 0
 
-        with self.assertRaises(ValueError):
-            use_case.register(name, password, tetris, spaceinvader, snake, flappy)
+        
+        self.assertFalse(use_case.register(name, password, tetris, spaceinvader, snake, flappy))
 
     def test_register_with_empty_password(self):
-        mock_user_repository = UserRepositoryImpl()
+        mock_user_repository = Mock(spec=UserRepositoryImpl)
         use_case = RegistrationUseCase(mock_user_repository)
 
         name = "Test User"
@@ -54,8 +54,8 @@ class RegistrationUseCaseTests(unittest.TestCase):
         snake = 0
         flappy = 0
 
-        with self.assertRaises(ValueError):
-            use_case.register(name, password, tetris, spaceinvader, snake, flappy)
+        
+        self.assertFalse(use_case.register(name, password, tetris, spaceinvader, snake, flappy))
 
 
 class LoginUseCaseTests(unittest.TestCase):
@@ -113,7 +113,19 @@ class DeleteUseCaseTests(unittest.TestCase):
         result = use_case.execute(name, password)
 
         self.assertTrue(result)
-        mock_user_repository.delete_by_name.assert_called_once_with
+
+    def test_execute_fail(self):
+        mock_user_repository = Mock(spec=UserRepositoryImpl)
+        use_case = DeleteUseCase(mock_user_repository)
+
+        name = "Test User"
+        password = "testpassword"
+
+        user = User(name, password, 0, 0, 0, 0)
+        mock_user_repository.find_by_name.return_value = user
+        result = use_case.execute(name, "wrongpassword")
+
+        self.assertFalse(result)
 
 if __name__ == '__main__':
     unittest.main()

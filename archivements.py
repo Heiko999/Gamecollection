@@ -20,19 +20,19 @@ class points_reached(archivement):
         self.points = points
 
     def congrats(self):
-        print("congrats you got %d points!" % self.points)
+        print("congrats you got %d points and broke your own Highscore!" % self.points)
 
 class highscore_reached(bigger_archivement):
     def __init__(self, points):
         self.points = points
 
     def congrats(self):
-        print("congrats you got %d points and broke the Highscore!" % self.points)
+        print("congrats you got %d points and broke the Games Highscore!" % self.points)
 
     def music_play(self):
         print("playing music")
         # Load the mp3 file
-        #pygame.init()
-        #sound = pygame.mixer.Sound("gamedump/highscoresound.mp3")
-        #sound.play()
-        #pygame.time.wait(int(sound.get_length() * 1000))
+        pygame.init()
+        sound = pygame.mixer.Sound("gamedump/highscoresound.mp3")
+        sound.play()
+        pygame.time.wait(int(sound.get_length() * 1000))

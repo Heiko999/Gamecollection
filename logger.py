@@ -1,3 +1,4 @@
+'''
 from tinydb import TinyDB, Query
 from archivements import points_reached, highscore_reached
 
@@ -173,3 +174,5 @@ class Log:
         result = converted_dict.items()
         data=list(result)
         return data
+
+        '''

@@ -28,8 +28,7 @@ class flappy:
         self.sealevel_image = 'gamedump/base.jfif'
         self.framepersecond_clock = pygame.time.Clock()
         self.done = False
-        # Sets the title on top of game window
-        pygame.display.set_caption('Flappy Bird Game')
+       
 
         # Load all the images which we will use in the game
 

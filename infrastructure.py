@@ -29,7 +29,12 @@ class UserRepositoryImpl(UserRepository):
         self.table = self.db.table('users')
 
     def save(self, user):
-        user_data = {'name': user.get_name(), 'password': user.get_password(), 'Tetris' : user.get_tetris(), 'SpaceInvaders' : user.get_spaceinvader() , 'Snake' : user.get_snake(), 'Flappy' : user.get_snake()}
+        user_data = {'name': user.get_name(), 
+                     'password': user.get_password(), 
+                     'Tetris' : user.get_tetris(), 
+                     'SpaceInvaders' : user.get_spaceinvader() , 
+                     'Snake' : user.get_snake(), 
+                     'Flappy' : user.get_snake()}
         self.table.insert(user_data)
 
     def find_by_name(self, name):
@@ -38,7 +43,12 @@ class UserRepositoryImpl(UserRepository):
         if result:
             user_data = result[0]
             print(user_data)
-            return User(user_data['name'], user_data['password'], user_data['Tetris'], user_data['SpaceInvaders'], user_data['Snake'], user_data['Flappy'])
+            return User(user_data['name'], 
+                        user_data['password'], 
+                        user_data['Tetris'], 
+                        user_data['SpaceInvaders'], 
+                        user_data['Snake'], 
+                        user_data['Flappy'])
         return None
     
     def check_password(self, name, password):
@@ -69,6 +79,7 @@ class UserRepositoryImpl(UserRepository):
         return users
     
     def get_highest_score(self, game_name):
+        #game_name = game_name.lower()
         users = self.find_all()
         highest_score = 0
         for user in users:

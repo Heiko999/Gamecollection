@@ -52,9 +52,6 @@ class EnemyMode(ABC):
     def execute(self):
         pass
 
-    def execute(self, a, b):
-        return self.strategy(a, b)
-
 # Define the fast enemy mode
 class FastEnemyMode(EnemyMode):
     def execute(self):
@@ -97,8 +94,7 @@ class skyfallGame:
         self.start_time = time.time()
         
 
-        # Set the caption of the window
-        pygame.display.set_caption("Space Invader")
+        
         self.context = Context(SlowEnemyMode())
         # Create the player object
         self.player = Player()

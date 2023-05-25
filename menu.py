@@ -71,7 +71,6 @@ class LoginMenu(Menu):
         self.signin_button = Button(self.game.DISPLAY_W / 2 - 250, 200, signin_img, 0.4)
         self.login_button = Button(self.game.DISPLAY_W / 2 -50, 200, login_img, 0.4)
         self.delete_button = Button(self.game.DISPLAY_W / 2 + 150, 200, delete_img, 0.4)
-        self.log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
     #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
     #welcher auf Eingaben wartet
     def display_menu(self):
@@ -124,10 +123,6 @@ class LoginMenu(Menu):
             user_repo = UserRepositoryImpl()
             registration_use_case = RegistrationUseCase(user_repo)
             registration_use_case.register(self.input_box1.text, self.input_box2.text, 0, 0, 0, 0)
-            high_score_use_case = HighScoreUseCase(user_repo)
-
-            # Update the high score for Tetris game
-            high_score_use_case.update_high_score(self.input_box1.text, 'Tetris', 100)
             self.reset_boxes()
 
     
