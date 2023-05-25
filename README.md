@@ -25,5 +25,5 @@ Nach dem man das Repo heruntergeladen hat, kann man es mit einem beliebigen Text
 Es müssen die beiden Libraries Pygame und TinyDB installiert werden. Die geschieht mit folgenden Kommands
 
 $ pip install pygame und 
-$ pip install tinydb
+$ pip install tinydb.
 Anschließend kann die main.py ausgeführt werden und die Spielesammlung genutzt werden.
