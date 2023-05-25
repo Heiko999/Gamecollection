@@ -23,7 +23,7 @@ Im Highscore Menu kann man sich schließlich entweder die Highscores aller Spiel
 # Installation:
 Nach dem man das Repo heruntergeladen hat, kann man es mit einem beliebigen Texteditor oder IDE welche Python unterstützt öffnen.
 Es müssen die beiden Libraries Pygame und TinyDB installiert werden. Die geschieht mit folgenden Kommands
-$ pip install pygame
 
+$ pip install pygame
 $ pip install tinydb
 Anschließend kann die main.py ausgeführt werden und die Spielesammlung genutzt werden.
