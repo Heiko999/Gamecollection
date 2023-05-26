@@ -2,7 +2,6 @@ import pygame
 #from main import *
 from input import InputBox
 from button import Button
-from logger import *
 from usecase import *
 
 
@@ -418,10 +417,8 @@ class PlayerhighscoreMenu(Menu):
     def draw_display(self):
         self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Player ' + self.game.highscoreplayer + ':', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-        self.draw_text(str(self.gamerscore[0]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
-        self.draw_text(str(self.gamerscore[1]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
-        self.draw_text(str(self.gamerscore[2]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
-        self.draw_text(str(self.gamerscore[3]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
+        for i in range(4):
+            self.draw_text(str(self.gamerscore[i]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
 
@@ -528,16 +525,9 @@ class SpaceMenu(Menu):
         #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer
         # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und
         # #immer 5 Scores auf einmal angeschaut werden
-        if 1+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
-        if 2+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[1 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
-        if 3+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[2 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
-        if 4+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[3 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
-        if 5+ self.n <= self.leng:
-            self.draw_text(str(self.spacescore[4 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 100)
+        for i in range(5):
+            if i + 1 + self.n <= self.leng:
+                self.draw_text(str(self.spacescore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
 
@@ -582,16 +572,9 @@ class TetrisMenu(Menu):
         #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer
         # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und
         #immer 5 Scores auf einmal angeschaut werden
-        if 1+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
-        if 2+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[1 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
-        if 3+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[2 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
-        if 4+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[3 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
-        if 5+ self.n <= self.leng:
-            self.draw_text(str(self.tetscore[4 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 100)
+        for i in range(5):
+            if i + 1 + self.n <= self.leng:
+                self.draw_text(str(self.tetscore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
 
@@ -635,16 +618,9 @@ class SnakeMenu(Menu):
         #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer
         # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und
         # #immer 5 Scores auf einmal angeschaut werden
-        if 1+ self.n <= self.leng:
-            self.draw_text(str(self.snakescore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
-        if 2+ self.n <= self.leng:
-            self.draw_text(str(self.snakescore[1 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
-        if 3+ self.n <= self.leng:
-            self.draw_text(str(self.snakescore[2 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
-        if 4+ self.n <= self.leng:
-            self.draw_text(str(self.snakescore[3 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
-        if 5+ self.n <= self.leng:
-            self.draw_text(str(self.snakescore[4 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 100)
+        for i in range(5):
+            if i + 1 + self.n <= self.leng:
+                self.draw_text(str(self.snakescore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
             
@@ -688,16 +664,9 @@ class FlappyMenu(Menu):
         #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer
         # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und
         # #immer 5 Scores auf einmal angeschaut werden
-        if 1+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[0 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20)
-        if 2+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[1 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 40)
-        if 3+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[2 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 60)
-        if 4+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[3 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 80)
-        if 5+ self.n <= self.leng:
-            self.draw_text(str(self.flapscore[4 + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 100)
+        for i in range(5):
+            if i + 1 + self.n <= self.leng:
+                self.draw_text(str(self.flapscore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
 
