@@ -173,11 +173,7 @@ class Tetris:
                         self.go_space()
                     if event.key == pygame.K_ESCAPE:
                         self.done = True
-                        #self.__init__(20, 10)
 
-            #if event.type == pygame.KEYUP:
-                    #if event.key == pygame.K_DOWN:
-                        #pressing_down = False
             if not self.done:
                 self.screen.fill(self.WHITE)
                 

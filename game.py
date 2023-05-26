@@ -12,15 +12,12 @@ from usecase import *
 
 class Game():
     def __init__(self):
-        #pygame.init()
         self.player = ''
         self.highscoreplayer = ''
         self.running, self.playing = True, False
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
         self.DISPLAY_W, self.DISPLAY_H = 600, 400
-        #self.font_name = '8-BIT WONDER.TTF'
         self.backgroundcolor, self.textcolor = (0, 0, 0), (255, 255, 255)
-        #self.login = LoginMenu(self)
         self.main_menu = ''
         self.options = ''
         self.credits = ''
@@ -135,11 +132,5 @@ class Game():
         self.login = LoginMenu(self)
         self.curr_menu = self.login
 
-
-#Ist glaube ich ein überbleibsel und wird nicht benötigt aber not sure
-class gamescore:
-    def __init__(self, game, score ):
-        self.game = game
-        self.score = score
 
 

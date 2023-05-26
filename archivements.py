@@ -31,7 +31,6 @@ class highscore_reached(bigger_archivement):
 
     def music_play(self):
         print("playing music")
-        # Load the mp3 file
         pygame.init()
         sound = pygame.mixer.Sound("gamedump/highscoresound.mp3")
         sound.play()

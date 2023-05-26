@@ -24,7 +24,6 @@ class DatabaseConnection:
 # User-Repository-Implementierung in der Infrastrukturschicht
 class UserRepositoryImpl(UserRepository):
     def __init__(self):
-        #self.db = TinyDB('users.json')
         self.db = DatabaseConnection.get_instance().db
         self.table = self.db.table('users')
 

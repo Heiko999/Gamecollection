@@ -86,8 +86,6 @@ class LoginMenu(Menu):
                     if event.type == pygame.QUIT:
                         self.done = True
                     for box in self.input_boxes:
-                        #if event.type == pygame.K_RETURN:
-                            #print(box.text + "test")
                         box.handle_event(event)
                 for box in self.input_boxes:
                     box.update()
@@ -108,15 +106,9 @@ class LoginMenu(Menu):
         self.input_box2.text = ''
         self.input_box1.txt_surface = FONT.render(self.input_box1.text, True, self.input_box1.color)
         self.input_box2.txt_surface = FONT.render(self.input_box2.text, True, self.input_box2.color)
-
+    
     #Legt bei Klick auf SignIn Button nach eingabe eines Usernamen und Passworts einen neuen Benutzer
     #in der Datenbank 
-    def check_signin(self):
-        self.signin_button.draw(self.screen)
-        if self.signin_button.click():
-            self.log.signIn(self.input_box1.text,self.input_box2.text)
-            self.reset_boxes()
-
     def new_check_signin(self):
         self.signin_button.draw(self.screen)
         if self.signin_button.click():
@@ -126,19 +118,8 @@ class LoginMenu(Menu):
             self.reset_boxes()
 
     
-    
     #Checkt nach auswahl des LoginButton, Ob Username und Passwort mit eintrag in Datenbank übereinstimmen
     #Stimmt es wird das Menu auf das Main Menu geändert 
-    def check_login(self):
-        self.login_button.draw(self.screen)
-        if self.login_button.click():
-            if self.log.login(self.input_box1.text, self.input_box2.text) == True:
-                self.game.player = self.input_box1.text
-                self.done = True
-                self.run_display = False
-                self.game.main_menu_set()
-            self.reset_boxes()
-
     def new_check_login(self):
         self.login_button.draw(self.screen)
         if self.login_button.click():
@@ -150,15 +131,7 @@ class LoginMenu(Menu):
                 self.run_display = False
                 self.game.main_menu_set()
             self.reset_boxes()
-
-    #Checkt nach Klick auf den Deletebutton ob User und Passwort mit eintrag in Datenbank übereinstimmen.
-    #Tun sie das, wird der Spieler gelöscht 
-    def check_delete(self):
-        self.delete_button.draw(self.screen)
-        if self.delete_button.click():
-            self.log.delete(self.input_box1.text,self.input_box2.text)
-            self.reset_boxes()
-
+    
     def new_check_delete(self):
         self.delete_button.draw(self.screen)
         if self.delete_button.click():
@@ -238,16 +211,12 @@ class MainMenu(Menu):
         if self.game.START_KEY:
             if self.state == 'Start':
                 self.game.game_collection_set()
-                #self.game.curr_menu = self.game.game_collection
             elif self.state == 'Highscores':
                 self.game.highscores_set()
-                #self.game.curr_menu = self.game.highscores
             elif self.state == 'Options':
                 self.game.options_set()
-                #self.game.curr_menu = self.game.options
             elif self.state == 'Credits':
                 self.game.credits_set()
-                #self.game.curr_menu = self.game.credits
             self.run_display = False
 
 class GameMenu(Menu):
@@ -285,7 +254,6 @@ class GameMenu(Menu):
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.main_menu_set()
-            #self.game.curr_menu = self.game.main_menu
             self.run_display = False
         elif self.game.DOWN_KEY:
             if self.state == 'SpaceInvaders':
@@ -358,7 +326,6 @@ class HighscoreMenu(Menu):
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.main_menu_set()
-            #self.game.curr_menu = self.game.main_menu
             self.run_display = False
         elif self.game.UP_KEY or self.game.DOWN_KEY:
             if self.state == 'Playerscore':
@@ -370,11 +337,9 @@ class HighscoreMenu(Menu):
         elif self.game.START_KEY:
             if self.state == 'Gamescore':
                 self.game.gamescores_set()
-                #self.game.curr_menu = self.game.gamescores
                 self.run_display = False
             elif self.state == 'Playerscore':
                 self.game.playerscores_set()
-                #self.game.curr_menu = self.game.playerscores
                 self.run_display = False
                 
 
@@ -390,13 +355,11 @@ class PlayerscoreMenu(Menu):
         while self.run_display:
             clock = pygame.time.Clock()
             self.display.fill(self.game.backgroundcolor)
-            #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
             user_repository = UserRepositoryImpl()
             Playercheck = FindPlayerUseCase(user_repository)
             #Erzeugt TextBoxen und Buttons für das LoginMenu
             input_box1 = InputBox(self.game.DISPLAY_W / 2 - 100,  50, 140, 32)  
             input_button = Button(self.game.DISPLAY_W / 2 -50, 200, search_img, 0.4)
-            #buttons =[start_button, exit_button]
             self.done = False
 
             while not self.done:
@@ -422,7 +385,6 @@ class PlayerscoreMenu(Menu):
                         self.done = True
                         self.run_display = False
                         self.game.playerhighscores_set()
-                        #self.game.curr_menu = self.game.playerhighscore
                     input_box1.text = ''
                     input_box1.txt_surface = FONT.render(input_box1.text, True, input_box1.color)
                 pygame.display.flip()
@@ -433,7 +395,6 @@ class PlayerscoreMenu(Menu):
         if self.game.BACK_KEY:
             print("jo geht")
             self.game.highscores_set()
-            #self.game.curr_menu = self.game.highscores
             self.done = True
             self.run_display = False
 
@@ -445,7 +406,6 @@ class PlayerhighscoreMenu(Menu):
     #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
     #welcher auf Eingaben wartet
     def display_menu(self):
-        #self.log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
         user_repository = UserRepositoryImpl()
         playerhigh_score_use_case = PlayerHighscoreUseCase(user_repository)
         self.gamerscore = playerhigh_score_use_case.execute(self.game.highscoreplayer)
@@ -469,7 +429,6 @@ class PlayerhighscoreMenu(Menu):
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.highscores_set()
-            #self.game.curr_menu = self.game.highscores
             self.run_display = False
 
 class GamescoreMenu(Menu):
@@ -506,7 +465,6 @@ class GamescoreMenu(Menu):
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.main_menu_set()
-            #self.game.curr_menu = self.game.main_menu
             self.run_display = False
         elif self.game.DOWN_KEY:
             if self.state == 'SpaceInvaders':
@@ -537,27 +495,21 @@ class GamescoreMenu(Menu):
         elif self.game.START_KEY:
             if self.state == 'SpaceInvaders':
                 self.game.spacescoremenu_set()
-                #self.game.curr_menu = self.game.spacescoremenu
             elif self.state == 'Tetris':
                 self.game.tetrisscoremenu_set()
-                #self.game.curr_menu = self.game.tetrisscoremenu
             elif self.state == 'Snake':
                 self.game.snakescoremenu_set()
-                #self.game.curr_menu = self.game.snakescoremenu
             elif self.state == 'Flappy':
                 self.game.flappyscoremenu_set()
-                #self.game.curr_menu = self.game.flappyscoremenu
         self.run_display = False
 
 class SpaceMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.n = 0
-        #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
         user_repository = UserRepositoryImpl()
         gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
         self.spacescore = gamehigh_score_use_case.execute('spaceinvader')
-        #self.spacescore = log.gamesscores('spaceinvader')
         self.leng = len(self.spacescore)
         print("leng ist : " + str(self.leng))
         
@@ -609,8 +561,6 @@ class TetrisMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.n = 0
-        #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        #self.tetscore = log.gamesscores('tetris')
         user_repository = UserRepositoryImpl()
         gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
         self.tetscore = gamehigh_score_use_case.execute('tetris')
@@ -663,9 +613,6 @@ class SnakeMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
         self.n = 0
-        #log = Log(DatabaseConnection1().getDB(), DatabaseConnection2().getDB())
-        #print("snakescore=")
-        #self.snakescore = log.gamesscores('snake')
         user_repository = UserRepositoryImpl()
         gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
         self.snakescore = gamehigh_score_use_case.execute('snake')

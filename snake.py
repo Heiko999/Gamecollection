@@ -1,5 +1,4 @@
 import pygame as pg
-#import sys
 from random import randrange, randint
 
 
@@ -169,9 +168,6 @@ class SnakeGame:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.Done = True
-                #pg.quit()
-                #sys.exit()
-            # snake control
             self.snake.control(event)
 
     def run(self):
@@ -180,7 +176,6 @@ class SnakeGame:
             self.check_event()
             self.update()
             self.draw()
-        #pg.quit()
 
     def getscore(self):
         return self.score

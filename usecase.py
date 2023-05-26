@@ -9,7 +9,6 @@ class RegistrationUseCase:
     def register(self, name, password, tetris, spaceinvader, snake, flappy):
         if name == "" or password == "":
             return False
-            #raise ValueError("name and password are required")
 
         # Aufruf der Domänenlogikschicht, um das Benutzerobjekt zu erstellen
         user = User(name, password, tetris, spaceinvader, snake, flappy)

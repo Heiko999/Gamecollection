@@ -3,16 +3,13 @@ import pygame
 import random
 import time
 
-# Define some colors
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-
-# Set the width and height of the screen
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
 
-# Define the player class
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -65,7 +62,6 @@ class SlowEnemyMode(EnemyMode):
         print("Slow")
 
 
-# Define the enemy class
 class Enemy(pygame.sprite.Sprite):
     speedscale = 1
     def __init__(self):
@@ -89,17 +85,11 @@ class Enemy(pygame.sprite.Sprite):
 class skyfallGame:
     highscore = 0
     def __init__(self):
-        # Initialize Pygame
         pygame.init()
         self.start_time = time.time()
-        
-
-        
         self.context = Context(SlowEnemyMode())
-        # Create the player object
         self.player = Player()
         self.context.setStrategy(SlowEnemyMode())
-        #self.enemy_Mode = SlowEnemyMode()
         # Create a sprite group for the player and enemies
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
@@ -113,12 +103,9 @@ class skyfallGame:
             self.enemy_sprites.add(enemy)
             self.all_sprites.add(enemy)
             self.context.executeStrategy()
-            #self.enemy_Mode.execute()
             enemy.update()
-        # Set the game loop
         self.done = False
         self.clock = pygame.time.Clock()
-        # Set the score
         self.score = 0
 
         # Set the game over screen
@@ -137,21 +124,16 @@ class skyfallGame:
                     self.restart_game()
                 if event.key == pygame.K_1:
                     self.context.setStrategy(FastEnemyMode())
-                    #self.set_enemy_Mode(FastEnemyMode())
                 if event.key == pygame.K_2:
                     self.context.setStrategy(SlowEnemyMode())
-                    #self.set_enemy_Mode(SlowEnemyMode())
 
     def update(self):
         if not self.game_over:
             self.all_sprites.update()
-            #self.enemy_Mode.execute(self)
-            
             self.collision_score_update()
             
 
     def collision_score_update(self):
-        # Check for collisions between the player and enemies
             if pygame.sprite.spritecollide(self.player, self.enemy_sprites, False):
                 self.game_over = True
                 font = pygame.font.SysFont("Arial", 48)
@@ -182,7 +164,6 @@ class skyfallGame:
             self.screen.blit(restart_text, (SCREEN_WIDTH // 2 - restart_text.get_width() // 2, SCREEN_HEIGHT // 2 + self.game_over_text.get_height() // 2 + 0))
             self.screen.blit(restart_text2, (SCREEN_WIDTH // 2 - restart_text.get_width() // 2, SCREEN_HEIGHT // 2 + self.game_over_text.get_height() // 2 + 50))
             self.screen.blit(restart_text3, (SCREEN_WIDTH // 2 - restart_text.get_width() // 2, SCREEN_HEIGHT // 2 + self.game_over_text.get_height() // 2 + 100))
-        # Update the screen
         pygame.display.flip()
 
     def scorepoints(self):
@@ -192,7 +173,6 @@ class skyfallGame:
 
 
     def run(self):
-        # Set the screen size
         self.screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
         # Game loop
         while not self.done:
@@ -200,22 +180,14 @@ class skyfallGame:
             self.update()
             self.scorepoints()
             self.draw()
-            #self.score()
-            
             # Set the FPS of the game
             self.clock.tick(60)
-
-        # Quit Pygame
-        #pygame.quit()
     
     def restart_game(self):
-        # Reset the game variables
         self.score = 0
         self.start_time = time.time()
         self.game_over = False
         self.game_over_text = None
-
-        # Remove all enemies from the sprite groups
         for enemy in self.enemy_sprites:
             enemy.kill()
 
@@ -225,14 +197,8 @@ class skyfallGame:
             self.enemy_sprites.add(enemy)
             self.all_sprites.add(enemy)
             self.context.executeStrategy()
-            #self.enemy_Mode.execute()
             enemy.update()
-            
-
-        # Reset the player position and bullets
+        # Reset the player position
         self.player.rect.centerx = SCREEN_WIDTH // 2
-       
-
-        # Run the game loop again
         self.run()
 
