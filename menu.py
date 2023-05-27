@@ -418,7 +418,8 @@ class PlayerhighscoreMenu(Menu):
         self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Player ' + self.game.highscoreplayer + ':', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
         for i in range(4):
-            self.draw_text(str(self.gamerscore[i]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
+            gamescore_formatted = str(self.gamerscore[i]).replace("(", "").replace("'", "").replace(",", " -").replace(")", "")
+            self.draw_text(gamescore_formatted, 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
 
@@ -527,7 +528,8 @@ class SpaceMenu(Menu):
         # #immer 5 Scores auf einmal angeschaut werden
         for i in range(5):
             if i + 1 + self.n <= self.leng:
-                self.draw_text(str(self.spacescore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
+                spacescore_formatted = str(self.spacescore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", "")
+                self.draw_text(spacescore_formatted, 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
 
@@ -574,7 +576,8 @@ class TetrisMenu(Menu):
         #immer 5 Scores auf einmal angeschaut werden
         for i in range(5):
             if i + 1 + self.n <= self.leng:
-                self.draw_text(str(self.tetscore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
+                tetscore_formatted = str(self.tetscore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", "")
+                self.draw_text(tetscore_formatted, 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
 
@@ -620,7 +623,8 @@ class SnakeMenu(Menu):
         # #immer 5 Scores auf einmal angeschaut werden
         for i in range(5):
             if i + 1 + self.n <= self.leng:
-                self.draw_text(str(self.snakescore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
+                snakescore_formatted = str(self.snakescore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", "")
+                self.draw_text(snakescore_formatted, 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
             
@@ -666,7 +670,8 @@ class FlappyMenu(Menu):
         # #immer 5 Scores auf einmal angeschaut werden
         for i in range(5):
             if i + 1 + self.n <= self.leng:
-                self.draw_text(str(self.flapscore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", ""), 15, self.mid_w, self.mid_h + 20 + (i * 20))
+                flapscore_formatted = str(self.flapscore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", "")
+                self.draw_text(flapscore_formatted, 15, self.mid_w, self.mid_h + 20 + (i * 20))
         self.blit_screen()
 
 
