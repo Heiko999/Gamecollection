@@ -1,6 +1,5 @@
 import pygame
 
-
 class SpaceGame:
     screen = None
     aliens = []
@@ -15,15 +14,13 @@ class SpaceGame:
         self.height = height
         self.screen = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
-        self.aliens = []                 #Klassenvariablen werden zurückgesetzt, damit spiel neu gestartet werden kann
+        self.aliens = []                 #resets class variables (enables restarting the game correctly)
         self.rockets = []
         self.lost = False
         self.test = 2
         done = False
 
         hero = Hero(self, width / 2, height - 20)
-        generator = Generator(self)
-        rocket = None
 
         while not done:
             if len(self.aliens) == 0:
@@ -78,17 +75,12 @@ class Alien:
         self.size = 30
 
     def draw(self):
-        pygame.draw.rect(self.game.screen,
-                         (81, 43, 88),
-                         pygame.Rect(self.x, self.y, self.size, self.size))
+        pygame.draw.rect(self.game.screen, (81, 43, 88), pygame.Rect(self.x, self.y, self.size, self.size))
         self.y += 0.2
 
     def checkCollision(self, game):
         for rocket in game.rockets:
-            if (rocket.x < self.x + self.size and
-                    rocket.x > self.x - self.size and
-                    rocket.y < self.y + self.size and
-                    rocket.y > self.y - self.size):
+            if (rocket.x < self.x + self.size and rocket.x > self.x - self.size and rocket.y < self.y + self.size and rocket.y > self.y - self.size):
                 game.rockets.remove(rocket)
                 game.aliens.remove(self)
 
@@ -100,9 +92,7 @@ class Hero:
         self.y = y
 
     def draw(self):
-        pygame.draw.rect(self.game.screen,
-                         (210, 250, 251),
-                         pygame.Rect(self.x, self.y, 8, 5))
+        pygame.draw.rect(self.game.screen, (210, 250, 251), pygame.Rect(self.x, self.y, 8, 5))
 
 
 class Generator:
@@ -113,9 +103,6 @@ class Generator:
             for y in range(margin, int(game.height / 2), width):
                 game.aliens.append(Alien(game, x, y))
 
-        # game.aliens.append(Alien(game, 280, 50))
-
-
 class Rocket:
     def __init__(self, game, x, y):
         self.x = x
@@ -123,8 +110,6 @@ class Rocket:
         self.game = game
 
     def draw(self):
-        pygame.draw.rect(self.game.screen,
-                         (254, 52, 110),
-                         pygame.Rect(self.x, self.y, 2, 4))
+        pygame.draw.rect(self.game.screen, (254, 52, 110), pygame.Rect(self.x, self.y, 2, 4))
         self.y -= 2
 

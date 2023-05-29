@@ -1,4 +1,4 @@
-# User-Objekt
+#User-Object
 from abc import ABC, abstractmethod
 class User:
     def __init__(self, name, password, tetris, spaceinvader, snake, flappy):
@@ -39,7 +39,7 @@ class User:
     def set_flappy(self,score):
         self.flappy = score
 
-# User-Repository-Interface
+#User-Repository-Interface
 class UserRepository(ABC):
     @abstractmethod
     def save(self, user):

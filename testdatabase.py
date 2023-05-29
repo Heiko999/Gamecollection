@@ -40,7 +40,6 @@ class RegistrationUseCaseTests(unittest.TestCase):
         snake = 0
         flappy = 0
 
-        
         self.assertFalse(use_case.register(name, password, tetris, spaceinvader, snake, flappy))
 
     def test_register_with_empty_password(self):
@@ -54,9 +53,7 @@ class RegistrationUseCaseTests(unittest.TestCase):
         snake = 0
         flappy = 0
 
-        
         self.assertFalse(use_case.register(name, password, tetris, spaceinvader, snake, flappy))
-
 
 class LoginUseCaseTests(unittest.TestCase):
 
@@ -97,7 +94,6 @@ class LoginUseCaseTests(unittest.TestCase):
         result = use_case.execute(name, password)
 
         self.assertFalse(result)
-
 
 class DeleteUseCaseTests(unittest.TestCase):
 

@@ -13,7 +13,7 @@ class DatabaseConnection:
 
     def __init__(self):
         if DatabaseConnection.__instance is not None:
-            raise Exception("DatabaseConnection ist ein Singleton!")
+            raise Exception("DatabaseConnection is a Singleton!")
         else:
             DatabaseConnection.__instance = self
             self.db = TinyDB('users.json')
@@ -21,7 +21,7 @@ class DatabaseConnection:
     def close(self):
         self.db.close()
 
-# User-Repository-Implementierung in der Infrastrukturschicht
+#User-Repository-Implementation in the Infrastructure Layer
 class UserRepositoryImpl(UserRepository):
     def __init__(self):
         self.db = DatabaseConnection.get_instance().db
@@ -31,7 +31,7 @@ class UserRepositoryImpl(UserRepository):
         user_data = {'name': user.get_name(), 
                      'password': user.get_password(), 
                      'Tetris' : user.get_tetris(), 
-                     'SpaceInvaders' : user.get_spaceinvader() , 
+                     'SpaceInvaders' : user.get_spaceinvader(),
                      'Snake' : user.get_snake(), 
                      'Flappy' : user.get_snake()}
         self.table.insert(user_data)
@@ -41,7 +41,6 @@ class UserRepositoryImpl(UserRepository):
         result = self.table.search(UserQuery.name == name)
         if result:
             user_data = result[0]
-            print(user_data)
             return User(user_data['name'], 
                         user_data['password'], 
                         user_data['Tetris'], 
@@ -78,7 +77,6 @@ class UserRepositoryImpl(UserRepository):
         return users
     
     def get_highest_score(self, game_name):
-        #game_name = game_name.lower()
         users = self.find_all()
         highest_score = 0
         for user in users:

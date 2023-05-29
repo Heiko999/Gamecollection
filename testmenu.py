@@ -2,6 +2,7 @@ import unittest
 from menu import MainMenu
 from game import Game
 import os
+
 #This is needed for integration with Gitlab Actions TestingPipeline
 os.environ['SDL_VIDEODRIVER'] = 'dummy'
 

@@ -1,6 +1,7 @@
 import unittest
 from skyfallgame import *
 
+#Testing the Game SkyFall
 class TestPlayer(unittest.TestCase):
     def setUp(self):
         self.game = skyfallGame()

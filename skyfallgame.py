@@ -28,7 +28,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += self.speed
         
 
-        # Keep the player within the screen bounds
+        #Keep the player within the screen bounds
         if self.rect.x < 0:
             self.rect.x = 0
         if self.rect.right > SCREEN_WIDTH:
@@ -49,17 +49,15 @@ class EnemyMode(ABC):
     def execute(self):
         pass
 
-# Define the fast enemy mode
+#Defining the fast enemy mode
 class FastEnemyMode(EnemyMode):
     def execute(self):
         Enemy.speedscale = 6
-        print("Fast")
 
-# Define the slow enemy mode
+#Defining the slow enemy mode
 class SlowEnemyMode(EnemyMode):
     def execute(self):
         Enemy.speedscale = 1
-        print("Slow")
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -81,7 +79,7 @@ class Enemy(pygame.sprite.Sprite):
             self.speed = random.randint(1, 3) + Enemy.speedscale
 
 
-# Define the game class
+#Defining the game class
 class skyfallGame:
     highscore = 0
     def __init__(self):
@@ -90,14 +88,12 @@ class skyfallGame:
         self.context = Context(SlowEnemyMode())
         self.player = Player()
         self.context.setStrategy(SlowEnemyMode())
-        # Create a sprite group for the player and enemies
+        #Creates a sprite group for the player and enemies
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
-
-        # Create a sprite group for the enemies
+        #Creates a sprite group for the enemies
         self.enemy_sprites = pygame.sprite.Group()
-
-        # Create some enemies and add them to the enemy sprite group
+        #Creates some enemies and add them to the enemy sprite group
         for i in range(10):
             enemy = Enemy()
             self.enemy_sprites.add(enemy)
@@ -108,7 +104,7 @@ class skyfallGame:
         self.clock = pygame.time.Clock()
         self.score = 0
 
-        # Set the game over screen
+        #Set the game over screen
         self.game_over = False
         self.game_over_text = None
 
@@ -126,6 +122,8 @@ class skyfallGame:
                     self.context.setStrategy(FastEnemyMode())
                 if event.key == pygame.K_2:
                     self.context.setStrategy(SlowEnemyMode())
+                if event.key == pygame.K_ESCAPE or event.key == pygame.K_BACKSPACE:
+                    self.done = True
 
     def update(self):
         if not self.game_over:
@@ -142,21 +140,20 @@ class skyfallGame:
                     skyfallGame.highscore = self.score
 
     def draw(self):
-        # Draw everything to the screen
+        #Draw everything to the screen
         self.screen.fill(BLACK)
         
         if not self.game_over:
             font = pygame.font.SysFont("Arial", 24)
             screenscore = round(self.score)
-            print(screenscore)
             score_text = font.render("Score: " + str(screenscore), True, WHITE)
-            self.screen.blit(score_text, (10, 10))
             self.all_sprites.draw(self.screen)
+            self.screen.blit(score_text, (10, 10))
         else:
-            # Draw the game over text
+            #Draw the game over text
             self.screen.blit(self.game_over_text, (SCREEN_WIDTH // 2 - self.game_over_text.get_width() // 2, SCREEN_HEIGHT // 2 - self.game_over_text.get_height() // 2))
 
-            # Draw the restart text
+            #Draw the restart text
             font = pygame.font.SysFont("Arial", 24)
             restart_text = font.render("Press Enter to Restart", True, WHITE)
             restart_text2 = font.render("GameModeChange:", True, WHITE)
@@ -174,13 +171,13 @@ class skyfallGame:
 
     def run(self):
         self.screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
-        # Game loop
+        #Game loop
         while not self.done:
             self.handle_events()
             self.update()
             self.scorepoints()
             self.draw()
-            # Set the FPS of the game
+            #Set the FPS of the game
             self.clock.tick(60)
     
     def restart_game(self):
@@ -191,14 +188,14 @@ class skyfallGame:
         for enemy in self.enemy_sprites:
             enemy.kill()
 
-        # Create some new enemies and add them to the sprite groups
+        #Creates some new enemies and add them to the sprite groups
         for i in range(10):
             enemy = Enemy()
             self.enemy_sprites.add(enemy)
             self.all_sprites.add(enemy)
             self.context.executeStrategy()
             enemy.update()
-        # Reset the player position
+        #Resets the player position
         self.player.rect.centerx = SCREEN_WIDTH // 2
         self.run()
 

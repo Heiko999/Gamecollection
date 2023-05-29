@@ -1,21 +1,15 @@
-import pygame
-#from main import *
 from input import InputBox
 from button import Button
 from usecase import *
 
-
-
-
-signin_img = pygame.image.load('signin_btn.png').convert_alpha()
-login_img = pygame.image.load('login_btn.png').convert_alpha()
-delete_img = pygame.image.load('delete_btn.png').convert_alpha()
-search_img = pygame.image.load('search_btn.png').convert_alpha()
+signin_img = pygame.image.load('files/signin_btn.png').convert_alpha()
+login_img = pygame.image.load('files/login_btn.png').convert_alpha()
+delete_img = pygame.image.load('files/delete_btn.png').convert_alpha()
+search_img = pygame.image.load('files/search_btn.png').convert_alpha()
 FONT = pygame.font.Font(None, 32)
 
-#Hauptklasse von welcher die anderen Klassen erben.
+#Main class; other classes inherit from this class
 class Menu():
-    #currentPlayer=''
     def __init__(self, game):
         pygame.init()
         self.game = game
@@ -27,16 +21,16 @@ class Menu():
         self.window = pygame.display.set_mode(((self.game.DISPLAY_W,self.game.DISPLAY_H)))
         self.font_name = pygame.font.get_default_font()
 
-    #Wird verwendet um den * Cursor an den ensprechenden Menupunkt zu setzen
+    #sets the "*" cursor to the currently chosen option
     def draw_cursor(self):
         self.draw_text('*', 15, self.cursor_rect.x, self.cursor_rect.y)
-    #Wird verwendet, um nach Ende einer Aktion in einem Menu das Bild zu aktualisieren
+    #refreshes the UI after an action
     def blit_screen(self):
         self.window.blit(self.display, (0, 0))
         pygame.display.update()
         self.game.reset_keys()
 
-    #Funktion um die gedrückten Tasten zu erfassen und in einem Boolean zu speichern
+    #saves the pressed keys
     def check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -70,8 +64,7 @@ class LoginMenu(Menu):
         self.signin_button = Button(self.game.DISPLAY_W / 2 - 250, 200, signin_img, 0.4)
         self.login_button = Button(self.game.DISPLAY_W / 2 -50, 200, login_img, 0.4)
         self.delete_button = Button(self.game.DISPLAY_W / 2 + 150, 200, delete_img, 0.4)
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -82,8 +75,8 @@ class LoginMenu(Menu):
             self.done = False
             while not self.done:
                 for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.done = True
+                    if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
+                        exit()
                     for box in self.input_boxes:
                         box.handle_event(event)
                 for box in self.input_boxes:
@@ -106,8 +99,7 @@ class LoginMenu(Menu):
         self.input_box1.txt_surface = FONT.render(self.input_box1.text, True, self.input_box1.color)
         self.input_box2.txt_surface = FONT.render(self.input_box2.text, True, self.input_box2.color)
     
-    #Legt bei Klick auf SignIn Button nach eingabe eines Usernamen und Passworts einen neuen Benutzer
-    #in der Datenbank 
+    #creates a new user and saves the username & password to the database after the button has been pressed
     def new_check_signin(self):
         self.signin_button.draw(self.screen)
         if self.signin_button.click():
@@ -117,8 +109,7 @@ class LoginMenu(Menu):
             self.reset_boxes()
 
     
-    #Checkt nach auswahl des LoginButton, Ob Username und Passwort mit eintrag in Datenbank übereinstimmen
-    #Stimmt es wird das Menu auf das Main Menu geändert 
+    #checks if a uuser with the same username & password exists
     def new_check_login(self):
         self.login_button.draw(self.screen)
         if self.login_button.click():
@@ -151,8 +142,7 @@ class MainMenu(Menu):
         self.creditsx, self.creditsy = self.mid_w, self.mid_h + 90
         self.cursor_rect.midtop = (self.startx + self.offset, self.starty)
     
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -201,10 +191,9 @@ class MainMenu(Menu):
                 self.cursor_rect.midtop = (self.optionsx + self.offset, self.optionsy)
                 self.state = 'Options'
         if self.game.BACK_KEY:
-            self.game.curr_menu = self.game.login
-            self.run_display = False
+            exit()
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         self.move_cursor()
         if self.game.START_KEY:
@@ -228,8 +217,7 @@ class GameMenu(Menu):
         self.flapx, self.flapy = self.mid_w, self.mid_h + 80
         self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
 
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -249,7 +237,7 @@ class GameMenu(Menu):
 
 
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.main_menu_set()
@@ -302,8 +290,7 @@ class HighscoreMenu(Menu):
         self.ghighscorex, self.ghighscorey = self.mid_w, self.mid_h + 40
         self.cursor_rect.midtop = (self.phighscorex + self.offset, self.phighscorey)
 
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -321,7 +308,7 @@ class HighscoreMenu(Menu):
             
 
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.main_menu_set()
@@ -347,8 +334,7 @@ class PlayerscoreMenu(Menu):
         Menu.__init__(self, game)
         self.state = "Playerscore"
         self.screen = pygame.display.set_mode((self.game.DISPLAY_W,self.game.DISPLAY_H))
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -356,7 +342,7 @@ class PlayerscoreMenu(Menu):
             self.display.fill(self.game.backgroundcolor)
             user_repository = UserRepositoryImpl()
             Playercheck = FindPlayerUseCase(user_repository)
-            #Erzeugt TextBoxen und Buttons für das LoginMenu
+            #creates textboxes and buttons for the login menu
             input_box1 = InputBox(self.game.DISPLAY_W / 2 - 100,  50, 140, 32)  
             input_button = Button(self.game.DISPLAY_W / 2 -50, 200, search_img, 0.4)
             self.done = False
@@ -371,13 +357,8 @@ class PlayerscoreMenu(Menu):
                 self.display.fill((30, 30, 30))
                 self.draw_text('Highscores for which Player?', 20, self.game.DISPLAY_W / 2, 30)
                 input_box1.draw(self.display)
-                #Legt bei Klick auf SignIn Button nach eingabe eines Usernamen und Passworts einen neuen Benutzer
-                #in der Datenbank an
-
-                input_button.draw(self.screen) 
+                input_button.draw(self.screen)
                 if input_button.click():
-                    print('input')
-                    print(input_box1.text)
                 
                     if Playercheck.execute(input_box1.text):
                         self.game.highscoreplayer = input_box1.text
@@ -389,10 +370,10 @@ class PlayerscoreMenu(Menu):
                 pygame.display.flip()
                 clock.tick(20)
                 self.blit_screen()
-    
+
+    # calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
-            print("jo geht")
             self.game.highscores_set()
             self.done = True
             self.run_display = False
@@ -402,8 +383,7 @@ class PlayerhighscoreMenu(Menu):
         Menu.__init__(self, game)
         
         
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         user_repository = UserRepositoryImpl()
         playerhigh_score_use_case = PlayerHighscoreUseCase(user_repository)
@@ -423,7 +403,7 @@ class PlayerhighscoreMenu(Menu):
         self.blit_screen()
 
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.highscores_set()
@@ -439,8 +419,7 @@ class GamescoreMenu(Menu):
         self.flapx, self.flapy = self.mid_w, self.mid_h + 80
         self.cursor_rect.midtop = (self.spacex + self.offset, self.spacey)
 
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -459,7 +438,7 @@ class GamescoreMenu(Menu):
         self.blit_screen()
 
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.main_menu_set()
@@ -509,10 +488,8 @@ class SpaceMenu(Menu):
         gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
         self.spacescore = gamehigh_score_use_case.execute('spaceinvader')
         self.leng = len(self.spacescore)
-        print("leng ist : " + str(self.leng))
         
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -523,9 +500,7 @@ class SpaceMenu(Menu):
     def draw_display(self):
         self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Spaceinvader:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-        #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer
-        # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und
-        # #immer 5 Scores auf einmal angeschaut werden
+        #shows the highscore list in increments of 5 players
         for i in range(5):
             if i + 1 + self.n <= self.leng:
                 spacescore_formatted = str(self.spacescore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", "")
@@ -535,7 +510,7 @@ class SpaceMenu(Menu):
 
 
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.gamescores_set()
@@ -543,11 +518,9 @@ class SpaceMenu(Menu):
         elif self.game.UP_KEY:
             if self.n >0:
                 self.n = self.n - 5
-                print("N ist jetzt:" + str(self.n))              
         elif self.game.DOWN_KEY:
             if 5+self.n < self.leng:
                 self.n =self.n + 5
-                print("N ist jetzt:" + str(self.n))
 
 class TetrisMenu(Menu):
     def __init__(self, game):
@@ -557,10 +530,8 @@ class TetrisMenu(Menu):
         gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
         self.tetscore = gamehigh_score_use_case.execute('tetris')
         self.leng = len(self.tetscore)
-        print("leng ist : " + str(self.leng))
 
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet    
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -571,9 +542,7 @@ class TetrisMenu(Menu):
     def draw_display(self):
         self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Tetris:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-        #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer
-        # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und
-        #immer 5 Scores auf einmal angeschaut werden
+        #shows the highscore list in increments of 5 players
         for i in range(5):
             if i + 1 + self.n <= self.leng:
                 tetscore_formatted = str(self.tetscore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", "")
@@ -581,7 +550,7 @@ class TetrisMenu(Menu):
         self.blit_screen()
 
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.gamescores_set()
@@ -589,11 +558,9 @@ class TetrisMenu(Menu):
         elif self.game.UP_KEY:
             if self.n >0:
                 self.n = self.n - 5
-                print("N ist jetzt:" + str(self.n))              
         elif self.game.DOWN_KEY:
             if 5+self.n < self.leng:
                 self.n =self.n + 5
-                print("N ist jetzt:" + str(self.n))
 
 class SnakeMenu(Menu):
     def __init__(self, game):
@@ -602,12 +569,9 @@ class SnakeMenu(Menu):
         user_repository = UserRepositoryImpl()
         gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
         self.snakescore = gamehigh_score_use_case.execute('snake')
-        print(self.snakescore)
         self.leng = len(self.snakescore)
-        print("leng ist : " + str(self.leng))
 
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet    
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -618,9 +582,7 @@ class SnakeMenu(Menu):
     def draw_display(self):
         self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores Snake:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-        #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer
-        # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und
-        # #immer 5 Scores auf einmal angeschaut werden
+        #shows the highscore list in increments of 5 players
         for i in range(5):
             if i + 1 + self.n <= self.leng:
                 snakescore_formatted = str(self.snakescore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", "")
@@ -629,7 +591,7 @@ class SnakeMenu(Menu):
 
             
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.gamescores_set()
@@ -637,11 +599,9 @@ class SnakeMenu(Menu):
         elif self.game.UP_KEY:
             if self.n >0:
                 self.n = self.n - 5
-                print("N ist jetzt:" + str(self.n))              
         elif self.game.DOWN_KEY:
             if 5+self.n < self.leng:
                 self.n =self.n + 5
-                print("N ist jetzt:" + str(self.n))
 
 class FlappyMenu(Menu):
     def __init__(self, game):
@@ -651,10 +611,8 @@ class FlappyMenu(Menu):
         gamehigh_score_use_case = GamesHighscoreUseCase(user_repository)
         self.flapscore = gamehigh_score_use_case.execute('flappy')
         self.leng = len(self.flapscore)
-        print("leng ist : " + str(self.leng))
 
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet    
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -665,9 +623,7 @@ class FlappyMenu(Menu):
     def draw_display(self):
         self.display.fill(self.game.backgroundcolor)
         self.draw_text('Highscores FlappyBird:', 20, self.game.DISPLAY_W / 2, self.game.DISPLAY_H / 2 - 30)
-        #Zeichnet die aktuellen Highscores. Self.leng ist die länge der Liste welche die Highscores enthält self n kann immer
-        # um 5 erhöht werden und somit soll in 5er inkrementen durch die komplette highscoreliste gescrollt werden und
-        # #immer 5 Scores auf einmal angeschaut werden
+        #shows the highscore list in increments of 5 players
         for i in range(5):
             if i + 1 + self.n <= self.leng:
                 flapscore_formatted = str(self.flapscore[i + self.n]).replace("(", "").replace("'", "").replace(",", " -").replace(")", "")
@@ -675,7 +631,7 @@ class FlappyMenu(Menu):
         self.blit_screen()
 
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
             self.game.gamescores_set()
@@ -683,11 +639,9 @@ class FlappyMenu(Menu):
         elif self.game.UP_KEY:
             if self.n >0:
                 self.n = self.n - 5
-                print("N ist jetzt:" + str(self.n))              
         elif self.game.DOWN_KEY:
             if 5+self.n < self.leng:
                 self.n =self.n + 5
-                print("N ist jetzt:" + str(self.n))
             
 
 
@@ -701,8 +655,7 @@ class OptionsMenu(Menu):
         self.voltextx, self.voltexty = self.mid_w, self.mid_h + 60
         self.cursor_rect.midtop = (self.volx + self.offset, self.voly)
 
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet
+    #this function is called when the corresponding menu is active and looped
     def display_menu(self):
         self.run_display = True
         while self.run_display:
@@ -720,7 +673,7 @@ class OptionsMenu(Menu):
         self.blit_screen()
 
 
-    #Reagiert auf gedrückte Tasten mit entsprechender Funktion
+    #calls the function that belongs to the input
     def check_input(self):
         if self.game.BACK_KEY:
             self.volume = ""
@@ -738,14 +691,10 @@ class OptionsMenu(Menu):
                 if self.game.backgroundcolor == (0, 0, 0):
                     self.game.backgroundcolor = (57, 57, 57)
                     self.game.textcolor = (0, 0, 0)
-                    print(self.game.backgroundcolor)
-                    print(self.game.textcolor)
                     return
                 elif self.game.backgroundcolor == (57, 57, 57):
                     self.game.backgroundcolor = (2, 56, 5)
                     self.game.textcolor = (57, 57, 57)
-                    print(self.game.backgroundcolor)
-                    print(self.game.textcolor)
                     return
                 elif self.game.backgroundcolor == (2, 56, 5):
                     self.game.backgroundcolor = (0, 0, 0)
@@ -759,8 +708,7 @@ class CreditsMenu(Menu):
     def __init__(self, game):
         Menu.__init__(self, game)
     
-    #Funktion welche aufgerufen wird, wenn das entsprechende Menu aktiv ist und einen Loop für das anzuzeigende Menu ausführt,
-    #welcher auf Eingaben wartet, benötigt kein Check_input() da es nur ein Bild der Credits anzeigt
+    #this function is called when the corresponding menu is active and looped; no check_input() since it only shows the credits
     def display_menu(self):
         self.run_display = True
         while self.run_display:

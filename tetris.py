@@ -145,6 +145,7 @@ class Tetris:
             for j in range(self.width):
                 new_line.append(0)
             self.field.append(new_line)
+
         while not self.done:
             if self.figure is None:
                 self.new_figure()

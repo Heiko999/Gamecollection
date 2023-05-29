@@ -1,10 +1,7 @@
 import pygame as pg
 from random import randrange, randint
 
-
 vec2 = pg.math.Vector2
-
-
 class Snake:
     def __init__(self, game):
         self.game = game
@@ -62,7 +59,6 @@ class Snake:
             self.game.food.rect.center = self.get_random_position()
             self.length += self.game.food.foodpoint
             self.game.new_foodtype()
-            print(self.length)
 
     def check_selfeating(self):
         if len(self.segments) != len(set(segment.center for segment in self.segments)):
@@ -168,7 +164,10 @@ class SnakeGame:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 self.Done = True
+            if event.type == pg.KEYDOWN and (event.key == pg.K_ESCAPE or event.key == pg.K_BACKSPACE):
+                self.Done = True
             self.snake.control(event)
+
 
     def run(self):
         self.screen = pg.display.set_mode([self.WINDOW_SIZE] * 2)

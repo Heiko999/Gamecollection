@@ -1,7 +1,7 @@
 from infrastructure import *
-from archivements import *
+from achievements import *
 
-# Registrierungs-Use-Case
+#Registration-Use-Case
 class RegistrationUseCase:
     def __init__(self, user_repository):
         self.user_repository = user_repository
@@ -10,10 +10,10 @@ class RegistrationUseCase:
         if name == "" or password == "":
             return False
 
-        # Aufruf der Domänenlogikschicht, um das Benutzerobjekt zu erstellen
+        #Calls Domain Layer to create a User object
         user = User(name, password, tetris, spaceinvader, snake, flappy)
 
-        # Aufruf des UserRepository in der Infrastrukturschicht, um den Benutzer zu speichern
+        #Calls User Repository in the Infrastructure Layer to save the data
         self.user_repository.save(user)
 
 class LoginUseCase:
@@ -26,7 +26,7 @@ class LoginUseCase:
             return True
         return False
     
-# Benutzerlösch-Use-Case-Implementierung in der Anwendungsschicht
+#Deletes the User; in the Application Layer
 class DeleteUseCase:
     def __init__(self, user_repository):
         self.user_repository = user_repository
@@ -106,13 +106,11 @@ class GamesHighscoreUseCase:
                 highscore = user.get_snake()
             elif game_name == 'flappy':
                 highscore = user.get_flappy()
-            #else:
-                #continue
+
             if highscore is not None:
                 highscores.append((user.get_name(), highscore))
 
         sorted_highscores = sorted(highscores, key=lambda x: x[1], reverse=True)
-        print(sorted_highscores)
         return sorted_highscores
     
 

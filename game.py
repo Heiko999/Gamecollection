@@ -1,4 +1,3 @@
-
 from menu import *
 from tetris import *
 from snake import *
@@ -6,14 +5,12 @@ from flappy import *
 from skyfallgame import *
 from usecase import *
 
-#TO-DO: Pygame Dependency entfernen, damit diese Klasse für Clean Code auf Framework Abhängigkeiten verzichtet.
-
 class Game():
     def __init__(self):
         self.player = ''
         self.highscoreplayer = ''
         self.running, self.playing = True, False
-        self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
+        self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY= False, False, False, False
         self.DISPLAY_W, self.DISPLAY_H = 600, 400
         self.backgroundcolor, self.textcolor = (0, 0, 0), (255, 255, 255)
         self.main_menu = ''
@@ -31,8 +28,7 @@ class Game():
         self.curr_menu = ''
         self.closedcounter = 0
     
-    #Wird für das Gamemenu verwendet. Solange man im GameMenu ist wird der State erfasst, um zu sehen, welches spiel gerade gespielt wird
-    #dann wird ein Objekt des Spiels erzeugt und somit dieses Spiel gestartet
+    #As long as the player stays in the GameMenu the state gets checked to find out which game will be played. After that a game objects will be created and the game starts
     def game_loop(self):
         if self.playing:
             if self.game_collection.state == 'SpaceInvaders':
@@ -41,7 +37,6 @@ class Game():
                 user_repository = UserRepositoryImpl()
                 high_score_use_case = HighScoreUseCase(user_repository)
                 high_score_use_case.update_high_score(self.player, 'spaceinvader', skyfallGame.highscore)
-                print("Skyfallhighscore = " + str(skyfallGame.highscore))
                 skyfallGame.highscore = 0
                 self.closedcounter = 1
             if self.game_collection.state == 'Tetris':
@@ -50,7 +45,6 @@ class Game():
                 user_repository = UserRepositoryImpl()
                 high_score_use_case = HighScoreUseCase(user_repository)
                 high_score_use_case.update_high_score(self.player, 'tetris', game.score_tetris)
-                print (game.score_tetris)
                 self.closedcounter = 1
             if self.game_collection.state == 'Snake':
                 game = SnakeGame()
@@ -58,7 +52,6 @@ class Game():
                 user_repository = UserRepositoryImpl()
                 high_score_use_case = HighScoreUseCase(user_repository)
                 high_score_use_case.update_high_score(self.player, 'snake', SnakeGame.highscore)
-                print("Highscore is: " + str(SnakeGame.highscore))
                 SnakeGame.highscore = 0
                 self.closedcounter = 1
             if self.game_collection.state == 'Flappy':
@@ -67,14 +60,12 @@ class Game():
                 user_repository = UserRepositoryImpl()
                 high_score_use_case = HighScoreUseCase(user_repository)
                 high_score_use_case.update_high_score(self.player, 'flappy', game.score_flappy)
-                print(game.score_flappy)
                 self.closedcounter = 1 
             self.playing = False
             self.reset_keys()
 
 
-    #Wird in den Menuklassen benutzt um am ende eines Displayloop die gedrückten Tasten zu resetten, damit nach einem Klick nach
-    #z.B. Unten nicht durchgehend nach unten gescrollt wird
+    #resets the key presses
     def reset_keys(self):
         self.UP_KEY, self.DOWN_KEY, self.START_KEY, self.BACK_KEY = False, False, False, False
     
