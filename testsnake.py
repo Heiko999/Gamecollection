@@ -9,7 +9,7 @@ class TestGame(unittest.TestCase):
     def test_snake_moveright(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        event = Mock(type=pg.KEYDOWN, key=pg.K_RIGHT)
+        event = Mock(type=pg.KEYDOWN,unicode='', key=pg.K_RIGHT)
         game.snake.control(event)
         game.snake.update()
         updated_position = game.snake.rect.center
@@ -20,7 +20,7 @@ class TestGame(unittest.TestCase):
     def test_snake_moverleft(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        event = Mock(type=pg.KEYDOWN, key=pg.K_LEFT)
+        event = Mock(type=pg.KEYDOWN,unicode='', key=pg.K_LEFT)
         game.snake.control(event)
         game.snake.update()
         updated_position = game.snake.rect.center
@@ -31,7 +31,7 @@ class TestGame(unittest.TestCase):
     def test_snake_moveup(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        event = Mock(type=pg.KEYDOWN, key=pg.K_UP)
+        event = Mock(type=pg.KEYDOWN,unicode='', key=pg.K_UP)
         game.snake.control(event)
         game.snake.update()
         updated_position = game.snake.rect.center
@@ -42,7 +42,7 @@ class TestGame(unittest.TestCase):
     def test_snake_movedown(self):
         game = SnakeGame()
         initial_position = game.snake.rect.center
-        event = Mock(type=pg.KEYDOWN, key=pg.K_DOWN)
+        event = Mock(type=pg.KEYDOWN,unicode='', key=pg.K_DOWN)
         game.snake.control(event)
         game.snake.update()
         updated_position = game.snake.rect.center
