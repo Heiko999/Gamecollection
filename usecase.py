@@ -120,6 +120,6 @@ class FindPlayerUseCase:
 
     def execute(self, name):
         user = self.user_repository.find_by_name(name)
-        if user :
+        if user:
             return True
         return False

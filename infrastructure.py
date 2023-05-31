@@ -30,10 +30,10 @@ class UserRepositoryImpl(UserRepository):
     def save(self, user):
         user_data = {'name': user.get_name(), 
                      'password': user.get_password(), 
-                     'Tetris' : user.get_tetris(), 
-                     'SpaceInvaders' : user.get_spaceinvader(),
-                     'Snake' : user.get_snake(), 
-                     'Flappy' : user.get_snake()}
+                     'Tetris': user.get_tetris(),
+                     'SpaceInvaders': user.get_spaceinvader(),
+                     'Snake': user.get_snake(),
+                     'Flappy': user.get_snake()}
         self.table.insert(user_data)
 
     def find_by_name(self, name):
