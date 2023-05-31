@@ -1,6 +1,8 @@
 import unittest
 import unittest
 from unittest.mock import Mock
+import unittest
+from unittest.mock import Mock
 import pygame as pg
 from snake import SnakeGame
 
@@ -50,6 +52,7 @@ class TestGame(unittest.TestCase):
         updated_direction = game.snake.direction
         self.assertNotEqual(initial_position, updated_position)
         self.assertEqual(updated_direction, (0, 50))  # Check if direction changed to down
+
 
 if __name__ == '__main__':
     unittest.main()
